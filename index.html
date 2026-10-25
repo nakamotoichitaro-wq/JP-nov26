@@ -1,6 +1,3 @@
-Here's the full fixed code. Replace everything in your file with it, save, and refresh.
-
-```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -69,7 +66,8 @@ header{background:var(--ai);color:#f2f4fa;position:sticky;top:0;z-index:40}
 .wx .t{font-size:.8rem}
 .wx .a{font-size:.66rem;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wx .src{font-size:.6rem;margin-top:2px;padding:0 4px;border-radius:4px;display:inline-block}
-.src-live{background:var(--momiji);color:#fff}
+.src-live,.src-jma{background:var(--momiji);color:#fff}
+.src-jmamodel,.src-localmodel,.src-model{background:rgba(255,255,255,.28)}
 .src-ly{background:rgba(255,255,255,.18)}
 .src-avg{background:rgba(255,255,255,.08);opacity:.85}
 .ribbon .meta{font-size:.72rem;opacity:.75;padding-bottom:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -104,7 +102,8 @@ h2{font-family:var(--f-display);font-size:1.15rem;margin:0}
 .day-title h3{margin:0;font-size:1.02rem;font-weight:700;text-wrap:balance}
 .wxchip{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:var(--chip);font-size:.82rem;white-space:nowrap}
 .wxchip i{font-size:1.1rem;color:var(--sky)}
-.wxchip .wear{font-size:.7rem;color:var(--muted);display:block}
+.wxchip .wear{font-size:.7rem;color:var(--muted);display:block;white-space:normal}
+.wxchip .wear a{color:var(--sky)}
 .areas{display:flex;flex-wrap:wrap;gap:6px;padding:10px 18px 0}
 .area{border:1px dashed var(--line);background:transparent;border-radius:99px;padding:2px 10px;font-size:.75rem;color:var(--muted)}
 .area.on{border-style:solid;border-color:var(--ai-2);background:var(--ai);color:#fff}
@@ -218,7 +217,7 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
   <div class="wrap hd">
     <div>
       <h1>2026 日本美食溫泉之旅</h1>
-      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.1</span></div>
+      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.7</span></div>
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="itinerary" aria-selected="true"><i class="fa-solid fa-calendar-days"></i> 行程</button>
@@ -318,8 +317,13 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
     <input type="hidden" id="f-day"><input type="hidden" id="f-idx">
     <label class="f">分類<select id="f-cat">
       <option value="dining">美食餐廳</option><option value="sight">景點活動</option><option value="snack">小吃甜點</option><option value="coffee">咖啡 / 茶屋</option>
-      <option value="train">交通（Yahoo! 查詢）</option><option value="flight">航班</option><option value="hotel">住宿</option>
+      <option value="train">交通（Yahoo! 查詢）</option><option value="flight">航班（輸入航班號碼自動填入）</option><option value="hotel">住宿</option>
     </select></label>
+    <div class="transit-box" id="f-flight" hidden>
+      <div class="fx"><label class="f">航班號碼<input id="f-fno" placeholder="例如 JL95、CX564" autocomplete="off"></label><label class="f">出發日期<input id="f-fdate" type="date"></label></div>
+      <button type="button" class="btn pri" id="f-fsearch"><i class="fa-solid fa-plane-departure"></i> 查詢航班並自動填入</button>
+      <div class="muted" id="f-fstatus">輸入航班號碼後按查詢，會自動填入出發地、目的地、起降時間與航廈。</div>
+    </div>
     <div class="transit-box" id="f-transit" hidden>
       <div class="fx"><label class="f">出發站<input id="f-from" placeholder="関西空港"></label><label class="f">到達站<input id="f-to" placeholder="大阪"></label></div>
       <div class="fx"><label class="f">時間類型<select id="f-ttype"><option value="departure">出發</option><option value="arrival">抵達</option></select></label><label class="f">時間<input id="f-ttime" type="time"></label></div>
@@ -374,16 +378,20 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
 window.addEventListener('error',e=>{const m=document.getElementById('days');if(m&&!m.children.length)m.innerHTML=`<div class="chk bad">頁面載入出錯：${String(e.message).replace(/</g,'&lt;')}。請截圖給我。</div>`});
 /* ===================== Area & suggestion database ===================== */
 // wx: weather location group. normal: typical late-Nov [high, low] °C used when no forecast/last-year data is available.
+// jma: official Japan Meteorological Agency office code, weather region keyword and temperature city names (first match wins).
+// link: the official forecast page for that place.
+const JMA_PAGE=c=>`https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=${c}`;
 const WX = {
-  taipei:{name:'台北',lat:25.03,lon:121.56,normal:[24,18]},
-  osaka:{name:'大阪',lat:34.70,lon:135.50,normal:[15,8]},
-  kyoto:{name:'京都',lat:35.00,lon:135.77,normal:[14,6]},
-  tokyo:{name:'東京',lat:35.68,lon:139.76,normal:[15,7]},
-  zao:{name:'遠刈田溫泉',lat:38.12,lon:140.55,normal:[9,1]},
-  sendai:{name:'仙台',lat:38.26,lon:140.87,normal:[12,4]},
-  ishinomaki:{name:'石巻',lat:38.43,lon:141.30,normal:[12,4]},
-  seoul:{name:'首爾',lat:37.57,lon:126.98,normal:[9,1]}
+  taipei:{name:'台北',lat:25.03,lon:121.56,normal:[24,18],link:'https://www.cwa.gov.tw/V8/C/W/County/County.html?CID=63',linkLabel:'中央氣象署'},
+  osaka:{name:'大阪',lat:34.70,lon:135.50,normal:[15,8],jma:{office:'270000',region:'大阪',temp:['大阪']}},
+  kyoto:{name:'京都',lat:35.00,lon:135.77,normal:[14,6],jma:{office:'260000',region:'南部',temp:['京都']}},
+  tokyo:{name:'東京',lat:35.68,lon:139.76,normal:[15,7],jma:{office:'130000',region:'東京地方',temp:['東京']}},
+  zao:{name:'遠刈田溫泉',lat:38.12,lon:140.55,normal:[9,1],jma:{office:'040000',region:'西部',temp:['白石','仙台']},tempNote:'氣溫取最近測站，山區通常再低 2–4°C'},
+  sendai:{name:'仙台',lat:38.26,lon:140.87,normal:[12,4],jma:{office:'040000',region:'東部',temp:['仙台']}},
+  ishinomaki:{name:'石巻',lat:38.43,lon:141.30,normal:[12,4],jma:{office:'040000',region:'東部',temp:['石巻','仙台']}},
+  seoul:{name:'首爾',lat:37.57,lon:126.98,normal:[9,1],model:'kma_seamless',modelLabel:'韓國氣象廳 KMA 模型',link:'https://www.weather.go.kr/w/weather/forecast/short-term.do',linkLabel:'韓國氣象廳'}
 };
+Object.values(WX).forEach(w=>{if(w.jma){w.link=JMA_PAGE(w.jma.office);w.linkLabel='日本氣象廳'}});
 const AREAS = {
   taipei:{label:'台北',wx:'taipei',jp:false,
     sight:[{t:'象山步道',jp:'象山親山步道',n:'約 20 分鐘爬到觀景台，傍晚看 101 與夕陽。'},{t:'永康街散步',jp:'永康街',n:'小吃、茶館、文青小店集中。'},{t:'華山1914文創園區',jp:'華山1914文化創意產業園區',n:'舊酒廠改建，展覽與市集。'}],
@@ -444,9 +452,9 @@ const AREAS = {
     coffee:[],
     tips:['渡輪由「網地島ライン」營運，冬季班次少，出發前請到官網確認時刻表。島上幾乎沒有商店，帶現金、水和午餐。','請勿餵貓人類食物。']},
   seoul:{label:'首爾',wx:'seoul',jp:false,
-    sight:[{t:'景福宮',jp:'경복궁',n:'週二休，11/29 週日可去。'},{t:'北村韓屋村',jp:'북촌한옥마을',n:'景福宮東側。'}],
-    snack:[{t:'廣藏市場',jp:'광장시장',n:'綠豆煎餅、麻藥飯捲。'}],
-    coffee:[{t:'Fritz Coffee Company',jp:'프릳츠 커피',n:'復古麵包咖啡店。'},{t:'Onion 安國',jp:'어니언 안국',n:'韓屋咖啡館。'}],
+    sight:[{t:'景福宮',jp:'경복궁',n:'週二休館。穿韓服入場免費。'},{t:'昌德宮・後苑',jp:'창덕궁 후원',n:'後苑（秘苑）需參加導覽，名額少請先上網預約；週一休館。'},{t:'北村韓屋村',jp:'북촌한옥마을',n:'景福宮與昌德宮之間，居民區請放低音量。'},{t:'益善洞韓屋街',jp:'익선동 한옥거리',n:'韓屋改建的小店與咖啡館。'},{t:'聖水洞',jp:'성수동',n:'工廠改建的咖啡館、選物店集中地。'},{t:'南山首爾塔',jp:'N서울타워',n:'傍晚上去看夜景，搭纜車或步行上山。'},{t:'東大門設計廣場 DDP',jp:'동대문디자인플라자',n:'札哈・哈蒂設計，附近東大門市場逛到深夜。'}],
+    snack:[{t:'廣藏市場',jp:'광장시장',n:'綠豆煎餅、麻藥飯捲、生拌牛肉。'},{t:'通仁市場 銅錢便當',jp:'통인시장 엽전도시락',n:'用銅錢換小菜自組便當，西村一帶。'},{t:'明洞街頭小吃',jp:'명동 길거리 음식',n:'傍晚後攤販最多。'}],
+    coffee:[{t:'Fritz Coffee Company',jp:'프릳츠 커피',n:'復古麵包咖啡店。'},{t:'Onion 安國',jp:'어니언 안국',n:'韓屋咖啡館。'},{t:'Onion 聖水',jp:'어니언 성수',n:'舊工廠改建的人氣麵包咖啡。'},{t:'Blue Bottle 聖水',jp:'블루보틀 성수',n:'韓國一號店。'},{t:'Anthracite 合井',jp:'앤트러사이트 합정',n:'舊鞋廠改建，近弘大。'}],
     tips:['AREX 直達車從首爾站到仁川機場約 43 分鐘；CX419 19:35 起飛，建議 16:30 前出發。']}
 };
 const CAT = {
@@ -491,9 +499,12 @@ const defaultDays = [
   {date:'2026-11-22',title:'田代島（貓島）一日遊',areas:['ishinomaki','sendai'],items:[
     {category:'train',from:'仙台',to:'石巻',timeType:'arrival',transitTime:'08:00',title:'仙石東北ライン → 石卷',jp:'仙台駅 → 石巻駅',en:'Sendai → Ishinomaki',notes:'再轉往渡輪碼頭'},
     {category:'sight',startTime:'08:30',endTime:'15:30',title:'渡輪＋田代島巡禮',jp:'宮城県石巻市田代島（網地島ライン）',en:'Tashirojima Island ferry',notes:'渡輪時刻請官網確認'}]},
-  ...['23','24','25','26','27'].map(d=>({date:`2026-11-${d}`,title:'自由日 / 彈性安排',areas:['tokyo'],items:[]})),
-  {date:'2026-11-28',title:'最後採購',areas:['tokyo'],items:[
-    {category:'sight',startTime:'14:00',endTime:'20:00',title:'伴手禮採購',jp:'東京都内',en:'Last-minute shopping',notes:''}]},
+  ...['23'].map(d=>({date:`2026-11-${d}`,title:'自由日 / 彈性安排',areas:['tokyo'],items:[]})),
+  {date:'2026-11-24',title:'自由日 / 彈性安排',areas:['tokyo'],items:[
+    {category:'flight',startTime:'19:30',endTime:'22:05',title:'JL 95 東京羽田 → 首爾金浦',jp:'羽田空港 第3ターミナル → 金浦国際空港',en:'JL95 HND T3 → GMP',notes:'建議 17:30 前到羽田第 3 航廈；時刻請以訂位確認單為準'}]},
+  ...['25','26','27'].map(d=>({date:`2026-11-${d}`,title:'首爾',areas:['seoul'],items:[]})),
+  {date:'2026-11-28',title:'首爾 · 最後採購',areas:['seoul'],items:[
+    {category:'sight',startTime:'14:00',endTime:'20:00',title:'伴手禮採購',jp:'首爾市內',en:'Last-minute shopping in Seoul',notes:''}]},
   {date:'2026-11-29',title:'首爾 → 返港 CX 419',areas:['seoul'],items:[
     {category:'train',from:'首爾站',to:'仁川機場 T1',timeType:'departure',transitTime:'16:30',title:'AREX 機場快線',jp:'서울역 → 인천국제공항 T1',en:'AREX Seoul Sta. → ICN T1',notes:'Yahoo 不涵蓋韓國'},
     {category:'flight',startTime:'19:35',endTime:'22:40',title:'CX 419 首爾仁川 → 香港',jp:'仁川国際空港 T1 → 香港国際空港 T1',en:'CX419 ICN T1 → HKG T1',notes:''}]}
@@ -516,6 +527,15 @@ days.forEach((d,i)=>{if(!Array.isArray(d.areas)||!d.areas.length||!d.areas.every
 hotels.forEach(h=>{if(!h.area||!AREAS[h.area])h.area=guessArea(h.address||h.name);if(h.status)h.status=String(h.status).split(' ')[0]});
 let ui = Object.assign({showTransit:true,sugOpen:{},sugTab:{}}, load(K.ui)||{});
 let wxData = load(K.wx) || {fetched:0};
+// One-time additions to data already saved in the browser
+(function(){ui.patches=ui.patches||{};
+  if(!ui.patches.jl95){const d=days.find(x=>x.date==='2026-11-24');
+    if(d&&!d.items.some(it=>/JL\s*0?95/.test(it.title||'')))d.items.push({category:'flight',startTime:'19:30',endTime:'22:05',title:'JL 95 東京羽田 → 首爾金浦',jp:'羽田空港 第3ターミナル → 金浦国際空港',en:'JL95 HND T3 → GMP',notes:'建議 17:30 前到羽田第 3 航廈；時刻請以訂位確認單為準'});
+    ui.patches.jl95=true;store(K.days,days);store(K.ui,ui)}
+  if(!ui.patches.seoul2528){['2026-11-25','2026-11-26','2026-11-27','2026-11-28'].forEach(dt=>{const d=days.find(x=>x.date===dt);if(!d)return;
+      d.areas=['seoul'];if(/自由日|彈性|最後採購|^$/.test(d.title||''))d.title=dt==='2026-11-28'?'首爾 · 最後採購':'首爾';
+      d.items.forEach(it=>{if(it.jp==='東京都内'){it.jp='首爾市內';if(/Tokyo|shopping/i.test(it.en||''))it.en='Last-minute shopping in Seoul'}})});
+    ui.patches.seoul2528=true;store(K.days,days);store(K.ui,ui)}})();
 
 function migrateOld(){
   // Import data saved by the previous version of this tool, keeping user edits.
@@ -640,57 +660,136 @@ async function runNav(id,force){
     el.querySelector('.nav-err')?.remove();el.insertAdjacentHTML('beforeend',`<div class="nav-err">${esc(e.message)}</div>`)}
 }
 
+/* ===================== Flight lookup (AeroDataBox via RapidAPI, same key as NAVITIME) ===================== */
+const ADB_HOST='aerodatabox.p.rapidapi.com';
+const AIRPORT_ZH={HND:'東京羽田',NRT:'東京成田',KIX:'大阪關西',ITM:'大阪伊丹',UKB:'神戶',NGO:'名古屋中部',SDJ:'仙台',CTS:'札幌新千歲',FUK:'福岡',OKA:'沖繩那霸',KOJ:'鹿兒島',HIJ:'廣島',
+  TPE:'台北桃園',TSA:'台北松山',KHH:'高雄',RMQ:'台中',HKG:'香港',MFM:'澳門',ICN:'首爾仁川',GMP:'首爾金浦',PUS:'釜山',CJU:'濟州',PVG:'上海浦東',SHA:'上海虹橋',PEK:'北京首都',PKX:'北京大興',SIN:'新加坡',BKK:'曼谷',MNL:'馬尼拉'};
+async function lookupFlight(no,date){
+  const key=navKey(); if(!key) throw new Error('尚未設定 RapidAPI 金鑰。');
+  no=(no||'').replace(/\s+/g,'').toUpperCase(); if(!/^[A-Z0-9]{2}\d{1,4}[A-Z]?$/.test(no)) throw new Error('航班號碼格式不正確，例如 JL95、CX564。');
+  if(!date) throw new Error('請選擇出發日期。');
+  let res;
+  try{res=await fetch(`https://${ADB_HOST}/flights/number/${no}/${date}?withAircraftImage=false&withLocation=false`,{headers:{'x-rapidapi-key':key,'x-rapidapi-host':ADB_HOST}})}
+  catch(e){throw new Error('無法連線到航班資料服務，請確認網路。')}
+  if(res.status===204||res.status===404) throw new Error(`找不到 ${no} 在 ${date} 的航班。請確認號碼與日期；太遠的日期可能還沒有排班資料。`);
+  if(res.status===401||res.status===403) throw new Error('你的 RapidAPI 金鑰還沒訂閱 AeroDataBox。請到 RapidAPI 搜尋 AeroDataBox，訂閱免費（Basic）方案後再試。');
+  if(res.status===429) throw new Error('已達 AeroDataBox 的查詢上限，請稍後再試。');
+  if(!res.ok) throw new Error(`航班資料服務回傳錯誤 ${res.status}${res.status===400?'（日期可能超出可查詢範圍）':''}。`);
+  const j=await res.json(); const arr=Array.isArray(j)?j:[j];
+  if(!arr.length) throw new Error(`找不到 ${no} 在 ${date} 的航班。`);
+  const f=arr.find(x=>x.codeshareStatus==='IsOperator')||arr[0];
+  const lt=m=>String(m?.scheduledTime?.local||m?.scheduledTimeLocal||m?.revisedTime?.local||'');
+  const ap=m=>{const a=m?.airport||{};return {iata:a.iata||'',zh:AIRPORT_ZH[a.iata]||a.municipalityName||a.shortName||a.name||a.iata||'',name:a.name||'',term:m?.terminal||''}};
+  const d=ap(f.departure), a=ap(f.arrival), dt=lt(f.departure), at=lt(f.arrival);
+  return {no:(f.number||no).replace(/\s+/g,' '),airline:f.airline?.name||'',aircraft:f.aircraft?.model||'',
+    dep:d,arr:a,depTime:dt.slice(11,16),arrTime:at.slice(11,16),depDate:dt.slice(0,10),arrDate:at.slice(0,10),status:f.status||''};
+}
+function flightTrackUrl(no){return 'https://www.flightradar24.com/data/flights/'+encodeURIComponent(String(no).replace(/\s+/g,'').toLowerCase())}
+
 /* ===================== Weather (Open-Meteo, no API key) ===================== */
 const WMO = c => c==null?['fa-temperature-half','—']:c===0?['fa-sun','晴']:c<=2?['fa-cloud-sun','晴時多雲']:c===3?['fa-cloud','陰']:c<=48?['fa-smog','霧']:c<=57?['fa-cloud-rain','毛毛雨']:c<=67?['fa-cloud-showers-heavy','雨']:c<=77?['fa-snowflake','雪']:c<=82?['fa-cloud-sun-rain','陣雨']:c<=86?['fa-snowflake','陣雪']:['fa-cloud-bolt','雷雨'];
+// JMA weather codes: 1xx sunny, 2xx cloudy, 3xx rain, 4xx snow (second part says what mixes in)
+function JMAW(c){c=+c;if(!c)return['fa-temperature-half','—'];
+  const rainy=[102,103,104,105,106,107,108,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,140];
+  if(c===100)return['fa-sun','晴'];
+  if(c<200)return rainy.includes(c)?['fa-cloud-sun-rain','晴，偶有雨']:['fa-cloud-sun','晴時多雲'];
+  if(c===200)return['fa-cloud','陰'];
+  if(c<300)return (c===201||c===210||c===211||c===223)?['fa-cloud-sun','陰時晴']:(c>=204&&c<=206||c>=215&&c<=217||c===228||c===229||c===230||c===281)?['fa-cloud-meatball','陰，偶有雪']:['fa-cloud-rain','陰，偶有雨'];
+  if(c<400)return c>=303&&c<=309||c>=314?['fa-cloud-showers-heavy','雨（或雪）']:['fa-cloud-showers-heavy','雨'];
+  return['fa-snowflake','雪'];}
+function iconFor(w){return w.codeType==='jma'?JMAW(w.code):WMO(w.code)}
 function wearHint(hi,lo){if(lo==null)return'';if(lo<=2)return'羽絨外套、手套';if(lo<=7)return'厚外套＋毛衣';if(hi<=16)return'夾克＋長袖';if(hi<=22)return'薄外套';return'短袖＋薄外套'}
 function dayWxKey(day){const a=AREAS[day.areas[0]];return a?a.wx:'tokyo'}
 function lastYear(date){return String(Number(date.slice(0,4))-1)+date.slice(4)}
 
+async function fetchJMA(office){
+  // Official JMA forecast data (same data as www.jma.go.jp). [0] = short-term (3 days), [1] = weekly (7 days).
+  const r=await fetch(`https://www.jma.go.jp/bosai/forecast/data/forecast/${office}.json`);
+  if(!r.ok) throw new Error('JMA '+r.status);
+  return r.json();
+}
+function parseJMA(data,cfg){
+  const out={};const day=t=>String(t).slice(0,10);const num=v=>v===''||v==null?null:Number(v);
+  const pickArea=(areas,names)=>{for(const n of names){const a=areas.find(x=>x.area&&x.area.name.includes(n));if(a)return a}return areas[0]};
+  // Weekly forecast: weather code + chance of rain per day, then min/max temperature per city
+  const wk=data[1];
+  if(wk&&wk.timeSeries){
+    const t0=wk.timeSeries[0], wa=pickArea(t0.areas,[cfg.region]);
+    t0.timeDefines.forEach((t,i)=>{out[day(t)]={code:wa.weatherCodes?.[i],pop:num(wa.pops?.[i]),hi:null,lo:null}});
+    const t1=wk.timeSeries[1];
+    if(t1){const ta=pickArea(t1.areas,cfg.temp);t1.timeDefines.forEach((t,i)=>{const o=out[day(t)]||(out[day(t)]={});o.hi=num(ta.tempsMax?.[i]);o.lo=num(ta.tempsMin?.[i])})}
+  }
+  // Short-term forecast fills today–day after tomorrow (more detailed)
+  const st=data[0];
+  if(st&&st.timeSeries){
+    const s0=st.timeSeries[0], sa=pickArea(s0.areas,[cfg.region]);
+    s0.timeDefines.forEach((t,i)=>{const o=out[day(t)]||(out[day(t)]={});if(sa.weatherCodes?.[i])o.code=sa.weatherCodes[i];if(sa.weathers?.[i])o.text=sa.weathers[i].replace(/\s+/g,' ')});
+    const s1=st.timeSeries[1];
+    if(s1){const pa=pickArea(s1.areas,[cfg.region]);const by={};s1.timeDefines.forEach((t,i)=>{const v=num(pa.pops?.[i]);if(v!=null)(by[day(t)]=by[day(t)]||[]).push(v)});
+      Object.entries(by).forEach(([d,v])=>{const o=out[d]||(out[d]={});o.pop=Math.max(...v)})}
+    const s2=st.timeSeries[2];
+    if(s2){const ta=pickArea(s2.areas,cfg.temp);const by={};s2.timeDefines.forEach((t,i)=>{const v=num(ta.temps?.[i]);if(v!=null)(by[day(t)]=by[day(t)]||[]).push(v)});
+      Object.entries(by).forEach(([d,v])=>{const o=out[d]||(out[d]={});if(v.length>1){o.lo=Math.min(...v);o.hi=Math.max(...v)}else if(o.hi==null)o.hi=v[0]})}
+  }
+  return out;
+}
 async function fetchWeather(force){
   const status=$('#wx-status');
-  if(!force && Date.now()-wxData.fetched < 3*3600e3 && wxData.byKey){renderWx();return}
+  if(!force && Date.now()-wxData.fetched < 3*3600e3 && wxData.byKey && wxData.v===3){renderWx();return}
   status.textContent='天氣更新中…';
   const needed=[...new Set(days.map(dayWxKey))];
-  const out={};
-  try{
-    await Promise.all(needed.map(async key=>{
-      const w=WX[key];
-      const base=`latitude=${w.lat}&longitude=${w.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
-      const [fc,ar]=await Promise.all([
-        fetch(`https://api.open-meteo.com/v1/forecast?${base}&forecast_days=16`).then(r=>r.json()),
-        fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${w.lat}&longitude=${w.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&start_date=2025-11-13&end_date=2025-11-29`).then(r=>r.json()).catch(()=>null)
-      ]);
-      out[key]={fc:{},ly:{}};
-      (fc.daily?.time||[]).forEach((t,i)=>out[key].fc[t]={code:fc.daily.weather_code[i],hi:fc.daily.temperature_2m_max[i],lo:fc.daily.temperature_2m_min[i],pop:fc.daily.precipitation_probability_max[i]});
-      (ar?.daily?.time||[]).forEach((t,i)=>out[key].ly[t]={code:ar.daily.weather_code[i],hi:ar.daily.temperature_2m_max[i],lo:ar.daily.temperature_2m_min[i],rain:ar.daily.precipitation_sum[i]});
-    }));
-    wxData={fetched:Date.now(),byKey:out};store(K.wx,wxData);
-  }catch(e){status.textContent='無法連線天氣服務，顯示歷年平均。';}
+  const out={}; const jmaCache={}; let jmaOk=false, jmaFail=false;
+  await Promise.all(needed.map(async key=>{
+    const w=WX[key]; out[key]={jma:{},fc:{},ly:{}};
+    // 1) Official JMA forecast (Japan only, 7 days)
+    if(w.jma){
+      try{jmaCache[w.jma.office]=jmaCache[w.jma.office]||fetchJMA(w.jma.office);out[key].jma=parseJMA(await jmaCache[w.jma.office],w.jma);jmaOk=true}
+      catch(e){jmaFail=true}
+    }
+    // 2) Beyond 7 days: JMA's own global model for Japan; standard model elsewhere
+    //    Seoul tries KMA's own model first; if it returns nothing usable, the standard model fills in.
+    const om=q=>fetch(`https://api.open-meteo.com/v1/forecast?latitude=${w.lat}&longitude=${w.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto${q}`).then(r=>r.json()).catch(()=>null);
+    const take=(fc,tag)=>{(fc?.daily?.time||[]).forEach((t,i)=>{if(fc.daily.temperature_2m_max?.[i]!=null&&!out[key].fc[t])out[key].fc[t]={code:fc.daily.weather_code?.[i],hi:fc.daily.temperature_2m_max[i],lo:fc.daily.temperature_2m_min[i],pop:fc.daily.precipitation_probability_max?.[i],tag}})};
+    if(w.jma) take(await om('&models=jma_seamless&forecast_days=11'),'jmamodel');
+    else{ if(w.model) take(await om(`&models=${w.model}&forecast_days=12`),'localmodel'); take(await om('&forecast_days=16'),'model'); }
+    // 3) Same dates last year (measured)
+    const ar=await fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${w.lat}&longitude=${w.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&start_date=2025-11-13&end_date=2025-11-29`).then(r=>r.json()).catch(()=>null);
+    (ar?.daily?.time||[]).forEach((t,i)=>out[key].ly[t]={code:ar.daily.weather_code[i],hi:ar.daily.temperature_2m_max[i],lo:ar.daily.temperature_2m_min[i],rain:ar.daily.precipitation_sum[i]});
+  }));
+  const any=Object.values(out).some(o=>Object.keys(o.jma).length||Object.keys(o.fc).length||Object.keys(o.ly).length);
+  if(any){wxData={v:3,fetched:Date.now(),byKey:out,jmaFail:jmaFail&&!jmaOk};store(K.wx,wxData)}
   renderWx();
 }
 function wxFor(day){
   const key=dayWxKey(day), w=WX[key], src=wxData.byKey&&wxData.byKey[key];
-  if(src&&src.fc[day.date]) return {...src.fc[day.date],src:'live',place:w.name};
-  if(src&&src.ly[lastYear(day.date)]) return {...src.ly[lastYear(day.date)],src:'ly',place:w.name};
-  return {code:null,hi:w.normal[0],lo:w.normal[1],src:'avg',place:w.name};
+  const base={place:w.name,link:w.link,linkLabel:w.linkLabel,tempNote:w.tempNote};
+  const j=src&&src.jma&&src.jma[day.date], f=src&&src.fc&&src.fc[day.date];
+  if(j&&j.code){const hi=j.hi??f?.hi??w.normal[0], lo=j.lo??f?.lo??w.normal[1];return {...base,code:j.code,codeType:'jma',text:j.text,hi,lo,pop:j.pop,src:'jma'}}
+  if(f) return {...base,...f,codeType:'wmo',src:f.tag||(w.jma?'jmamodel':'model'),modelLabel:w.modelLabel};
+  if(src&&src.ly&&src.ly[lastYear(day.date)]) return {...base,...src.ly[lastYear(day.date)],codeType:'wmo',src:'ly'};
+  return {...base,code:null,codeType:'wmo',hi:w.normal[0],lo:w.normal[1],src:'avg'};
 }
+const SRC_LABEL={jma:'氣象廳',jmamodel:'JMA 模型',localmodel:'KMA 模型',model:'模型預報',ly:'去年同日',avg:'歷年平均'};
 function renderWx(){
   const strip=$('#wx-strip');
-  strip.innerHTML=days.map((d,i)=>{const w=wxFor(d);const[ic,lab]=WMO(w.code);
-    const srcLab={live:'即時預報',ly:'去年同日',avg:'歷年平均'}[w.src];
+  strip.innerHTML=days.map((d,i)=>{const w=wxFor(d);const[ic,lab]=iconFor(w);
+    const srcLab=SRC_LABEL[w.src];
     return `<button class="wx" data-jump="${i}" title="${esc(w.place)} · ${lab}"><div class="d num">${mmdd(d.date)} ${wd(d.date)}</div><div class="ic"><i class="fa-solid ${ic}"></i></div><div class="t num">${Math.round(w.hi)}° / ${Math.round(w.lo)}°</div><div class="a">${esc(w.place)}</div><span class="src src-${w.src}">${srcLab}</span></button>`}).join('');
-  const live=days.filter(d=>wxFor(d).src==='live').length;
+  const cnt=k=>days.filter(d=>wxFor(d).src===k).length;const nJ=cnt('jma'),nM=cnt('jmamodel')+cnt('localmodel')+cnt('model');
   const when=wxData.fetched?new Date(wxData.fetched).toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
   $('#wx-status').textContent = !wxData.byKey
     ? '無法連線天氣服務，目前顯示各地 11 月下旬歷年平均氣溫。'
-    : live
-    ? `${live} 天為即時預報（Open-Meteo），其餘為去年同日實測。更新於 ${when}`
-    : `每天會在約 16 天前（10/29 起）逐日切換為即時預報；目前顯示去年同日實測天氣作參考。更新於 ${when}`;
+    : (nJ?`${nJ} 天為日本氣象廳官方預報；`:'日本各地在出發前 7 天內（約 11/6 起）顯示日本氣象廳官方預報；')
+      +(nM?`${nM} 天為氣象模型預報（日本用氣象廳模型、首爾優先用韓國氣象廳模型）；`:'')+'其餘為去年同日實測。'
+      +(wxData.jmaFail?' 目前無法讀取氣象廳資料。':'')+` 更新於 ${when}`;
   document.querySelectorAll('.day').forEach(el=>{const i=+el.dataset.i;const c=el.querySelector('.wxchip');if(c)c.outerHTML=wxChip(days[i])});
 }
-function wxChip(day){const w=wxFor(day);const[ic,lab]=WMO(w.code);
-  const extra=w.src==='live'&&w.pop!=null?` · 降雨 ${w.pop}%`:(w.src==='ly'&&w.rain>0?` · 去年雨量 ${w.rain}mm`:'');
-  return `<div class="wxchip"><i class="fa-solid ${ic}"></i><div><span class="num">${Math.round(w.hi)}° / ${Math.round(w.lo)}°</span> ${lab==='—'?'':lab}${extra}<span class="wear">${esc(w.place)} · ${wearHint(w.hi,w.lo)}</span></div></div>`}
+function wxChip(day){const w=wxFor(day);const[ic,lab]=iconFor(w);
+  const extra=w.pop!=null&&(w.src==='jma'||w.src==='jmamodel'||w.src==='localmodel'||w.src==='model')?` · 降雨 ${w.pop}%`:(w.src==='ly'&&w.rain>0?` · 去年雨量 ${w.rain}mm`:'');
+  const srcTxt={jma:'日本氣象廳預報',jmamodel:'日本氣象廳模型',localmodel:w.modelLabel||'在地模型',model:'國際模型預報',ly:'去年同日實測',avg:'歷年平均'}[w.src];
+  return `<div class="wxchip" title="${esc(w.text||'')}"><i class="fa-solid ${ic}"></i><div><span class="num">${Math.round(w.hi)}° / ${Math.round(w.lo)}°</span> ${lab==='—'?'':lab}${extra}
+    <span class="wear">${esc(w.place)} · ${wearHint(w.hi,w.lo)}</span>
+    <span class="wear">${srcTxt}${w.tempNote&&w.src==='jma'?' · '+esc(w.tempNote):''}${w.link?` · <a href="${w.link}" target="_blank" rel="noopener">${w.src==='jma'?'官方頁面':esc(w.linkLabel)+'官方預報'} ↗</a>`:''}</span></div></div>`}
 
 /* ===================== Smart checks ===================== */
 function nightsOf(h){return Math.round((new Date(h.checkOut)-new Date(h.checkIn))/864e5)}
@@ -757,6 +856,7 @@ function renderDays(){
           navHtml=navPanel(navQueries[pid],pid);
         } else links+=`<a class="lk" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=transit&origin=${encodeURIComponent(it.from)}&destination=${encodeURIComponent(it.to)}"><i class="fa-solid fa-route"></i> Google 路線</a>`;
       }
+      if(it.category==='flight'){const no=it.flightNo||((it.title||'').match(/\b([A-Z0-9]{2})\s?(\d{1,4})\b/)||[]).slice(1).join('');if(no)links+=`<a class="lk" target="_blank" rel="noopener" href="${flightTrackUrl(no)}"><i class="fa-solid fa-plane"></i> 航班動態 ${esc(no)}</a>`}
       if(it.category!=='train'&&it.category!=='flight'&&(it.jp||it.title)) links+=`<a class="lk" target="_blank" rel="noopener" href="${mapsUrl(it.jp||it.title)}"><i class="fa-solid fa-location-dot"></i> 地圖</a>`;
       if(it.category==='dining'&&it.jp&&inJapan(d)){
         const prevSpot=[...d.items.slice(0,j)].reverse().find(x=>x.category!=='train'&&x.jp);
@@ -841,7 +941,7 @@ function fillDatalist(dayIdx){
   $('#sug-list').innerHTML=areas.flatMap(a=>['sight','snack','coffee'].flatMap(k=>(AREAS[a][k]||[]).map(s=>`<option value="${esc(s.t)}">${esc(AREAS[a].label)}</option>`))).join('');
 }
 function findSug(title){for(const[a,A]of Object.entries(AREAS))for(const k of['sight','snack','coffee'])for(const s of A[k]||[])if(s.t===title||title&&s.t.includes(title))return{...s,cat:k,area:a};return null}
-function toggleCatFields(){const tr=$('#f-cat').value==='train';$('#f-transit').hidden=!tr;$('#f-times').hidden=tr;updateModalYahoo()}
+function toggleCatFields(){const tr=$('#f-cat').value==='train';$('#f-flight').hidden=$('#f-cat').value!=='flight';$('#f-transit').hidden=!tr;$('#f-times').hidden=tr;updateModalYahoo()}
 function updateModalYahoo(){const d=days[+$('#f-day').value];if(!d)return;$('#f-yahoo').href=yahooUrl($('#f-from').value,$('#f-to').value,d.date,$('#f-ttime').value,$('#f-ttype').value==='arrival'?4:1,0)}
 function openItem(dayIdx,idx=null){
   const it=idx!=null?days[dayIdx].items[idx]:{category:'dining'};
@@ -850,6 +950,7 @@ function openItem(dayIdx,idx=null){
   $('#f-cat').value=it.category||'dining';
   $('#f-from').value=it.from||'';$('#f-to').value=it.to||'';$('#f-ttype').value=it.timeType||'departure';$('#f-ttime').value=it.transitTime||'';
   $('#f-start').value=it.startTime||'';$('#f-end').value=it.endTime||'';
+  $('#f-fno').value=it.flightNo||'';$('#f-fdate').value=it.flightDate||days[dayIdx].date;$('#f-fstatus').textContent='輸入航班號碼後按查詢，會自動填入出發地、目的地、起降時間與航廈。';
   $('#f-title').value=it.title||'';$('#f-jp').value=it.jp||'';$('#f-en').value=it.en||'';$('#f-notes').value=it.notes||'';
   fillDatalist(dayIdx);toggleCatFields();$('#item-modal').hidden=false;$('#f-title').focus();
 }
@@ -912,6 +1013,19 @@ $('#nav-all').onclick=async()=>{const ids=Object.keys(navQueries).filter(id=>doc
 $('#q-nav').onclick=async()=>{const q=transitQuery();navQueries['q-result-nav']=q;$('#q-result').innerHTML=`<div class="nav" id="q-result-nav"><div class="nav-hd"><span>查詢中…</span></div></div>`;
   try{const r=await navSearch(q,true);$('#q-result').innerHTML=navPanel(q,'q-result-nav')}catch(e){$('#q-result').innerHTML=`<div class="nav-err">${esc(e.message)}</div>`}};
 $('#f-cat').onchange=toggleCatFields;
+$('#f-fsearch').onclick=async()=>{const st=$('#f-fstatus'),btn=$('#f-fsearch');st.textContent='查詢中…';btn.disabled=true;
+  try{const r=await lookupFlight($('#f-fno').value,$('#f-fdate').value);
+    const T=x=>!x.term?'':/^\d+$/.test(x.term)?` T${x.term}`:x.term==='I'?' 國際線':` ${x.term}`;const plus=r.arrDate&&r.depDate&&r.arrDate!==r.depDate?'（+1 天）':'';
+    $('#f-title').value=`${r.no} ${r.dep.zh} → ${r.arr.zh}`;
+    $('#f-start').value=r.depTime;$('#f-end').value=r.arrTime;
+    $('#f-jp').value=`${r.dep.name||r.dep.zh}${T(r.dep)} → ${r.arr.name||r.arr.zh}${T(r.arr)}`;
+    $('#f-en').value=`${r.no.replace(/\s+/g,'')} ${r.dep.iata}${T(r.dep)} → ${r.arr.iata}${T(r.arr)}`;
+    const extra=[r.airline,r.aircraft,plus?`抵達日期 ${r.arrDate}`:''].filter(Boolean).join(' · ');
+    if(!$('#f-notes').value||$('#f-notes').dataset.auto==='1'){$('#f-notes').value=extra+(extra?'；':'')+'時刻為當地時間，請以訂位確認單為準';$('#f-notes').dataset.auto='1'}
+    st.textContent=`已填入：${r.dep.zh}${T(r.dep)} ${r.depTime} → ${r.arr.zh}${T(r.arr)} ${r.arrTime}${plus}。確認後按「儲存」。`}
+  catch(e){st.textContent=e.message}
+  finally{btn.disabled=false}};
+$('#f-fno').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#f-fsearch').click()}});
 ['#f-from','#f-to','#f-ttype','#f-ttime'].forEach(s=>$(s).addEventListener('input',updateModalYahoo));
 ['#q-from','#q-to','#q-date','#q-time','#q-type','#q-sort'].forEach(s=>$(s).addEventListener('input',updateQuery));
 $('#f-fill').onclick=()=>{const s=findSug($('#f-title').value.trim());if(!s){toast('推薦資料庫裡找不到這個名稱');return}
@@ -922,6 +1036,7 @@ $('#item-form').onsubmit=e=>{e.preventDefault();
   const it={category:cat,title:$('#f-title').value.trim(),jp:$('#f-jp').value.trim(),en:$('#f-en').value.trim(),notes:$('#f-notes').value.trim()};
   if(cat==='train'){it.from=$('#f-from').value.trim();it.to=$('#f-to').value.trim();it.timeType=$('#f-ttype').value;it.transitTime=$('#f-ttime').value}
   else{it.startTime=$('#f-start').value;it.endTime=$('#f-end').value}
+  if(cat==='flight'){const fno=$('#f-fno').value.replace(/\s+/g,'').toUpperCase();if(fno){it.flightNo=fno;it.flightDate=$('#f-fdate').value}}
   if(idx==='')days[di].items.push(it);else days[di].items[+idx]=it;
   $('#item-modal').hidden=true;save();toast('已儲存');
 };
@@ -952,6 +1067,3 @@ renderCountdown();renderAll();keyStatus();fetchWeather(false);
 </script>
 </body>
 </html>
-```
-
-The label next to the countdown now reads **v3.1**, so you can confirm you're on this version. If the page still doesn't load, it now shows a red error message in place of the days; send me a screenshot of it.
