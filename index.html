@@ -1,6 +1,3 @@
-41f33604c3msh95bfc2429bc070ep1e6cccjsnce523b194e60
-
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -628,7 +625,7 @@ const STATIONS={
 const NAV_HOST='navitime-route-totalnavi.p.rapidapi.com';
 const NK={key:'jp_trip_nav_key',cache:'jp_trip_nav_cache',geo:'jp_trip_geo'};
 let navCache=load(NK.cache)||{}; let geoCache=load(NK.geo)||{};
-const const DEFAULT_NAV_KEY='41f33604c3msh95bfc2429bc070ep1e6cccjsnce523b194e60'; // keep empty: enter the RapidAPI key with the「NAVITIME 金鑰」button on each device (never commit keys to GitHub)
+const DEFAULT_NAV_KEY='41f33604c3msh95bfc2429bc070ep1e6cccjsnce523b194e60'; // RapidAPI key built in (public repo: anyone can see it)
 function navKey(){try{return localStorage.getItem(NK.key)||DEFAULT_NAV_KEY}catch(e){return DEFAULT_NAV_KEY}}
 async function coordOf(name){
   name=(name||'').trim();
