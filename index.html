@@ -217,7 +217,7 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
   <div class="wrap hd">
     <div>
       <h1>2026 日本美食溫泉之旅</h1>
-      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.11</span></div>
+      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.12</span></div>
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="itinerary" aria-selected="true"><i class="fa-solid fa-calendar-days"></i> 行程</button>
@@ -535,8 +535,24 @@ function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 let hotels = load(K.hotels);
 let days = load(K.days) || migrateOld() || clone(defaultDays);
 if(!Array.isArray(hotels)) hotels = clone(defaultHotels);
+// Trip runs 11/13–11/29: add any missing dates from the default plan and keep days in date order
+const TRIP_START='2026-11-13', TRIP_END='2026-11-29';
+function normalizeDays(){
+  if(!Array.isArray(days)) days=[];
+  const have=new Set(days.map(d=>d&&d.date));
+  defaultDays.forEach(dd=>{if(!have.has(dd.date))days.push(clone(dd))});
+  const seen=new Set(); days=days.filter(d=>d&&d.date&&!seen.has(d.date)&&seen.add(d.date));
+  days.sort((a,b)=>a.date.localeCompare(b.date));
+  days.forEach(d=>{const dd=defaultDays.find(x=>x.date===d.date);
+    if(!Array.isArray(d.areas)||!d.areas.length||!d.areas.every(a=>AREAS[a]))d.areas=(dd&&dd.areas)||['tokyo'];
+    if(!Array.isArray(d.items))d.items=[];
+    if(!d.title)d.title=(dd&&dd.title)||''});
+}
+const dayNo=date=>Math.round((new Date(date+'T12:00:00')-new Date(TRIP_START+'T12:00:00'))/864e5)+1;
+const isNight=date=>date>=TRIP_START&&date<TRIP_END;   // nights that need a hotel (11/13–11/28)
+normalizeDays();
 // Repair anything missing from older saved data
-days.forEach((d,i)=>{if(!Array.isArray(d.areas)||!d.areas.length||!d.areas.every(a=>AREAS[a]))d.areas=(defaultDays[i]&&defaultDays[i].areas)||['tokyo'];if(!Array.isArray(d.items))d.items=[];
+days.forEach(d=>{
   d.items.forEach(it=>{if(!it.category)it.category='sight';if(!it.startTime&&it.time&&it.category!=='train')it.startTime=it.time})});
 hotels.forEach(h=>{if(!h.area||!AREAS[h.area])h.area=guessArea(h.address||h.name);if(h.status)h.status=String(h.status).split(' ')[0]});
 let ui = Object.assign({showTransit:true,sugOpen:{},sugTab:{}}, load(K.ui)||{});
@@ -567,7 +583,7 @@ function migrateOld(){
   const old = load('jp_itinerary_2026'); if(!old || !Array.isArray(old)) return null;
   const oldH = load('jp_hotels_2026');
   if(Array.isArray(oldH) && !hotels) hotels = oldH.map(h=>({...h,area:h.area||guessArea(h.address||h.name),status:(h.status||'').split(' ')[0]}));
-  return old.map((d,i)=>({date:d.date,title:d.title,areas:(defaultDays[i]&&defaultDays[i].areas)||['tokyo'],items:d.items||[]}));
+  return old.map(d=>({date:d.date,title:d.title,areas:(defaultDays.find(x=>x.date===d.date)||{}).areas||['tokyo'],items:d.items||[]}));
 }
 function guessArea(s){s=s||'';if(/蔵王|遠刈田/.test(s))return'zao';if(/仙台/.test(s))return'sendai';if(/京都/.test(s))return'kyoto';if(/大阪/.test(s))return'osaka';return'tokyo'}
 function save(){days.forEach(sortItems);store(K.days,days);store(K.hotels,hotels);store(K.ui,ui);
@@ -762,7 +778,7 @@ async function ghSync(opts={}){
     const remote=r.data, rTime=remote?.updatedAt||0;
     const useRemote=remote&&Array.isArray(remote.days)&&(opts.forceRemote||!meta.dirty||rTime>meta.updatedAt||!ghCfg.token);
     if(useRemote){
-      days=remote.days;hotels=Array.isArray(remote.hotels)?remote.hotels:[];days.forEach(sortItems);
+      days=remote.days;hotels=Array.isArray(remote.hotels)?remote.hotels:[];normalizeDays();days.forEach(sortItems);
       meta={updatedAt:rTime,dirty:false};store(K.days,days);store(K.hotels,hotels);store(K.meta,meta);renderAll();
       if(opts.announce)toast('已載入雲端最新版本');
     }
@@ -887,7 +903,7 @@ function nextDate(date){const d=new Date(date+'T12:00:00');d.setDate(d.getDate()
 function hotelFor(date){return hotels.find(h=>date>=h.checkIn&&date<h.checkOut)}
 function computeChecks(){
   const out=[];
-  const nights=days.slice(0,16).filter(d=>!hotelFor(d.date));
+  const nights=days.filter(d=>isNight(d.date)&&!hotelFor(d.date));
   if(nights.length) out.push({lvl:'warn',msg:`還有 ${nights.length} 晚未安排住宿：${nights.map(d=>mmdd(d.date)).join('、')}`,tab:'hotels'});
   days.forEach((d,i)=>{
     const h=hotelFor(d.date);
@@ -968,14 +984,14 @@ function renderDays(){
     const areaChips=Object.entries(AREAS).filter(([k])=>d.areas.includes(k)||nearbyAreas(d).includes(k)).map(([k,a])=>`<button class="area ${d.areas.includes(k)?'on':''}" data-area="${i},${k}">${a.label}</button>`).join('')+`<button class="area" data-morearea="${i}">＋地區</button>`;
     const open=ui.sugOpen[d.date]!==false;
     return `<article class="day" id="day-${i}" data-i="${i}">
-      <div class="day-hd"><div class="dnum"><b class="num">${i+1}</b><small>DAY</small></div>
+      <div class="day-hd"><div class="dnum"><b class="num">${dayNo(d.date)}</b><small>DAY</small></div>
         <div class="day-title"><div class="date num">${d.date.replace(/-/g,'/')} (${wd(d.date)})</div><h3>${esc(d.title)} <button class="icon-btn" data-rename="${i}" aria-label="改標題"><i class="fa-solid fa-pen" style="font-size:.7rem"></i></button></h3></div>
         ${wxChip(d)}</div>
       <div class="areas">${areaChips}</div>
       <div class="day-body">${merged||'<div class="empty">今天還沒有安排，打開下方推薦挑幾個加入吧。</div>'}
         <div><button class="btn sm" data-add="${i}"><i class="fa-solid fa-plus"></i> 新增項目</button></div></div>
       ${renderSug(d,i,open)}
-      <div class="day-ft"><span><i class="fa-solid fa-bed" style="color:var(--plum)"></i> 當晚住宿：<b>${h?esc(h.name):(i===16?'返港':'尚未安排')}</b>${h?` <span class="muted num">（${mmdd(h.checkIn)} 入住 → ${mmdd(h.checkOut)} 退房，第 ${Math.round((new Date(d.date)-new Date(h.checkIn))/864e5)+1}/${nightsOf(h)} 晚）</span>`:''}</span>${i<16?(h?`<button class="btn sm" data-hedit="${hotels.indexOf(h)}">編輯住宿</button>`:`<button class="btn sm pri" data-hnew="${d.date}"><i class="fa-solid fa-plus"></i> 新增今晚住宿</button>`):''}</div>
+      <div class="day-ft"><span><i class="fa-solid fa-bed" style="color:var(--plum)"></i> 當晚住宿：<b>${h?esc(h.name):(d.date>=TRIP_END?'返港':'尚未安排')}</b>${h?` <span class="muted num">（${mmdd(h.checkIn)} 入住 → ${mmdd(h.checkOut)} 退房，第 ${Math.round((new Date(d.date)-new Date(h.checkIn))/864e5)+1}/${nightsOf(h)} 晚）</span>`:''}</span>${isNight(d.date)?(h?`<button class="btn sm" data-hedit="${hotels.indexOf(h)}">編輯住宿</button>`:`<button class="btn sm pri" data-hnew="${d.date}"><i class="fa-solid fa-plus"></i> 新增今晚住宿</button>`):''}</div>
     </article>`}).join('');
 }
 function hotelRow(h,hi,kind){
@@ -1007,7 +1023,7 @@ function renderSug(d,i,open){
 /* ===================== Hotels ===================== */
 function renderHotels(){
   let ok=0;
-  $('#cover').innerHTML=days.slice(0,16).map(d=>{const h=hotelFor(d.date);if(h)ok++;return `<div class="cell num ${h?'ok':''}" title="${d.date} ${h?esc(h.name):'未安排'}">${d.date.slice(8)}</div>`}).join('');
+  $('#cover').innerHTML=days.filter(d=>isNight(d.date)).map(d=>{const h=hotelFor(d.date);if(h)ok++;return `<div class="cell num ${h?'ok':''}" title="${d.date} ${h?esc(h.name):'未安排'}">${d.date.slice(8)}</div>`}).join('');
   $('#hotel-badge').textContent=`${ok}/16`;
   $('#hotels').innerHTML=hotels.length?hotels.map((h,i)=>`<div class="hc"><div class="row spread"><span class="pill ${h.status==='已確認'?'ok':'hold'}">${esc(h.status)}</span><span><button class="icon-btn" data-hedit="${i}"><i class="fa-solid fa-pen"></i></button><button class="icon-btn" data-hdel="${i}"><i class="fa-solid fa-trash"></i></button></span></div>
     <b>${esc(h.name)}</b><span class="muted num">入住 ${mmdd(h.checkIn)} (${wd(h.checkIn)}) ${esc(h.checkInTime||'15:00')} → 退房 ${mmdd(h.checkOut)} (${wd(h.checkOut)}) ${esc(h.checkOutTime||'11:00')}</span><span class="muted">${nightsOf(h)} 晚 · ${AREAS[h.area]?AREAS[h.area].label:''}</span>
@@ -1152,11 +1168,11 @@ $('#btn-export').onclick=()=>{const blob=new Blob([JSON.stringify({version:2,day
 $('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);
   if(p.days&&p.hotels){days=p.days;hotels=p.hotels}
   else if(p.itinerary&&p.hotels){days=p.itinerary.map((d,i)=>({date:d.date,title:d.title,areas:(defaultDays[i]||{}).areas||['tokyo'],items:d.items||[]}));hotels=p.hotels.map(h=>({...h,area:h.area||guessArea(h.address||h.name),status:(h.status||'').split(' ')[0]}))}
-  else throw 0;save();fetchWeather(true);toast('匯入成功')}catch(err){toast('檔案格式不正確')}};r.readAsText(f);e.target.value=''};
+  else throw 0;normalizeDays();save();fetchWeather(true);toast('匯入成功')}catch(err){toast('檔案格式不正確')}};r.readAsText(f);e.target.value=''};
 
 /* ===================== Boot ===================== */
 function renderCountdown(){const diff=Math.ceil((new Date('2026-11-13T00:00:00+08:00')-Date.now())/864e5);const el=$('#countdown');
-  if(diff>0)el.textContent=`倒數 ${diff} 天`;else{const idx=days.findIndex(d=>d.date===new Date().toISOString().slice(0,10));el.textContent=idx>=0?`今天 Day ${idx+1}`:'旅程結束'}}
+  if(diff>0)el.textContent=`倒數 ${diff} 天`;else{const idx=days.findIndex(d=>d.date===new Date().toISOString().slice(0,10));el.textContent=idx>=0?`今天 Day ${dayNo(days[idx].date)}`:'旅程結束'}}
 function renderAll(){renderChecks();renderDays();renderHotels();renderTransit();renderWx()}
 days.forEach(sortItems);
 if(!ui.showTransit)$('#btn-toggle-transit').innerHTML='<i class="fa-solid fa-eye"></i> 顯示交通';
