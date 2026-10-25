@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 0,
+ "updatedAt": 1792944089239,
  "days": [
   {
    "date": "2026-11-13",
@@ -11,13 +11,13 @@
    "items": [
     {
      "category": "flight",
-     "startTime": "",
-     "endTime": "",
-     "title": "CX 544 香港 → 台北桃園",
-     "jp": "香港国際空港 → 台湾桃園国際空港",
-     "en": "CX544 HKG → TPE",
+     "title": "CX 488 香港 → 台北桃園",
+     "jp": "Hong Kong Chek Lap Kok T1 → Taipei Taiwan Taoyuan T1",
+     "en": "CX488 HKG T1 → TPE T1",
      "notes": "起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入",
-     "flightNo": "CX544",
+     "startTime": "08:00",
+     "endTime": "09:40",
+     "flightNo": "CX488",
      "flightDate": "2026-11-13"
     }
    ]
