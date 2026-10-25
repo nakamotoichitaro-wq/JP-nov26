@@ -217,12 +217,13 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
   <div class="wrap hd">
     <div>
       <h1>2026 日本美食溫泉之旅</h1>
-      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.8</span></div>
+      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.10</span></div>
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="itinerary" aria-selected="true"><i class="fa-solid fa-calendar-days"></i> 行程</button>
       <button class="tab" role="tab" data-tab="hotels" aria-selected="false"><i class="fa-solid fa-bed"></i> 住宿 <span id="hotel-badge" class="num"></span></button>
       <button class="tab" role="tab" data-tab="transit" aria-selected="false"><i class="fa-solid fa-train-subway"></i> 交通</button>
+      <button class="tab ghost" id="btn-cloud" title="雲端同步設定"><i class="fa-solid fa-cloud" id="cloud-icon"></i> <span id="cloud-text">雲端同步</span></button>
       <button class="tab ghost" id="btn-key" title="設定 NAVITIME API Key"><i class="fa-solid fa-key"></i> NAVITIME 金鑰</button>
       <button class="tab ghost" id="btn-export" title="下載備份 JSON"><i class="fa-solid fa-download"></i> 匯出</button>
       <label class="tab ghost" title="從 JSON 還原"><i class="fa-solid fa-upload"></i> 匯入<input type="file" id="importFile" accept=".json" hidden></label>
@@ -301,7 +302,7 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
     <div class="panel stack">
       <h2>航班</h2>
       <div class="two">
-        <div class="flight"><span class="pill ok">已訂</span><div class="big">CX 488 · 香港 HKG → 台北 TPE</div><div class="muted">11/13 (五) · 08:00 – 09:50 · T1</div></div>
+        <div class="flight"><span class="pill ok">已訂</span><div class="big">CX 544 · 香港 HKG → 台北 TPE</div><div class="muted">11/13 (五) · 起降時間待確認</div></div>
         <div class="flight"><span class="pill ok">已訂</span><div class="big">CX 564 · 台北 TPE → 大阪 KIX</div><div class="muted">11/15 (日) · 14:45 抵達關西 T1</div></div>
         <div class="flight"><span class="pill hold">缺少</span><div class="big">日本 → 首爾 ICN</div><div class="muted">11/28 或 11/29 尚未加入航班</div></div>
         <div class="flight"><span class="pill ok">已訂</span><div class="big">CX 419 · 首爾 ICN → 香港 HKG</div><div class="muted">11/29 (日) · 19:35 – 22:40 · T1</div></div>
@@ -365,6 +366,19 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
     <input id="key-modal-input" type="password" placeholder="貼上 X-RapidAPI-Key" autocomplete="off">
     <div class="muted" id="key-modal-status"></div>
     <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-close>關閉</button><button type="button" class="btn" id="key-modal-test">測試連線</button><button class="btn pri">儲存</button></div>
+  </form>
+</div>
+
+<!-- Cloud sync modal -->
+<div class="modal" id="cloud-modal" hidden>
+  <form class="dlg" id="cloud-form">
+    <div class="row spread"><h3>雲端同步（GitHub）</h3><button type="button" class="icon-btn" data-close><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="muted">行程會存成你 GitHub repo 裡的 <b>trip-data.json</b>。有填權杖的裝置可以編輯並自動上傳；沒填權杖的裝置（例如同行朋友）打開網站時，會看到最新版本但無法修改。</div>
+    <div class="fx"><label class="f">GitHub 帳號（owner）<input id="gh-owner" autocomplete="off"></label><label class="f">Repo 名稱<input id="gh-repo" autocomplete="off"></label></div>
+    <div class="fx"><label class="f">分支（留空＝預設分支）<input id="gh-branch" placeholder="main" autocomplete="off"></label><label class="f">資料檔路徑<input id="gh-path" value="trip-data.json" autocomplete="off"></label></div>
+    <label class="f">個人存取權杖（Fine-grained token，只存在這台裝置）<input id="gh-token" type="password" placeholder="github_pat_… 不需編輯的裝置可留空" autocomplete="off"></label>
+    <div class="muted" id="gh-status"></div>
+    <div class="row" style="justify-content:flex-end"><button type="button" class="btn" id="gh-pull">下載雲端版本</button><button type="button" class="btn" data-close>關閉</button><button class="btn pri">儲存並同步</button></div>
   </form>
 </div>
 
@@ -465,12 +479,12 @@ const CAT = {
 /* ===================== Default itinerary ===================== */
 const WD = ['日','一','二','三','四','五','六'];
 const defaultDays = [
-  {date:'2026-11-13',title:'啟程：香港 → 台北 CX 488',areas:['taipei'],items:[
-    {category:'flight',startTime:'08:00',endTime:'09:50',title:'CX 488 香港 → 台北桃園',jp:'香港国際空港 T1 → 台湾桃園国際空港 T1',en:'CX488 HKG T1 → TPE T1',notes:'Cathay Pacific；時刻請以訂位確認單為準',flightNo:'CX488',flightDate:'2026-11-13'}]},
+  {date:'2026-11-13',title:'啟程：香港 → 台北 CX 544',areas:['taipei'],items:[
+    {category:'flight',startTime:'',endTime:'',title:'CX 544 香港 → 台北桃園',jp:'香港国際空港 → 台湾桃園国際空港',en:'CX544 HKG → TPE',notes:'起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入',flightNo:'CX544',flightDate:'2026-11-13'}]},
   {date:'2026-11-14',title:'台北停留',areas:['taipei'],items:[
     {category:'sight',startTime:'10:00',endTime:'18:00',title:'台北自由活動 / 整理行李',jp:'台北市内',en:'Taipei free day',notes:'明天 CX564 飛大阪'}]},
   {date:'2026-11-15',title:'抵達關西 · 天婦羅晚餐',areas:['osaka'],items:[
-    {category:'flight',startTime:'',endTime:'14:45',title:'CX 564 台北 → 大阪關西',jp:'台湾桃園国際空港 T1 → 関西国際空港 T1',en:'CX564 TPE → KIX T1',notes:'14:45 抵達關西機場'},
+    {category:'flight',startTime:'',endTime:'14:45',title:'CX 564 台北 → 大阪關西',jp:'台湾桃園国際空港 T1 → 関西国際空港 T1',en:'CX564 TPE → KIX T1',notes:'14:45 抵達關西機場',flightNo:'CX564',flightDate:'2026-11-15'},
     {category:'train',from:'関西空港',to:'大阪',timeType:'departure',transitTime:'15:45',title:'關空特急 Haruka',jp:'関西空港駅 → 大阪駅',en:'Kansai Airport → Osaka Sta.',notes:''},
     {category:'dining',startTime:'20:20',endTime:'22:30',title:'ぬまた 双（天婦羅）',jp:'大阪府大阪市北区西天満4-9-3 渡辺ビル 1F',en:'4-9-3 Nishitenma, Kita-ku, Osaka',notes:'晚餐預約 20:20'}]},
   {date:'2026-11-16',title:'宇治 → 京都 東山緒方',areas:['uji','kyoto'],items:[
@@ -514,7 +528,7 @@ const defaultHotels = [
 ];
 
 /* ===================== State ===================== */
-const K = {days:'jp_trip_v2_days',hotels:'jp_trip_v2_hotels',wx:'jp_trip_v2_wx',ui:'jp_trip_v2_ui'};
+const K = {days:'jp_trip_v2_days',hotels:'jp_trip_v2_hotels',wx:'jp_trip_v2_wx',ui:'jp_trip_v2_ui',meta:'jp_trip_v2_meta'};
 const clone = o => JSON.parse(JSON.stringify(o));
 function load(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
 function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
@@ -527,6 +541,7 @@ days.forEach((d,i)=>{if(!Array.isArray(d.areas)||!d.areas.length||!d.areas.every
 hotels.forEach(h=>{if(!h.area||!AREAS[h.area])h.area=guessArea(h.address||h.name);if(h.status)h.status=String(h.status).split(' ')[0]});
 let ui = Object.assign({showTransit:true,sugOpen:{},sugTab:{}}, load(K.ui)||{});
 let wxData = load(K.wx) || {fetched:0};
+let meta = Object.assign({updatedAt:0,dirty:false}, load(K.meta)||{});
 // One-time additions to data already saved in the browser
 (function(){ui.patches=ui.patches||{};
   if(!ui.patches.jl95){const d=days.find(x=>x.date==='2026-11-24');
@@ -540,7 +555,12 @@ let wxData = load(K.wx) || {fetched:0};
     if(d){d.items=d.items.filter(it=>!(it.category==='flight'&&/航班待確認|TBD/.test((it.title||'')+(it.en||''))));
       if(!d.items.some(it=>/CX\s*0?488/.test(it.title||'')))d.items.push({category:'flight',startTime:'08:00',endTime:'09:50',title:'CX 488 香港 → 台北桃園',jp:'香港国際空港 T1 → 台湾桃園国際空港 T1',en:'CX488 HKG T1 → TPE T1',notes:'Cathay Pacific；時刻請以訂位確認單為準',flightNo:'CX488',flightDate:'2026-11-13'});
       if(/^啟程：香港 → 台北/.test(d.title||''))d.title='啟程：香港 → 台北 CX 488'}
-    ui.patches.cx488=true;store(K.days,days);store(K.ui,ui)}})();
+    ui.patches.cx488=true;store(K.days,days);store(K.ui,ui)}
+  if(!ui.patches.cx544){const d=days.find(x=>x.date==='2026-11-13');
+    if(d){d.items=d.items.filter(it=>!(it.category==='flight'&&(/CX\s*0?488/.test(it.title||'')||/航班待確認|TBD/.test((it.title||'')+(it.en||'')))));
+      if(!d.items.some(it=>/CX\s*0?544/.test(it.title||'')))d.items.push({category:'flight',startTime:'',endTime:'',title:'CX 544 香港 → 台北桃園',jp:'香港国際空港 → 台湾桃園国際空港',en:'CX544 HKG → TPE',notes:'起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入',flightNo:'CX544',flightDate:'2026-11-13'});
+      if(/^啟程：香港 → 台北/.test(d.title||''))d.title='啟程：香港 → 台北 CX 544'}
+    ui.patches.cx544=true;store(K.days,days);store(K.ui,ui)}})();
 
 function migrateOld(){
   // Import data saved by the previous version of this tool, keeping user edits.
@@ -550,7 +570,8 @@ function migrateOld(){
   return old.map((d,i)=>({date:d.date,title:d.title,areas:(defaultDays[i]&&defaultDays[i].areas)||['tokyo'],items:d.items||[]}));
 }
 function guessArea(s){s=s||'';if(/蔵王|遠刈田/.test(s))return'zao';if(/仙台/.test(s))return'sendai';if(/京都/.test(s))return'kyoto';if(/大阪/.test(s))return'osaka';return'tokyo'}
-function save(){days.forEach(sortItems);store(K.days,days);store(K.hotels,hotels);store(K.ui,ui);renderAll()}
+function save(){days.forEach(sortItems);store(K.days,days);store(K.hotels,hotels);store(K.ui,ui);
+  meta.updatedAt=Date.now();meta.dirty=true;store(K.meta,meta);ghSchedule();renderAll()}
 function itemTime(it){return it.category==='train'?(it.transitTime||''):(it.startTime||it.endTime||'')}
 function sortItems(d){d.items.sort((a,b)=>(itemTime(a)||'99:99').localeCompare(itemTime(b)||'99:99'))}
 
@@ -690,6 +711,70 @@ async function lookupFlight(no,date){
     dep:d,arr:a,depTime:dt.slice(11,16),arrTime:at.slice(11,16),depDate:dt.slice(0,10),arrDate:at.slice(0,10),status:f.status||''};
 }
 function flightTrackUrl(no){return 'https://www.flightradar24.com/data/flights/'+encodeURIComponent(String(no).replace(/\s+/g,'').toLowerCase())}
+
+/* ===================== Cloud sync: trip-data.json in the GitHub repo ===================== */
+// Reads work without a token on a public repo; writes need a fine-grained token with "Contents: Read and write" on this repo.
+const GH_CFG_KEY='jp_trip_gh_cfg';
+function ghDetect(){const m=location.hostname.match(/^([^.]+)\.github\.io$/i);if(!m)return null;
+  const seg=location.pathname.split('/').filter(Boolean)[0];const repo=seg&&!/\.html?$/i.test(seg)?seg:`${m[1]}.github.io`;
+  return {owner:m[1],repo,branch:'',path:'trip-data.json',token:''}}
+let ghCfg=Object.assign({owner:'',repo:'',branch:'',path:'trip-data.json',token:''},ghDetect()||{},load(GH_CFG_KEY)||{});
+let ghSha=null, ghTimer=null, ghBusy=false;
+const ghOn=()=>!!(ghCfg.owner&&ghCfg.repo&&ghCfg.path);
+const ghUrl=()=>`https://api.github.com/repos/${encodeURIComponent(ghCfg.owner)}/${encodeURIComponent(ghCfg.repo)}/contents/${ghCfg.path.split('/').map(encodeURIComponent).join('/')}`;
+const ghHeaders=()=>Object.assign({'Accept':'application/vnd.github+json'},ghCfg.token?{'Authorization':'Bearer '+ghCfg.token}:{});
+const b64enc=str=>{const b=new TextEncoder().encode(str);let s='';for(let i=0;i<b.length;i+=0x8000)s+=String.fromCharCode(...b.subarray(i,i+0x8000));return btoa(s)};
+const b64dec=b64=>new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g,'')),c=>c.charCodeAt(0)));
+function cloudBadge(state,msg){const ic=$('#cloud-icon'),tx=$('#cloud-text');if(!ic)return;
+  const map={off:['fa-cloud','雲端同步'],ok:['fa-cloud-arrow-up','已同步'],busy:['fa-rotate','同步中…'],pending:['fa-cloud-arrow-up','待上傳'],read:['fa-cloud-arrow-down','唯讀・已是最新'],err:['fa-triangle-exclamation','同步失敗']};
+  const [i,t]=map[state]||map.off;ic.className='fa-solid '+i;tx.textContent=t;$('#btn-cloud').title=msg||t}
+async function ghGet(){
+  const r=await fetch(ghUrl()+(ghCfg.branch?`?ref=${encodeURIComponent(ghCfg.branch)}`:'')+(ghCfg.branch?'&':'?')+'t='+Date.now(),{headers:ghHeaders(),cache:'no-store'});
+  if(r.status===404) return {missing:true};
+  if(r.status===401) throw new Error('權杖無效或已過期，請重新產生。');
+  if(r.status===403) throw new Error(ghCfg.token?'權杖沒有這個 repo 的權限，或已達 GitHub 查詢上限。':'已達 GitHub 未登入的查詢上限（每小時 60 次），稍後再試。');
+  if(!r.ok) throw new Error('讀取雲端資料失敗（'+r.status+'）。');
+  const j=await r.json(); ghSha=j.sha;
+  return {data:JSON.parse(b64dec(j.content||''))};
+}
+async function ghPut(retry=true){
+  const body={message:`Update itinerary ${new Date().toISOString().slice(0,16).replace('T',' ')}`,
+    content:b64enc(JSON.stringify({version:3,updatedAt:meta.updatedAt,days,hotels},null,1))};
+  if(ghSha) body.sha=ghSha; if(ghCfg.branch) body.branch=ghCfg.branch;
+  const r=await fetch(ghUrl(),{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify(body)});
+  if((r.status===409||r.status===422)&&retry){ await ghGet().catch(()=>{}); return ghPut(false); }  // someone else saved first: take their file version, keep our latest edit
+  if(r.status===401) throw new Error('權杖無效或已過期，請重新產生。');
+  if(r.status===403||r.status===404) throw new Error('權杖沒有寫入權限。請確認權杖有這個 repo 的「Contents: Read and write」。');
+  if(!r.ok) throw new Error('上傳失敗（'+r.status+'）。');
+  const j=await r.json(); ghSha=j.content&&j.content.sha;
+}
+function ghSchedule(){ if(!ghOn()||!ghCfg.token){cloudBadge(ghOn()?'read':'off');return}
+  cloudBadge('pending'); clearTimeout(ghTimer); ghTimer=setTimeout(ghUpload,1500) }
+async function ghUpload(){ if(ghBusy){ghSchedule();return} ghBusy=true; cloudBadge('busy');
+  try{await ghPut();meta.dirty=false;store(K.meta,meta);cloudBadge('ok','已同步 '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}))}
+  catch(e){cloudBadge('err',e.message);toast('雲端同步失敗：'+e.message)}
+  finally{ghBusy=false} }
+async function ghSync(opts={}){
+  if(!ghOn()){cloudBadge('off');return}
+  if(ghBusy) return; ghBusy=true; cloudBadge('busy');
+  try{
+    const r=await ghGet();
+    const remote=r.data, rTime=remote?.updatedAt||0;
+    const useRemote=remote&&Array.isArray(remote.days)&&(opts.forceRemote||!meta.dirty||rTime>meta.updatedAt||!ghCfg.token);
+    if(useRemote){
+      days=remote.days;hotels=Array.isArray(remote.hotels)?remote.hotels:[];days.forEach(sortItems);
+      meta={updatedAt:rTime,dirty:false};store(K.days,days);store(K.hotels,hotels);store(K.meta,meta);renderAll();
+      if(opts.announce)toast('已載入雲端最新版本');
+    }
+    ghBusy=false;
+    if(!useRemote&&ghCfg.token&&(meta.dirty||r.missing)){ await ghUpload(); return }
+    cloudBadge(ghCfg.token?'ok':'read',r.missing&&!ghCfg.token?'雲端還沒有資料檔，請在可編輯的裝置設定權杖後同步':undefined);
+  }catch(e){ghBusy=false;cloudBadge('err',e.message);if(opts.announce)toast(e.message)}
+}
+function openCloud(){$('#gh-owner').value=ghCfg.owner;$('#gh-repo').value=ghCfg.repo;$('#gh-branch').value=ghCfg.branch;$('#gh-path').value=ghCfg.path||'trip-data.json';
+  $('#gh-token').value='';$('#gh-token').placeholder=ghCfg.token?'已儲存權杖（留空＝不變）':'github_pat_… 不需編輯的裝置可留空';
+  $('#gh-status').textContent=ghOn()?(ghCfg.token?'這台裝置可以編輯並自動上傳。':'這台裝置目前是唯讀：會自動載入雲端最新版本，修改只存在本機。'):'尚未設定。';
+  $('#cloud-modal').hidden=false}
 
 /* ===================== Weather (Open-Meteo, no API key) ===================== */
 const WMO = c => c==null?['fa-temperature-half','—']:c===0?['fa-sun','晴']:c<=2?['fa-cloud-sun','晴時多雲']:c===3?['fa-cloud','陰']:c<=48?['fa-smog','霧']:c<=57?['fa-cloud-rain','毛毛雨']:c<=67?['fa-cloud-showers-heavy','雨']:c<=77?['fa-snowflake','雪']:c<=82?['fa-cloud-sun-rain','陣雨']:c<=86?['fa-snowflake','陣雪']:['fa-cloud-bolt','雷雨'];
@@ -997,6 +1082,15 @@ document.addEventListener('click',async e=>{
   if(ds.hdel!=null){const i=+ds.hdel;if(await askConfirm(`刪除住宿「${hotels[i].name}」？`)){hotels.splice(i,1);save()}return}
 });
 $('#btn-add-hotel').onclick=()=>openHotel();
+$('#btn-cloud').onclick=openCloud;
+$('#cloud-form').onsubmit=async e=>{e.preventDefault();
+  const tok=$('#gh-token').value.trim();
+  ghCfg={owner:$('#gh-owner').value.trim(),repo:$('#gh-repo').value.trim(),branch:$('#gh-branch').value.trim(),path:$('#gh-path').value.trim()||'trip-data.json',token:tok||ghCfg.token};
+  try{localStorage.setItem(GH_CFG_KEY,JSON.stringify(ghCfg))}catch(err){}
+  $('#gh-status').textContent='同步中…';await ghSync({announce:true});
+  $('#gh-status').textContent=$('#btn-cloud').title;};
+$('#gh-pull').onclick=async()=>{$('#gh-status').textContent='下載中…';await ghSync({forceRemote:true,announce:true});$('#gh-status').textContent=$('#btn-cloud').title};
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&ghOn()&&!meta.dirty)ghSync()});
 $('#h-in').addEventListener('input',()=>{if($('#h-out').value<=$('#h-in').value)$('#h-out').value=nextDate($('#h-in').value);updateNights()});
 $('#h-out').addEventListener('input',updateNights);
 $('#btn-toggle-transit').onclick=()=>{ui.showTransit=!ui.showTransit;$('#btn-toggle-transit').innerHTML=ui.showTransit?'<i class="fa-solid fa-eye-slash"></i> 隱藏交通':'<i class="fa-solid fa-eye"></i> 顯示交通';save()};
@@ -1066,7 +1160,7 @@ function renderCountdown(){const diff=Math.ceil((new Date('2026-11-13T00:00:00+0
 function renderAll(){renderChecks();renderDays();renderHotels();renderTransit();renderWx()}
 days.forEach(sortItems);
 if(!ui.showTransit)$('#btn-toggle-transit').innerHTML='<i class="fa-solid fa-eye"></i> 顯示交通';
-renderCountdown();renderAll();keyStatus();fetchWeather(false);
+renderCountdown();renderAll();keyStatus();fetchWeather(false);ghSync();
 // During the trip, jump to today's card automatically
 (function(){const today=new Date().toISOString().slice(0,10);const i=days.findIndex(d=>d.date===today);if(i>0)setTimeout(()=>$('#day-'+i).scrollIntoView(),300)})();
 </script>
