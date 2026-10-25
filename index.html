@@ -1,3 +1,6 @@
+Here's the full fixed code. Replace everything in your file with it, save, and refresh.
+
+```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -215,7 +218,7 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
   <div class="wrap hd">
     <div>
       <h1>2026 日本美食溫泉之旅</h1>
-      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3</span></div>
+      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.1</span></div>
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="itinerary" aria-selected="true"><i class="fa-solid fa-calendar-days"></i> 行程</button>
@@ -368,6 +371,7 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
 <div class="toast" id="toast"></div>
 
 <script>
+window.addEventListener('error',e=>{const m=document.getElementById('days');if(m&&!m.children.length)m.innerHTML=`<div class="chk bad">頁面載入出錯：${String(e.message).replace(/</g,'&lt;')}。請截圖給我。</div>`});
 /* ===================== Area & suggestion database ===================== */
 // wx: weather location group. normal: typical late-Nov [high, low] °C used when no forecast/last-year data is available.
 const WX = {
@@ -383,4 +387,571 @@ const WX = {
 const AREAS = {
   taipei:{label:'台北',wx:'taipei',jp:false,
     sight:[{t:'象山步道',jp:'象山親山步道',n:'約 20 分鐘爬到觀景台，傍晚看 101 與夕陽。'},{t:'永康街散步',jp:'永康街',n:'小吃、茶館、文青小店集中。'},{t:'華山1914文創園區',jp:'華山1914文化創意產業園區',n:'舊酒廠改建，展覽與市集。'}],
-    snack:[{t:'阜杭豆漿',jp:'阜杭豆漿
+    snack:[{t:'阜杭豆漿',jp:'阜杭豆漿 華山市場2樓',n:'厚餅夾蛋＋鹹豆漿，早上排隊約 30–60 分鐘。'},{t:'鼎泰豐 信義本店',jp:'鼎泰豐 信義路',n:'小籠包創始店，可現場抽號。'},{t:'寧夏夜市',jp:'寧夏夜市',n:'規模小、在地小吃多。'}],
+    coffee:[{t:'Simple Kaffa 興波咖啡',jp:'Simple Kaffa 華山',n:'世界冠軍吳則霖的店。'}],
+    tips:['台北 11 月仍溫暖，可能有東北季風帶來的小雨。']},
+  osaka:{label:'大阪 梅田/北新地',wx:'osaka',jp:true,
+    sight:[{t:'梅田藍天大廈 空中庭園',jp:'梅田スカイビル 空中庭園展望台',n:'抵達當天傍晚看夜景，離大阪站步行約 10 分。'},{t:'中之島公園・中央公會堂',jp:'大阪市中央公会堂',n:'紅磚建築與河岸散步，秋季銀杏。'},{t:'大阪城公園',jp:'大阪城公園',n:'11 月下旬紅葉與銀杏正好。'}],
+    snack:[{t:'阪神名物 いか焼き',jp:'阪神梅田本店 B1 スナックパーク',n:'大阪站旁的平民名物，便宜快速。'},{t:'551 蓬萊 豚まん',jp:'551蓬莱 大阪駅',n:'車站就有，適合當伴手禮或宵夜。'},{t:'りくろーおじさんの店',jp:'りくろーおじさんの店 なんば本店',n:'現烤起司蛋糕，在難波。'}],
+    coffee:[{t:'Brooklyn Roasting Company 北浜',jp:'Brooklyn Roasting Company 北浜',n:'土佐堀川畔，景觀好。'},{t:'LiLo Coffee Roasters',jp:'LiLo Coffee Roasters 心斎橋',n:'淺焙單品，座位少。'}],
+    tips:['關空特急 Haruka 到「大阪」站約 50 分鐘；用 ICOCA 或購買 Haruka 優惠票。']},
+  uji:{label:'宇治',wx:'kyoto',jp:true,
+    sight:[{t:'平等院 鳳凰堂',jp:'平等院',n:'8:30 開門，鳳凰堂內部參觀需另購整理券。'},{t:'宇治上神社',jp:'宇治上神社',n:'世界遺產，日本現存最古老的神社建築。'},{t:'源氏物語博物館',jp:'宇治市源氏物語ミュージアム',n:'週一休館（11/16 是週一）。'}],
+    snack:[{t:'中村藤吉本店',jp:'中村藤吉本店 宇治',n:'抹茶聖代，開門即登記候位。'},{t:'伊藤久右衛門 本店',jp:'伊藤久右衛門 本店',n:'抹茶甜點與伴手禮。'}],
+    coffee:[{t:'通圓 茶屋',jp:'通圓 宇治橋東詰',n:'宇治橋旁的老茶屋，喝抹茶看宇治川。'}],
+    tips:['源氏物語博物館週一休，11/16 剛好週一。']},
+  kyoto:{label:'京都 東山',wx:'kyoto',jp:true,
+    sight:[{t:'清水寺',jp:'清水寺',n:'11 月中下旬紅葉高峰，秋季常有夜間特別拜觀。'},{t:'高台寺',jp:'高台寺',n:'秋季夜間點燈，離東山緒方步行可到。'},{t:'二年坂・三年坂',jp:'二寧坂 産寧坂',n:'清早人少，傍晚人潮最多。'},{t:'祇園白川',jp:'祇園白川 巽橋',n:'晚餐前後散步拍照。'}],
+    snack:[{t:'鍵善良房 四条本店',jp:'鍵善良房 四条本店',n:'名物葛切り。'},{t:'七味家本舗',jp:'七味家本舗 清水坂',n:'京都七味粉老舖，伴手禮。'}],
+    coffee:[{t:'% Arabica 京都東山',jp:'% Arabica 京都東山',n:'八坂塔附近，外帶為主。'},{t:'Starbucks 二寧坂ヤサカ茶屋店',jp:'スターバックス 京都二寧坂ヤサカ茶屋店',n:'百年町家改建，二樓榻榻米座位。'}],
+    tips:['紅葉季週末塞車嚴重，東山區移動以步行＋京阪/地鐵為主。']},
+  kagurazaka:{label:'神樂坂',wx:'tokyo',jp:true,
+    sight:[{t:'赤城神社',jp:'赤城神社',n:'隈研吾參與改建的神社。'},{t:'兵庫橫丁 石疊小巷',jp:'兵庫横丁',n:'晚餐前散步，料亭街氛圍。'},{t:'小石川後樂園',jp:'小石川後楽園',n:'11 月下旬紅葉，飯田橋站步行 8 分。'}],
+    snack:[{t:'不二家 ペコちゃん焼',jp:'不二家 飯田橋神楽坂店',n:'只有這家店才有的人形燒。'}],
+    coffee:[{t:'CANAL CAFE',jp:'カナルカフェ 飯田橋',n:'外濠水岸露台。'}],
+    tips:[]},
+  oshiage:{label:'押上 / 淺草',wx:'tokyo',jp:true,
+    sight:[{t:'東京晴空塔',jp:'東京スカイツリー',n:'午餐後就在旁邊，建議網路先買時段票。'},{t:'淺草寺',jp:'浅草寺',n:'押上搭淺草線一站。'},{t:'隅田公園',jp:'隅田公園',n:'河岸散步遠望晴空塔。'}],
+    snack:[{t:'淺草きびだんご あづま',jp:'浅草きびだんご あづま',n:'現做黃豆粉糰子。'},{t:'淺草花月堂 本店',jp:'浅草花月堂 本店',n:'巨大菠蘿麵包。'}],
+    coffee:[{t:'Fuglen Asakusa',jp:'Fuglen Asakusa',n:'挪威咖啡館的淺草店。'}],
+    tips:[]},
+  futako:{label:'二子玉川',wx:'tokyo',jp:true,
+    sight:[{t:'等等力溪谷',jp:'等々力渓谷公園',n:'23 區唯一溪谷，二子玉川搭大井町線 3 站，晚餐前好去處。'},{t:'多摩川河岸',jp:'二子玉川 多摩川河川敷',n:'傍晚看夕陽。'},{t:'二子玉川 蔦屋家電',jp:'二子玉川 蔦屋家電',n:'書店＋家電＋咖啡，等候晚餐時間。'}],
+    snack:[],coffee:[],tips:[]},
+  kojimachi:{label:'麴町 / 皇居',wx:'tokyo',jp:true,
+    sight:[{t:'皇居東御苑',jp:'皇居東御苑',n:'免費，週一、週五休園（11/19 週四可去）。'},{t:'千鳥之淵・北之丸公園',jp:'千鳥ヶ淵 北の丸公園',n:'麴町步行可到，秋季紅葉。'},{t:'靖國神社 銀杏',jp:'靖國神社',n:'11 月下旬參道銀杏轉黃。'}],
+    snack:[{t:'東京車站 GRANSTA',jp:'グランスタ東京',n:'站內甜點伴手禮集中地。'}],
+    coffee:[{t:'Glitch Coffee & Roasters',jp:'GLITCH COFFEE & ROASTERS 神保町',n:'東京代表性淺焙咖啡，搭地鐵約 10 分。'}],
+    tips:[]},
+  tokyo:{label:'東京（自由日）',wx:'tokyo',jp:true,
+    sight:[{t:'明治神宮外苑 銀杏並木',jp:'明治神宮外苑 いちょう並木',n:'11 月下旬至 12 月初最黃，這幾天正是時候。'},{t:'六義園 紅葉點燈',jp:'六義園',n:'秋季夜間點燈通常在 11 月下旬。'},{t:'teamLab Planets',jp:'チームラボプラネッツ 豊洲',n:'需事先網路購票。'},{t:'谷中・根津・千駄木',jp:'谷中銀座商店街',n:'下町老街散步。'},{t:'一日遊：鎌倉',jp:'鎌倉 長谷寺',n:'鎌倉紅葉比東京晚，11 月底到 12 月初。'}],
+    snack:[{t:'浪花家總本店 鯛魚燒',jp:'浪花家総本店 麻布十番',n:'百年鯛魚燒老店。'},{t:'築地場外市場',jp:'築地場外市場',n:'玉子燒、海鮮丼，上午去。'},{t:'人形町 甘酒橫丁',jp:'人形町 甘酒横丁',n:'和菓子、人形燒老舖。'}],
+    coffee:[{t:'Koffee Mameya Kakeru',jp:'Koffee Mameya Kakeru 清澄白河',n:'咖啡套餐體驗，建議預約。'},{t:'Blue Bottle 清澄白河',jp:'ブルーボトルコーヒー 清澄白河フラッグシップカフェ',n:'日本一號店。'},{t:'Fuglen Tokyo',jp:'Fuglen Tokyo 富ヶ谷',n:'白天咖啡、晚上調酒。'},{t:'Onibus Coffee 中目黑',jp:'ONIBUS COFFEE 中目黒',n:'電車旁的小屋。'}],
+    tips:['西瓜卡（Suica）可存入 iPhone/Apple Wallet，地鐵與便利店通用。']},
+  zao:{label:'藏王 遠刈田溫泉',wx:'zao',jp:true,
+    sight:[{t:'宮城藏王木芥子館',jp:'みやぎ蔵王こけし館',n:'遠刈田溫泉區內，可體驗彩繪木芥子。'},{t:'宮城藏王狐狸村',jp:'宮城蔵王キツネ村',n:'在白石市山區，需開車或計程車。'},{t:'藏王酪農中心',jp:'蔵王酪農センター',n:'起司與乳製品，可試吃。'}],
+    snack:[{t:'白石溫麵',jp:'白石温麺',n:'白石市名物細短麵。'},{t:'藏王起司',jp:'蔵王チーズ',n:'在酪農中心或車站買。'}],
+    coffee:[],
+    tips:['注意：藏王御釜所在的「蔵王エコーライン」通常 11 月上旬起冬季封閉，11 月下旬無法開車上山。','行程寫「藏王溫泉」，但旅館在宮城縣「遠刈田溫泉」，與山形縣的藏王溫泉是不同地方，搭車時請說清楚。']},
+  sendai:{label:'仙台',wx:'sendai',jp:true,
+    sight:[{t:'瑞鳳殿',jp:'瑞鳳殿',n:'伊達政宗靈廟，杉林中的華麗建築。'},{t:'仙台城跡（青葉城址）',jp:'仙台城跡',n:'伊達政宗騎馬像與市景。'},{t:'定禪寺通',jp:'定禅寺通',n:'櫸木大道，晚餐前散步。'}],
+    snack:[{t:'牛舌 味太助',jp:'味太助 仙台',n:'據說是炭烤牛舌的元祖店。'},{t:'牛舌炭燒 利久',jp:'牛たん炭焼 利久',n:'連鎖店多，車站也有。'},{t:'ずんだ茶寮 毛豆奶昔',jp:'ずんだ茶寮 仙台駅',n:'仙台站內，毛豆泥奶昔。'},{t:'笹かまぼこ 鐘崎',jp:'鐘崎 笹かまぼこ',n:'仙台名產魚板。'}],
+    coffee:[],
+    tips:['Hou 晚餐 20:00 開始、約 22:00 結束；若當晚住遠刈田溫泉，回程約 1 小時車程且無大眾運輸，需預約計程車或改住仙台。']},
+  ishinomaki:{label:'石卷 / 田代島',wx:'ishinomaki',jp:true,
+    sight:[{t:'田代島 貓神社',jp:'田代島 猫神社',n:'島中央的小神社。'},{t:'漫畫島',jp:'マンガアイランド 田代島',n:'石之森章太郎設計的貓造型小屋。'},{t:'石之森萬畫館',jp:'石ノ森萬画館',n:'石卷市區，週二休館。'}],
+    snack:[{t:'石卷炒麵',jp:'石巻焼きそば',n:'茶色麵條的在地炒麵。'}],
+    coffee:[],
+    tips:['渡輪由「網地島ライン」營運，冬季班次少，出發前請到官網確認時刻表。島上幾乎沒有商店，帶現金、水和午餐。','請勿餵貓人類食物。']},
+  seoul:{label:'首爾',wx:'seoul',jp:false,
+    sight:[{t:'景福宮',jp:'경복궁',n:'週二休，11/29 週日可去。'},{t:'北村韓屋村',jp:'북촌한옥마을',n:'景福宮東側。'}],
+    snack:[{t:'廣藏市場',jp:'광장시장',n:'綠豆煎餅、麻藥飯捲。'}],
+    coffee:[{t:'Fritz Coffee Company',jp:'프릳츠 커피',n:'復古麵包咖啡店。'},{t:'Onion 安國',jp:'어니언 안국',n:'韓屋咖啡館。'}],
+    tips:['AREX 直達車從首爾站到仁川機場約 43 分鐘；CX419 19:35 起飛，建議 16:30 前出發。']}
+};
+const CAT = {
+  dining:{label:'美食',icon:'fa-utensils'},sight:{label:'景點',icon:'fa-torii-gate'},snack:{label:'小吃',icon:'fa-cookie-bite'},
+  coffee:{label:'咖啡',icon:'fa-mug-hot'},train:{label:'交通',icon:'fa-train'},flight:{label:'航班',icon:'fa-plane'},hotel:{label:'住宿',icon:'fa-bed'}
+};
+
+/* ===================== Default itinerary ===================== */
+const WD = ['日','一','二','三','四','五','六'];
+const defaultDays = [
+  {date:'2026-11-13',title:'啟程：香港 → 台北',areas:['taipei'],items:[
+    {category:'flight',startTime:'09:00',endTime:'11:00',title:'香港 → 台北（航班待確認）',jp:'香港国際空港 → 台湾桃園国際空港',en:'HKG → TPE (TBD)',notes:''}]},
+  {date:'2026-11-14',title:'台北停留',areas:['taipei'],items:[
+    {category:'sight',startTime:'10:00',endTime:'18:00',title:'台北自由活動 / 整理行李',jp:'台北市内',en:'Taipei free day',notes:'明天 CX564 飛大阪'}]},
+  {date:'2026-11-15',title:'抵達關西 · 天婦羅晚餐',areas:['osaka'],items:[
+    {category:'flight',startTime:'',endTime:'14:45',title:'CX 564 台北 → 大阪關西',jp:'台湾桃園国際空港 T1 → 関西国際空港 T1',en:'CX564 TPE → KIX T1',notes:'14:45 抵達關西機場'},
+    {category:'train',from:'関西空港',to:'大阪',timeType:'departure',transitTime:'15:45',title:'關空特急 Haruka',jp:'関西空港駅 → 大阪駅',en:'Kansai Airport → Osaka Sta.',notes:''},
+    {category:'dining',startTime:'20:20',endTime:'22:30',title:'ぬまた 双（天婦羅）',jp:'大阪府大阪市北区西天満4-9-3 渡辺ビル 1F',en:'4-9-3 Nishitenma, Kita-ku, Osaka',notes:'晚餐預約 20:20'}]},
+  {date:'2026-11-16',title:'宇治 → 京都 東山緒方',areas:['uji','kyoto'],items:[
+    {category:'train',from:'大阪',to:'宇治',timeType:'departure',transitTime:'08:45',title:'前往宇治',jp:'大阪 → 宇治',en:'Osaka → Uji',notes:'約 50–60 分鐘'},
+    {category:'sight',startTime:'10:00',endTime:'14:00',title:'宇治散策（平等院・茶寮）',jp:'京都府宇治市宇治蓮華116 平等院',en:'Byodoin, Uji',notes:''},
+    {category:'train',from:'宇治',to:'祇園四条',timeType:'departure',transitTime:'14:35',title:'移動至京都東山',jp:'宇治 → 祇園四条',en:'Uji → Gion-Shijo',notes:''},
+    {category:'dining',startTime:'16:00',endTime:'18:30',title:'東山緒方',jp:'京都府京都市東山区下河原町489-2',en:'489-2 Shimogawaracho, Higashiyama-ku, Kyoto',notes:'預約'}]},
+  {date:'2026-11-17',title:'京都 → 東京 · 神樂坂',areas:['kagurazaka'],items:[
+    {category:'train',from:'京都',to:'東京',timeType:'departure',transitTime:'14:00',title:'東海道新幹線 のぞみ',jp:'京都駅 → 東京駅',en:'Kyoto → Tokyo (Tokaido Shinkansen)',notes:'約 2 小時 15 分'},
+    {category:'hotel',startTime:'16:30',endTime:'18:00',title:'入住東京飯店',jp:'',en:'Tokyo hotel check-in',notes:'建議住東京站或神樂坂附近'},
+    {category:'dining',startTime:'20:15',endTime:'22:30',title:'多仁本（可選）',jp:'東京都新宿区神楽坂',en:'Kagurazaka, Shinjuku-ku',notes:'可選'}]},
+  {date:'2026-11-18',title:'押上 焼鳥おみ乃 → 二子玉川 すし喜邑',areas:['oshiage','futako'],items:[
+    {category:'train',from:'東京',to:'押上',timeType:'arrival',transitTime:'11:35',title:'前往押上',jp:'→ 押上駅',en:'→ Oshiage Sta.',notes:''},
+    {category:'dining',startTime:'11:45',endTime:'14:15',title:'焼鳥 おみ乃',jp:'東京都墨田区押上1-38-4',en:'1-38-4 Oshiage, Sumida-ku',notes:'午餐預約'},
+    {category:'train',from:'押上',to:'二子玉川',timeType:'arrival',transitTime:'17:40',title:'半藏門線直通 → 二子玉川',jp:'押上駅 → 二子玉川駅',en:'Oshiage → Futako-Tamagawa',notes:'田園都市線直通'},
+    {category:'dining',startTime:'18:00',endTime:'20:30',title:'すし喜邑',jp:'東京都世田谷区玉川3-21-8',en:'3-21-8 Tamagawa, Setagaya-ku',notes:'晚餐預約'}]},
+  {date:'2026-11-19',title:'麴町 鮨みずかみ',areas:['kojimachi','tokyo'],items:[
+    {category:'train',from:'東京',to:'麹町',timeType:'arrival',transitTime:'12:45',title:'前往麴町',jp:'→ 麹町駅（有楽町線）',en:'→ Kojimachi Sta.',notes:''},
+    {category:'dining',startTime:'13:00',endTime:'15:00',title:'鮨みずかみ',jp:'東京都千代田区麹町3-3-6 麹町フロントビル 1F',en:'3-3-6 Kojimachi, Chiyoda-ku',notes:'午餐預約'}]},
+  {date:'2026-11-20',title:'東京 → 遠刈田溫泉',areas:['zao'],items:[
+    {category:'train',from:'東京',to:'白石蔵王',timeType:'departure',transitTime:'12:16',title:'東北新幹線 やまびこ 137號',jp:'東京駅 → 白石蔵王駅',en:'Tokyo → Shiroishi-Zao',notes:'約 1 小時 48 分'},
+    {category:'hotel',startTime:'14:15',endTime:'15:00',title:'旅館接送 → だいこんの花',jp:'白石蔵王駅 → 温泉山荘 だいこんの花',en:'Shiroishi-Zao → Daikon no Hana',notes:'預約接送約 40 分'} ]},
+  {date:'2026-11-21',title:'遠刈田溫泉 → 仙台晚餐 Hou',areas:['zao','sendai'],items:[
+    {category:'sight',startTime:'10:00',endTime:'17:00',title:'溫泉早晨 · 移動至仙台',jp:'遠刈田温泉 → 仙台市内',en:'Togatta Onsen → Sendai',notes:''},
+    {category:'dining',startTime:'20:00',endTime:'22:00',title:'Hou',jp:'宮城県仙台市青葉区一番町2-3-3 J-BOXビル 3F',en:'3F J-BOX Bldg, 2-3-3 Ichibancho, Aoba-ku, Sendai',notes:'晚餐預約'}]},
+  {date:'2026-11-22',title:'田代島（貓島）一日遊',areas:['ishinomaki','sendai'],items:[
+    {category:'train',from:'仙台',to:'石巻',timeType:'arrival',transitTime:'08:00',title:'仙石東北ライン → 石卷',jp:'仙台駅 → 石巻駅',en:'Sendai → Ishinomaki',notes:'再轉往渡輪碼頭'},
+    {category:'sight',startTime:'08:30',endTime:'15:30',title:'渡輪＋田代島巡禮',jp:'宮城県石巻市田代島（網地島ライン）',en:'Tashirojima Island ferry',notes:'渡輪時刻請官網確認'}]},
+  ...['23','24','25','26','27'].map(d=>({date:`2026-11-${d}`,title:'自由日 / 彈性安排',areas:['tokyo'],items:[]})),
+  {date:'2026-11-28',title:'最後採購',areas:['tokyo'],items:[
+    {category:'sight',startTime:'14:00',endTime:'20:00',title:'伴手禮採購',jp:'東京都内',en:'Last-minute shopping',notes:''}]},
+  {date:'2026-11-29',title:'首爾 → 返港 CX 419',areas:['seoul'],items:[
+    {category:'train',from:'首爾站',to:'仁川機場 T1',timeType:'departure',transitTime:'16:30',title:'AREX 機場快線',jp:'서울역 → 인천국제공항 T1',en:'AREX Seoul Sta. → ICN T1',notes:'Yahoo 不涵蓋韓國'},
+    {category:'flight',startTime:'19:35',endTime:'22:40',title:'CX 419 首爾仁川 → 香港',jp:'仁川国際空港 T1 → 香港国際空港 T1',en:'CX419 ICN T1 → HKG T1',notes:''}]}
+];
+const defaultHotels = [
+  {id:'h1',name:'温泉山荘 だいこんの花',checkIn:'2026-11-20',checkInTime:'15:00',checkOut:'2026-11-22',checkOutTime:'10:00',area:'zao',address:'宮城県刈田郡蔵王町遠刈田温泉字北山21-7',status:'已確認',conf:''}
+];
+
+/* ===================== State ===================== */
+const K = {days:'jp_trip_v2_days',hotels:'jp_trip_v2_hotels',wx:'jp_trip_v2_wx',ui:'jp_trip_v2_ui'};
+const clone = o => JSON.parse(JSON.stringify(o));
+function load(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let hotels = load(K.hotels);
+let days = load(K.days) || migrateOld() || clone(defaultDays);
+if(!Array.isArray(hotels)) hotels = clone(defaultHotels);
+// Repair anything missing from older saved data
+days.forEach((d,i)=>{if(!Array.isArray(d.areas)||!d.areas.length||!d.areas.every(a=>AREAS[a]))d.areas=(defaultDays[i]&&defaultDays[i].areas)||['tokyo'];if(!Array.isArray(d.items))d.items=[];
+  d.items.forEach(it=>{if(!it.category)it.category='sight';if(!it.startTime&&it.time&&it.category!=='train')it.startTime=it.time})});
+hotels.forEach(h=>{if(!h.area||!AREAS[h.area])h.area=guessArea(h.address||h.name);if(h.status)h.status=String(h.status).split(' ')[0]});
+let ui = Object.assign({showTransit:true,sugOpen:{},sugTab:{}}, load(K.ui)||{});
+let wxData = load(K.wx) || {fetched:0};
+
+function migrateOld(){
+  // Import data saved by the previous version of this tool, keeping user edits.
+  const old = load('jp_itinerary_2026'); if(!old || !Array.isArray(old)) return null;
+  const oldH = load('jp_hotels_2026');
+  if(Array.isArray(oldH) && !hotels) hotels = oldH.map(h=>({...h,area:h.area||guessArea(h.address||h.name),status:(h.status||'').split(' ')[0]}));
+  return old.map((d,i)=>({date:d.date,title:d.title,areas:(defaultDays[i]&&defaultDays[i].areas)||['tokyo'],items:d.items||[]}));
+}
+function guessArea(s){s=s||'';if(/蔵王|遠刈田/.test(s))return'zao';if(/仙台/.test(s))return'sendai';if(/京都/.test(s))return'kyoto';if(/大阪/.test(s))return'osaka';return'tokyo'}
+function save(){days.forEach(sortItems);store(K.days,days);store(K.hotels,hotels);store(K.ui,ui);renderAll()}
+function itemTime(it){return it.category==='train'?(it.transitTime||''):(it.startTime||it.endTime||'')}
+function sortItems(d){d.items.sort((a,b)=>(itemTime(a)||'99:99').localeCompare(itemTime(b)||'99:99'))}
+
+/* ===================== Helpers ===================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const wd = date => WD[new Date(date+'T12:00:00').getDay()];
+const mmdd = date => date.slice(5).replace('-','/');
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),1800)}
+function askConfirm(text){return new Promise(res=>{$('#confirm-text').textContent=text;const m=$('#confirm-modal');m.hidden=false;
+  const done=v=>{m.hidden=true;$('#confirm-yes').onclick=$('#confirm-no').onclick=null;res(v)};
+  $('#confirm-yes').onclick=()=>done(true);$('#confirm-no').onclick=()=>done(false)})}
+function mapsUrl(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
+function toMin(t){if(!t)return null;const[h,m]=t.split(':').map(Number);return h*60+m}
+
+// Yahoo! 乗換案内 deep link with date, time and condition (type: 1 出発, 4 到着, 3 始発, 2 終電; s: 0 早い, 1 安い, 2 楽)
+function yahooUrl(from,to,date,time,type=1,sort=0){
+  const p=new URLSearchParams({from,to});
+  if(date){const[y,m,d]=date.split('-');p.set('y',y);p.set('m',m);p.set('d',d)}
+  if(time&&(type==1||type==4)){const[hh,mm]=time.split(':');p.set('hh',String(Number(hh)));p.set('m1',mm[0]);p.set('m2',mm[1])}
+  p.set('type',type);p.set('ticket','ic');p.set('expkind','1');p.set('userpass','1');p.set('ws','3');p.set('s',sort);
+  return 'https://transit.yahoo.co.jp/search/result?'+p.toString();
+}
+function inJapan(day){return day.areas.some(a=>AREAS[a]&&AREAS[a].jp)}
+
+/* ===================== NAVITIME route search (RapidAPI) ===================== */
+// Station coordinates used as start/goal. Names not listed here are looked up with Open-Meteo geocoding, or can be typed as "lat,lon".
+const STATIONS={
+  '関西空港':[34.4325,135.2441],'大阪':[34.7025,135.4959],'梅田':[34.7050,135.4980],'新大阪':[34.7334,135.5002],'淀屋橋':[34.6925,135.5011],'難波':[34.6660,135.5009],'なんば':[34.6660,135.5009],
+  '宇治':[34.8939,135.8072],'京阪宇治':[34.8939,135.8072],'JR宇治':[34.8904,135.8003],'祇園四条':[35.0037,135.7722],'清水五条':[34.9958,135.7697],'京都':[34.9858,135.7588],'三条':[35.0089,135.7722],
+  '東京':[35.6812,139.7671],'品川':[35.6285,139.7387],'新宿':[35.6896,139.7006],'渋谷':[35.6580,139.7016],'上野':[35.7138,139.7773],'浅草':[35.7114,139.7966],'押上':[35.7101,139.8132],
+  '二子玉川':[35.6115,139.6268],'麹町':[35.6840,139.7372],'飯田橋':[35.7020,139.7450],'神楽坂':[35.7034,139.7346],'羽田空港':[35.5494,139.7798],'成田空港':[35.7647,140.3864],
+  '白石蔵王':[38.0087,140.6411],'遠刈田温泉':[38.1205,140.5530],'仙台':[38.2601,140.8821],'石巻':[38.4281,141.3048]
+};
+const NAV_HOST='navitime-route-totalnavi.p.rapidapi.com';
+const NK={key:'jp_trip_nav_key',cache:'jp_trip_nav_cache',geo:'jp_trip_geo'};
+let navCache=load(NK.cache)||{}; let geoCache=load(NK.geo)||{};
+const DEFAULT_NAV_KEY='41f33604c3msh95bfc2429bc070ep1e6cccjsnce523b194e60'; // built-in RapidAPI key; a key saved in the browser takes priority
+function navKey(){try{return localStorage.getItem(NK.key)||DEFAULT_NAV_KEY}catch(e){return DEFAULT_NAV_KEY}}
+async function coordOf(name){
+  name=(name||'').trim();
+  const m=name.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/); if(m) return [+m[1],+m[2]];
+  const bare=name.replace(/駅$/,'');
+  if(STATIONS[bare]) return STATIONS[bare];
+  if(geoCache[bare]) return geoCache[bare];
+  const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(bare)}&count=5&language=ja&countryCode=JP`).then(r=>r.json()).catch(()=>null);
+  const hit=r&&r.results&&r.results[0];
+  if(!hit) throw new Error(`找不到「${name}」的位置。請改用常見站名，或輸入「緯度,經度」。`);
+  geoCache[bare]=[hit.latitude,hit.longitude]; store(NK.geo,geoCache); return geoCache[bare];
+}
+function navCacheKey(q){return [q.from,q.to,q.date,q.time,q.type].join('|')}
+async function navSearch(q,force){
+  const ck=navCacheKey(q);
+  if(!force&&navCache[ck]) return navCache[ck];
+  const key=navKey(); if(!key) throw new Error('尚未設定 NAVITIME API Key，請到「交通」分頁貼上金鑰。');
+  const [s,g]=await Promise.all([coordOf(q.from),coordOf(q.to)]);
+  const time=`${q.date}T${(q.time||'09:00')}:00`;
+  const call=async extra=>{
+    const p=new URLSearchParams({start:`${s[0]},${s[1]}`,goal:`${g[0]},${g[1]}`,limit:'3',...extra});
+    let res;
+    try{res=await fetch(`https://${NAV_HOST}/route_transit?${p}`,{headers:{'x-rapidapi-key':key,'x-rapidapi-host':NAV_HOST}})}
+    catch(err){throw new Error('無法連線到 NAVITIME。請確認網路，或是否有廣告/隱私阻擋外掛擋住 rapidapi.com。')}
+    if(res.status===401||res.status===403) throw new Error('金鑰無效或尚未訂閱 NAVITIME Route (totalnavi)。');
+    if(res.status===429) throw new Error('已達 RapidAPI 的查詢上限，請稍後再試。');
+    if(!res.ok){const t=await res.text().catch(()=>'');const e=new Error(`NAVITIME 回傳錯誤 ${res.status}`);e.status=res.status;e.body=t;throw e}
+    return res.json();
+  };
+  let data;
+  if(q.type==='arrival'){
+    try{data=await call({goal_time:time})}
+    catch(e){ if(e.status!==400) throw e;
+      // Fallback: search departures 2.5h before the wanted arrival and keep routes that arrive in time
+      const t=new Date(`${time}+09:00`);t.setMinutes(t.getMinutes()-150);
+      const st=new Date(t.getTime()+9*3600e3).toISOString().slice(0,19);
+      data=await call({start_time:st});
+      data.items=(data.items||[]).filter(it=>(it.summary?.move?.to_time||'').slice(11,16)<=(q.time||'23:59'));
+    }
+  } else data=await call({start_time:time});
+  const slim={at:Date.now(),items:(data.items||[]).slice(0,3).map(slimRoute)};
+  navCache[ck]=slim; store(NK.cache,navCache); return slim;
+}
+function slimRoute(r){
+  const m=r.summary?.move||{};const f=m.fare||{};
+  return {from:m.from_time,to:m.to_time,time:m.time,transit:m.transit_count,fare:f.unit_48??f.unit_0??null,fareCash:f.unit_0??null,walk:m.walk_distance,
+    sections:(r.sections||[]).map(x=>x.type==='point'?{p:x.name||''}:{mv:x.move,line:x.line_name||x.transport?.name||'',color:x.transport?.color||'',type:x.transport?.type||'',dir:x.transport?.links?.[0]?.direction||'',from:x.from_time,to:x.to_time,min:x.time,dist:x.distance})};
+}
+const hm=t=>t?String(t).slice(11,16):'';
+const MOVE={walk:'步行',local_train:'電車',rapid_train:'快速',semiexpress_train:'準急',expresstrain:'急行',express_train:'急行',limited_express_train:'特急',superexpress_train:'新幹線',sleeper_ultraexpress:'寢台特急',domestic_flight:'飛機',ferry:'渡輪',bus:'巴士',car:'汽車'};
+function renderRoutes(res){
+  if(!res.items.length) return '<div class="nav-err">NAVITIME 找不到符合的班次（時刻表可能尚未公布），請改用 Yahoo! 連結。</div>';
+  return `<div class="routes">${res.items.map((r,k)=>`<details class="route" ${k===0?'open':''}>
+    <summary><span class="tt">${hm(r.from)} → ${hm(r.to)}</span>${k===0?'<span class="best">建議</span>':''}<span class="m">${r.time??'?'} 分 · 轉乘 ${r.transit??0} 次${r.fare!=null?` · ¥${Number(r.fare).toLocaleString()}${r.fareCash!=null&&r.fareCash!==r.fare?`（現金 ¥${Number(r.fareCash).toLocaleString()}）`:''}`:''}</span></summary>
+    <div class="legs">${r.sections.map(x=>x.p!=null
+      ?`<div class="leg stop"><div class="lt"></div><div class="bar"><span></span></div><div class="lx">${esc(x.p)}</div></div>`
+      :x.mv==='walk'
+      ?`<div class="leg walk"><div class="lt">${hm(x.from)}</div><div class="bar"><span></span></div><div class="lx muted">步行 ${x.min??''} 分${x.dist?` · ${x.dist} m`:''}</div></div>`
+      :`<div class="leg" style="--lc:${/^#?[0-9a-f]{6}$/i.test(x.color)?(x.color[0]==='#'?x.color:'#'+x.color):'var(--matcha)'}"><div class="lt">${hm(x.from)}</div><div class="bar"><span></span></div><div class="lx"><b>${esc(x.line)}</b> <span class="muted">${esc(MOVE[x.mv]||x.type||'')}${x.dir?' · 往 '+esc(x.dir):''} · ${x.min??''} 分 · ${hm(x.to)} 到</span></div></div>`).join('')}</div>
+  </details>`).join('')}</div>`;
+}
+function navPanel(q,id){
+  const res=navCache[navCacheKey(q)];
+  const when=res?new Date(res.at).toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+  return `<div class="nav" id="${id}"><div class="nav-hd"><span><i class="fa-solid fa-route"></i> NAVITIME 路線${res?` · ${when} 查詢`:''}</span>
+    <button class="btn sm ${res?'':'pri'}" data-navgo="${id}">${res?'重新查詢':'查詢班次與票價'}</button></div>${res?renderRoutes(res):''}</div>`;
+}
+const navQueries={};   // panel id -> query
+async function runNav(id,force){
+  const q=navQueries[id]; const el=document.getElementById(id); if(!q||!el) return;
+  const btn=el.querySelector('[data-navgo]'); if(btn){btn.disabled=true;btn.textContent='查詢中…'}
+  try{await navSearch(q,force);el.outerHTML=navPanel(q,id)}
+  catch(e){if(btn){btn.disabled=false;btn.textContent='再試一次'}
+    el.querySelector('.nav-err')?.remove();el.insertAdjacentHTML('beforeend',`<div class="nav-err">${esc(e.message)}</div>`)}
+}
+
+/* ===================== Weather (Open-Meteo, no API key) ===================== */
+const WMO = c => c==null?['fa-temperature-half','—']:c===0?['fa-sun','晴']:c<=2?['fa-cloud-sun','晴時多雲']:c===3?['fa-cloud','陰']:c<=48?['fa-smog','霧']:c<=57?['fa-cloud-rain','毛毛雨']:c<=67?['fa-cloud-showers-heavy','雨']:c<=77?['fa-snowflake','雪']:c<=82?['fa-cloud-sun-rain','陣雨']:c<=86?['fa-snowflake','陣雪']:['fa-cloud-bolt','雷雨'];
+function wearHint(hi,lo){if(lo==null)return'';if(lo<=2)return'羽絨外套、手套';if(lo<=7)return'厚外套＋毛衣';if(hi<=16)return'夾克＋長袖';if(hi<=22)return'薄外套';return'短袖＋薄外套'}
+function dayWxKey(day){const a=AREAS[day.areas[0]];return a?a.wx:'tokyo'}
+function lastYear(date){return String(Number(date.slice(0,4))-1)+date.slice(4)}
+
+async function fetchWeather(force){
+  const status=$('#wx-status');
+  if(!force && Date.now()-wxData.fetched < 3*3600e3 && wxData.byKey){renderWx();return}
+  status.textContent='天氣更新中…';
+  const needed=[...new Set(days.map(dayWxKey))];
+  const out={};
+  try{
+    await Promise.all(needed.map(async key=>{
+      const w=WX[key];
+      const base=`latitude=${w.lat}&longitude=${w.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
+      const [fc,ar]=await Promise.all([
+        fetch(`https://api.open-meteo.com/v1/forecast?${base}&forecast_days=16`).then(r=>r.json()),
+        fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${w.lat}&longitude=${w.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&start_date=2025-11-13&end_date=2025-11-29`).then(r=>r.json()).catch(()=>null)
+      ]);
+      out[key]={fc:{},ly:{}};
+      (fc.daily?.time||[]).forEach((t,i)=>out[key].fc[t]={code:fc.daily.weather_code[i],hi:fc.daily.temperature_2m_max[i],lo:fc.daily.temperature_2m_min[i],pop:fc.daily.precipitation_probability_max[i]});
+      (ar?.daily?.time||[]).forEach((t,i)=>out[key].ly[t]={code:ar.daily.weather_code[i],hi:ar.daily.temperature_2m_max[i],lo:ar.daily.temperature_2m_min[i],rain:ar.daily.precipitation_sum[i]});
+    }));
+    wxData={fetched:Date.now(),byKey:out};store(K.wx,wxData);
+  }catch(e){status.textContent='無法連線天氣服務，顯示歷年平均。';}
+  renderWx();
+}
+function wxFor(day){
+  const key=dayWxKey(day), w=WX[key], src=wxData.byKey&&wxData.byKey[key];
+  if(src&&src.fc[day.date]) return {...src.fc[day.date],src:'live',place:w.name};
+  if(src&&src.ly[lastYear(day.date)]) return {...src.ly[lastYear(day.date)],src:'ly',place:w.name};
+  return {code:null,hi:w.normal[0],lo:w.normal[1],src:'avg',place:w.name};
+}
+function renderWx(){
+  const strip=$('#wx-strip');
+  strip.innerHTML=days.map((d,i)=>{const w=wxFor(d);const[ic,lab]=WMO(w.code);
+    const srcLab={live:'即時預報',ly:'去年同日',avg:'歷年平均'}[w.src];
+    return `<button class="wx" data-jump="${i}" title="${esc(w.place)} · ${lab}"><div class="d num">${mmdd(d.date)} ${wd(d.date)}</div><div class="ic"><i class="fa-solid ${ic}"></i></div><div class="t num">${Math.round(w.hi)}° / ${Math.round(w.lo)}°</div><div class="a">${esc(w.place)}</div><span class="src src-${w.src}">${srcLab}</span></button>`}).join('');
+  const live=days.filter(d=>wxFor(d).src==='live').length;
+  const when=wxData.fetched?new Date(wxData.fetched).toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+  $('#wx-status').textContent = !wxData.byKey
+    ? '無法連線天氣服務，目前顯示各地 11 月下旬歷年平均氣溫。'
+    : live
+    ? `${live} 天為即時預報（Open-Meteo），其餘為去年同日實測。更新於 ${when}`
+    : `每天會在約 16 天前（10/29 起）逐日切換為即時預報；目前顯示去年同日實測天氣作參考。更新於 ${when}`;
+  document.querySelectorAll('.day').forEach(el=>{const i=+el.dataset.i;const c=el.querySelector('.wxchip');if(c)c.outerHTML=wxChip(days[i])});
+}
+function wxChip(day){const w=wxFor(day);const[ic,lab]=WMO(w.code);
+  const extra=w.src==='live'&&w.pop!=null?` · 降雨 ${w.pop}%`:(w.src==='ly'&&w.rain>0?` · 去年雨量 ${w.rain}mm`:'');
+  return `<div class="wxchip"><i class="fa-solid ${ic}"></i><div><span class="num">${Math.round(w.hi)}° / ${Math.round(w.lo)}°</span> ${lab==='—'?'':lab}${extra}<span class="wear">${esc(w.place)} · ${wearHint(w.hi,w.lo)}</span></div></div>`}
+
+/* ===================== Smart checks ===================== */
+function nightsOf(h){return Math.round((new Date(h.checkOut)-new Date(h.checkIn))/864e5)}
+function nextDate(date){const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+1);return d.toISOString().slice(0,10)}
+function hotelFor(date){return hotels.find(h=>date>=h.checkIn&&date<h.checkOut)}
+function computeChecks(){
+  const out=[];
+  const nights=days.slice(0,16).filter(d=>!hotelFor(d.date));
+  if(nights.length) out.push({lvl:'warn',msg:`還有 ${nights.length} 晚未安排住宿：${nights.map(d=>mmdd(d.date)).join('、')}`,tab:'hotels'});
+  days.forEach((d,i)=>{
+    const h=hotelFor(d.date);
+    const late=d.items.filter(it=>toMin(it.endTime)>=21*60);
+    if(h&&h.area&&late.length&&d.areas[d.areas.length-1]!==h.area){
+      out.push({lvl:'bad',msg:`${mmdd(d.date)} 晚上 ${esc(late[0].title)} 在${AREAS[d.areas[d.areas.length-1]].label}，但當晚住${AREAS[h.area].label}（${esc(h.name)}）。請確認夜間回程交通。`,day:i});
+    }
+    const prev=i>0&&hotelFor(days[i-1].date);
+    const first=d.items.find(it=>toMin(itemTime(it))!=null);
+    if(prev&&prev.area&&first&&toMin(itemTime(first))<9*60&&!d.areas.includes(prev.area)){
+      out.push({lvl:'bad',msg:`${mmdd(d.date)} ${itemTime(first)} 要在${AREAS[d.areas[0]].label}，但前一晚住${AREAS[prev.area].label}。早上可能趕不上。`,day:i});
+    }
+    // overlaps
+    const timed=d.items.filter(it=>it.category!=='train'&&it.startTime&&it.endTime).sort((a,b)=>a.startTime.localeCompare(b.startTime));
+    for(let k=1;k<timed.length;k++) if(timed[k].startTime<timed[k-1].endTime) out.push({lvl:'warn',msg:`${mmdd(d.date)}「${esc(timed[k-1].title)}」與「${esc(timed[k].title)}」時間重疊。`,day:i});
+    d.items.filter(it=>it.category==='train'&&!it.transitTime).forEach(it=>out.push({lvl:'warn',msg:`${mmdd(d.date)} 交通「${esc(it.title)}」沒有填時間，Yahoo! 查詢會用現在時間。`,day:i}));
+    // missing flight between countries
+    if(i>0){const a=inJapan(days[i-1]),b=inJapan(d);const firstAct=d.items.find(it=>it.category!=='flight'&&itemTime(it));const hasFlight=days[i-1].items.some(it=>it.category==='flight')||d.items.some(it=>it.category==='flight'&&(!firstAct||(itemTime(it)||'99')<=itemTime(firstAct)));
+      if(a!==b&&!hasFlight) out.push({lvl:'bad',msg:`${mmdd(days[i-1].date)} 在${AREAS[days[i-1].areas[0]].label}，${mmdd(d.date)} 在${AREAS[d.areas[0]].label}，中間沒有航班。`,day:i});}
+  });
+  return out;
+}
+function renderChecks(){
+  const c=computeChecks();
+  $('#checks').innerHTML=c.length?c.map(x=>`<div class="chk ${x.lvl==='bad'?'bad':''}"><i class="fa-solid ${x.lvl==='bad'?'fa-circle-exclamation':'fa-triangle-exclamation'}" style="margin-top:3px"></i><div style="flex:1">${x.msg}</div>${x.day!=null?`<a data-jump="${x.day}">查看</a>`:x.tab?`<a data-tabgo="${x.tab}">前往</a>`:''}</div>`).join('')
+    :`<div class="chk" style="background:var(--chip);color:var(--matcha)"><i class="fa-solid fa-circle-check"></i> 行程沒有發現衝突。</div>`;
+}
+
+/* ===================== Itinerary rendering ===================== */
+function renderDays(){
+  $('#days').innerHTML=days.map((d,i)=>{
+    const h=hotelFor(d.date);
+    let prevEnd=null;
+    const hotelRows=[];
+    hotels.forEach((ho,hi)=>{
+      if(ho.checkOut===d.date) hotelRows.push({t:ho.checkOutTime||'11:00',html:hotelRow(ho,hi,'out')});
+      if(ho.checkIn===d.date) hotelRows.push({t:ho.checkInTime||'15:00',html:hotelRow(ho,hi,'in')});
+    });
+    const items=d.items.map((it,j)=>{
+      if(it.category==='train'&&!ui.showTransit) return '';
+      const c=CAT[it.category]||CAT.sight;
+      const st=itemTime(it), s=toMin(st);
+      let gap='';
+      if(prevEnd!=null&&s!=null&&s-prevEnd>=90&&it.category!=='train') gap=`<div class="gap"><i class="fa-regular fa-clock"></i> 空檔約 ${Math.floor((s-prevEnd)/60)} 小時${(s-prevEnd)%60?((s-prevEnd)%60)+' 分':''}，可看下方推薦</div>`;
+      const e=it.category==='train'?s:(toMin(it.endTime)??s); if(e!=null) prevEnd=e;
+      let timeHtml = it.category==='train'
+        ? `<b>${esc(it.transitTime||'--:--')}</b>${it.timeType==='arrival'?'抵達':'出發'}`
+        : `<b>${esc(it.startTime||it.endTime||'--:--')}</b>${it.startTime&&it.endTime?'– '+esc(it.endTime):''}`;
+      let links='', navHtml='';
+      if(it.category==='train'&&it.from&&it.to){
+        if(inJapan(d)){
+          const t=it.timeType==='arrival'?4:1;
+          links+=`<a class="lk yahoo" target="_blank" rel="noopener" href="${yahooUrl(it.from,it.to,d.date,it.transitTime,t,0)}"><i class="fa-solid fa-route"></i> Yahoo! ${esc(it.from)} → ${esc(it.to)}</a>`;
+          links+=`<a class="lk" target="_blank" rel="noopener" href="${yahooUrl(it.from,it.to,d.date,it.transitTime,t,1)}">Yahoo! 最便宜</a><a class="lk" target="_blank" rel="noopener" href="${yahooUrl(it.from,it.to,d.date,it.transitTime,t,2)}">Yahoo! 轉乘最少</a>`;
+          const pid=`nav-${i}-${j}`; navQueries[pid]={from:it.from,to:it.to,date:d.date,time:it.transitTime,type:it.timeType==='arrival'?'arrival':'departure'};
+          navHtml=navPanel(navQueries[pid],pid);
+        } else links+=`<a class="lk" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=transit&origin=${encodeURIComponent(it.from)}&destination=${encodeURIComponent(it.to)}"><i class="fa-solid fa-route"></i> Google 路線</a>`;
+      }
+      if(it.category!=='train'&&it.category!=='flight'&&(it.jp||it.title)) links+=`<a class="lk" target="_blank" rel="noopener" href="${mapsUrl(it.jp||it.title)}"><i class="fa-solid fa-location-dot"></i> 地圖</a>`;
+      if(it.category==='dining'&&it.jp&&inJapan(d)){
+        const prevSpot=[...d.items.slice(0,j)].reverse().find(x=>x.category!=='train'&&x.jp);
+        // Quick "how do I get to this restaurant" link: from the nearest station guess of the previous stop
+        links+=`<a class="lk" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=transit&destination=${encodeURIComponent(it.jp)}${prevSpot?'&origin='+encodeURIComponent(prevSpot.jp):''}"><i class="fa-solid fa-person-walking"></i> 怎麼去</a>`;
+      }
+      return gap+`<div class="item c-${it.category}">
+        <div class="time">${timeHtml}</div>
+        <div class="info"><h4><i class="fa-solid ${c.icon}"></i>${esc(it.title)}</h4>
+          ${it.category==='train'&&it.from?`<div class="jp">${esc(it.from)} → ${esc(it.to)}</div>`:''}
+          ${it.jp&&it.category!=='train'?`<div class="jp">${esc(it.jp)}</div>`:''}
+          ${it.en?`<div class="en">${esc(it.en)}</div>`:''}
+          ${it.notes?`<div class="note">${esc(it.notes)}</div>`:''}
+          ${links?`<div class="links">${links}</div>`:''}${navHtml}</div>
+        <div class="acts"><button class="icon-btn" data-edit="${i},${j}" aria-label="編輯"><i class="fa-solid fa-pen"></i></button><button class="icon-btn" data-del="${i},${j}" aria-label="刪除"><i class="fa-solid fa-trash"></i></button></div>
+      </div>`});
+    const merged=[...items.map((x,k)=>({t:itemTime(d.items[k])||'99:99',html:x,k})),...hotelRows.map(r=>({...r,k:-1}))]
+      .sort((a,b)=>a.t.localeCompare(b.t)||(a.k-b.k)).map(x=>x.html).join('');
+    const areaChips=Object.entries(AREAS).filter(([k])=>d.areas.includes(k)||nearbyAreas(d).includes(k)).map(([k,a])=>`<button class="area ${d.areas.includes(k)?'on':''}" data-area="${i},${k}">${a.label}</button>`).join('')+`<button class="area" data-morearea="${i}">＋地區</button>`;
+    const open=ui.sugOpen[d.date]!==false;
+    return `<article class="day" id="day-${i}" data-i="${i}">
+      <div class="day-hd"><div class="dnum"><b class="num">${i+1}</b><small>DAY</small></div>
+        <div class="day-title"><div class="date num">${d.date.replace(/-/g,'/')} (${wd(d.date)})</div><h3>${esc(d.title)} <button class="icon-btn" data-rename="${i}" aria-label="改標題"><i class="fa-solid fa-pen" style="font-size:.7rem"></i></button></h3></div>
+        ${wxChip(d)}</div>
+      <div class="areas">${areaChips}</div>
+      <div class="day-body">${merged||'<div class="empty">今天還沒有安排，打開下方推薦挑幾個加入吧。</div>'}
+        <div><button class="btn sm" data-add="${i}"><i class="fa-solid fa-plus"></i> 新增項目</button></div></div>
+      ${renderSug(d,i,open)}
+      <div class="day-ft"><span><i class="fa-solid fa-bed" style="color:var(--plum)"></i> 當晚住宿：<b>${h?esc(h.name):(i===16?'返港':'尚未安排')}</b>${h?` <span class="muted num">（${mmdd(h.checkIn)} 入住 → ${mmdd(h.checkOut)} 退房，第 ${Math.round((new Date(d.date)-new Date(h.checkIn))/864e5)+1}/${nightsOf(h)} 晚）</span>`:''}</span>${i<16?(h?`<button class="btn sm" data-hedit="${hotels.indexOf(h)}">編輯住宿</button>`:`<button class="btn sm pri" data-hnew="${d.date}"><i class="fa-solid fa-plus"></i> 新增今晚住宿</button>`):''}</div>
+    </article>`}).join('');
+}
+function hotelRow(h,hi,kind){
+  const isIn=kind==='in';
+  return `<div class="item c-hotel"><div class="time"><b>${esc(isIn?(h.checkInTime||'15:00'):(h.checkOutTime||'11:00'))}</b>${isIn?'Check-in':'Check-out'}</div>
+    <div class="info"><h4><i class="fa-solid ${isIn?'fa-door-open':'fa-suitcase-rolling'}"></i>${isIn?'入住':'退房'}：${esc(h.name)}</h4>
+      <div class="jp num">${mmdd(h.checkIn)} → ${mmdd(h.checkOut)} · ${nightsOf(h)} 晚${h.conf?' · 確認編號 '+esc(h.conf):''}</div>
+      ${h.address?`<div class="links"><a class="lk" target="_blank" rel="noopener" href="${mapsUrl(h.address)}"><i class="fa-solid fa-location-dot"></i> ${esc(h.address)}</a></div>`:''}</div>
+    <div class="acts"><button class="icon-btn" data-hedit="${hi}" aria-label="編輯住宿"><i class="fa-solid fa-pen"></i></button></div></div>`;
+}
+function nearbyAreas(d){
+  const map={taipei:[],osaka:['kyoto'],uji:['kyoto'],kyoto:['uji','osaka'],kagurazaka:['tokyo','kojimachi'],oshiage:['tokyo'],futako:['tokyo'],kojimachi:['tokyo','kagurazaka'],tokyo:['oshiage','kojimachi'],zao:['sendai'],sendai:['zao','ishinomaki'],ishinomaki:['sendai'],seoul:[]};
+  return [...new Set(d.areas.flatMap(a=>map[a]||[]))];
+}
+function renderSug(d,i,open){
+  if(!open) return `<div class="sug"><button class="btn sm" data-sugtoggle="${d.date}"><i class="fa-solid fa-lightbulb"></i> 顯示附近推薦（${d.areas.map(a=>AREAS[a].label).join('、')}）</button></div>`;
+  const tab=ui.sugTab[d.date]||'sight';
+  const list=d.areas.flatMap(a=>(AREAS[a][tab]||[]).map(s=>({...s,area:a})));
+  const added=new Set(d.items.map(x=>x.title));
+  const tips=d.areas.flatMap(a=>AREAS[a].tips||[]);
+  const tabs=[['sight','景點'],['snack','小吃甜點'],['coffee','咖啡・茶屋']].map(([k,l])=>{const n=d.areas.reduce((s,a)=>s+(AREAS[a][k]||[]).length,0);return `<button class="sug-tab" aria-selected="${tab===k}" data-sugtab="${d.date},${k}">${l} <span class="num">${n}</span></button>`}).join('');
+  return `<div class="sug"><div class="row spread" style="margin-bottom:8px"><b style="font-size:.88rem"><i class="fa-solid fa-lightbulb" style="color:var(--momiji)"></i> 附近推薦</b><button class="btn sm" data-sugtoggle="${d.date}">收合</button></div>
+    <div class="sug-tabs">${tabs}</div>
+    ${list.length?`<div class="sug-grid">${list.map(s=>`<div class="sc"><div class="t">${esc(s.t)}</div><div class="jpn">${esc(s.jp)} · ${AREAS[s.area].label}</div><div class="n">${esc(s.n)}</div>
+      <div class="row"><button class="btn sm ${added.has(s.t)?'':'pri'}" data-addsug="${i},${s.area},${tab},${esc(s.t)}" ${added.has(s.t)?'disabled':''}>${added.has(s.t)?'已加入':'＋ 加入行程'}</button><a class="lk" target="_blank" rel="noopener" href="${mapsUrl(s.jp)}"><i class="fa-solid fa-location-dot"></i> 地圖</a></div></div>`).join('')}</div>`:'<div class="empty">這個分類在此區還沒有推薦，可切換其他分類或地區。</div>'}
+    ${tips.map(t=>`<div class="tip"><i class="fa-solid fa-circle-info"></i> ${esc(t)}</div>`).join('')}</div>`;
+}
+
+/* ===================== Hotels ===================== */
+function renderHotels(){
+  let ok=0;
+  $('#cover').innerHTML=days.slice(0,16).map(d=>{const h=hotelFor(d.date);if(h)ok++;return `<div class="cell num ${h?'ok':''}" title="${d.date} ${h?esc(h.name):'未安排'}">${d.date.slice(8)}</div>`}).join('');
+  $('#hotel-badge').textContent=`${ok}/16`;
+  $('#hotels').innerHTML=hotels.length?hotels.map((h,i)=>`<div class="hc"><div class="row spread"><span class="pill ${h.status==='已確認'?'ok':'hold'}">${esc(h.status)}</span><span><button class="icon-btn" data-hedit="${i}"><i class="fa-solid fa-pen"></i></button><button class="icon-btn" data-hdel="${i}"><i class="fa-solid fa-trash"></i></button></span></div>
+    <b>${esc(h.name)}</b><span class="muted num">入住 ${mmdd(h.checkIn)} (${wd(h.checkIn)}) ${esc(h.checkInTime||'15:00')} → 退房 ${mmdd(h.checkOut)} (${wd(h.checkOut)}) ${esc(h.checkOutTime||'11:00')}</span><span class="muted">${nightsOf(h)} 晚 · ${AREAS[h.area]?AREAS[h.area].label:''}</span>
+    ${h.address?`<a class="lk" style="justify-self:start" target="_blank" rel="noopener" href="${mapsUrl(h.address)}"><i class="fa-solid fa-location-dot"></i> ${esc(h.address)}</a>`:''}
+    ${h.conf?`<span class="muted">確認編號 <span class="num">${esc(h.conf)}</span></span>`:''}</div>`).join(''):'<div class="empty">還沒有住宿。</div>';
+}
+
+/* ===================== Transit tab ===================== */
+function renderTransit(){
+  const legs=[];
+  days.forEach(d=>d.items.forEach(it=>{if(it.category==='train'&&it.from&&it.to&&inJapan(d))legs.push({d,it})}));
+  $('#qlinks').innerHTML=legs.map(({d,it})=>`<a class="ql" target="_blank" rel="noopener" href="${yahooUrl(it.from,it.to,d.date,it.transitTime,it.timeType==='arrival'?4:1,0)}"><b>${esc(it.from)} → ${esc(it.to)}</b><small class="num">${mmdd(d.date)} (${wd(d.date)}) ${esc(it.transitTime||'')} ${it.timeType==='arrival'?'抵達':'出發'} · ${esc(it.title)}</small></a>`).join('');
+  updateQuery();
+}
+function transitQuery(){const ty=+$('#q-type').value;return {from:$('#q-from').value.trim(),to:$('#q-to').value.trim(),date:$('#q-date').value,time:ty===3?'05:00':ty===2?'22:30':$('#q-time').value,type:ty===4?'arrival':'departure'}}
+function updateQuery(){$('#q-go').href=yahooUrl($('#q-from').value,$('#q-to').value,$('#q-date').value,$('#q-time').value,+$('#q-type').value,+$('#q-sort').value)}
+
+/* ===================== Modals ===================== */
+function fillDatalist(dayIdx){
+  const d=days[dayIdx];const areas=[...d.areas,...Object.keys(AREAS).filter(a=>!d.areas.includes(a))];
+  $('#sug-list').innerHTML=areas.flatMap(a=>['sight','snack','coffee'].flatMap(k=>(AREAS[a][k]||[]).map(s=>`<option value="${esc(s.t)}">${esc(AREAS[a].label)}</option>`))).join('');
+}
+function findSug(title){for(const[a,A]of Object.entries(AREAS))for(const k of['sight','snack','coffee'])for(const s of A[k]||[])if(s.t===title||title&&s.t.includes(title))return{...s,cat:k,area:a};return null}
+function toggleCatFields(){const tr=$('#f-cat').value==='train';$('#f-transit').hidden=!tr;$('#f-times').hidden=tr;updateModalYahoo()}
+function updateModalYahoo(){const d=days[+$('#f-day').value];if(!d)return;$('#f-yahoo').href=yahooUrl($('#f-from').value,$('#f-to').value,d.date,$('#f-ttime').value,$('#f-ttype').value==='arrival'?4:1,0)}
+function openItem(dayIdx,idx=null){
+  const it=idx!=null?days[dayIdx].items[idx]:{category:'dining'};
+  $('#f-day').value=dayIdx;$('#f-idx').value=idx??'';
+  $('#item-modal-title').textContent=(idx!=null?'編輯項目':'新增項目')+` · ${mmdd(days[dayIdx].date)}`;
+  $('#f-cat').value=it.category||'dining';
+  $('#f-from').value=it.from||'';$('#f-to').value=it.to||'';$('#f-ttype').value=it.timeType||'departure';$('#f-ttime').value=it.transitTime||'';
+  $('#f-start').value=it.startTime||'';$('#f-end').value=it.endTime||'';
+  $('#f-title').value=it.title||'';$('#f-jp').value=it.jp||'';$('#f-en').value=it.en||'';$('#f-notes').value=it.notes||'';
+  fillDatalist(dayIdx);toggleCatFields();$('#item-modal').hidden=false;$('#f-title').focus();
+}
+function openHotel(idx=null,date=null){
+  const day=date&&days.find(d=>d.date===date);
+  const h=idx!=null?hotels[idx]:{checkIn:date||'2026-11-17',checkOut:date?nextDate(date):'2026-11-20',area:day?(AREAS[day.areas[day.areas.length-1]]?day.areas[day.areas.length-1]:'tokyo'):'tokyo',status:'已確認'};
+  $('#h-idx').value=idx??'';$('#h-name').value=h.name||'';$('#h-in').value=h.checkIn;$('#h-out').value=h.checkOut;
+  $('#h-area').innerHTML=Object.entries(AREAS).map(([k,a])=>`<option value="${k}">${a.label}</option>`).join('');$('#h-area').value=h.area||'tokyo';
+  $('#h-intime').value=h.checkInTime||'15:00';$('#h-outtime').value=h.checkOutTime||'11:00';updateNights();
+  $('#h-addr').value=h.address||'';$('#h-status').value=h.status||'已確認';$('#h-conf').value=h.conf||'';$('#hotel-modal').hidden=false;
+}
+
+function updateNights(){const a=$('#h-in').value,b=$('#h-out').value;const n=a&&b?Math.round((new Date(b)-new Date(a))/864e5):0;
+  $('#h-nights').textContent=n>0?`共 ${n} 晚（${mmdd(a)} ${wd(a)} → ${mmdd(b)} ${wd(b)}）`:'退房日期需晚於入住日期';}
+/* ===================== Events ===================== */
+document.addEventListener('click',async e=>{
+  const t=e.target.closest('button,a');if(!t)return;
+  const ds=t.dataset;
+  if(ds.tab){document.querySelectorAll('.tab[data-tab]').forEach(b=>b.setAttribute('aria-selected',b===t));['itinerary','hotels','transit'].forEach(x=>$('#tab-'+x).hidden=x!==ds.tab);return}
+  if(ds.tabgo){e.preventDefault();document.querySelector(`.tab[data-tab="${ds.tabgo}"]`).click();scrollTo({top:0});return}
+  if(ds.jump!=null){document.querySelector('.tab[data-tab="itinerary"]').click();const el=$('#day-'+ds.jump);el&&el.scrollIntoView({behavior:'smooth'});return}
+  if('close' in ds){t.closest('.modal').hidden=true;return}
+  if(ds.add!=null){openItem(+ds.add);return}
+  if(ds.edit){const[a,b]=ds.edit.split(',').map(Number);openItem(a,b);return}
+  if(ds.del){const[a,b]=ds.del.split(',').map(Number);if(await askConfirm(`刪除「${days[a].items[b].title}」？`)){days[a].items.splice(b,1);save();toast('已刪除')}return}
+  if(ds.rename!=null){const i=+ds.rename;const h3=t.closest('h3');h3.innerHTML=`<input id="rename-${i}" value="${esc(days[i].title)}">`;const inp=$('#rename-'+i);inp.focus();inp.select();
+    const fin=()=>{days[i].title=inp.value.trim()||days[i].title;save()};inp.addEventListener('blur',fin,{once:true});inp.addEventListener('keydown',ev=>{if(ev.key==='Enter')inp.blur()});return}
+  if(ds.area){const[i,k]=ds.area.split(',');const d=days[+i];
+    if(d.areas.includes(k)){if(d.areas.length>1)d.areas=d.areas.filter(x=>x!==k)}else d.areas.push(k);save();renderWx();return}
+  if(ds.morearea!=null){const i=+ds.morearea;const d=days[i];const box=t.parentElement;
+    box.innerHTML=Object.entries(AREAS).map(([k,a])=>`<button class="area ${d.areas.includes(k)?'on':''}" data-area="${i},${k}">${a.label}</button>`).join('');return}
+  if(ds.sugtoggle){ui.sugOpen[ds.sugtoggle]=ui.sugOpen[ds.sugtoggle]===false;save();return}
+  if(ds.sugtab){const[d,k]=ds.sugtab.split(',');ui.sugTab[d]=k;save();return}
+  if(ds.addsug){const[i,a,k,...rest]=ds.addsug.split(',');const title=rest.join(',');const s=(AREAS[a][k]||[]).find(x=>x.t===title);
+    days[+i].items.push({category:k,startTime:'',endTime:'',title:s.t,jp:s.jp,en:'',notes:s.n});save();toast(`已加入 ${mmdd(days[+i].date)}，可點筆圖示設定時間`);return}
+  if(ds.hedit!=null){openHotel(+ds.hedit);return}
+  if(ds.hnew){openHotel(null,ds.hnew);return}
+  if(ds.navgo){runNav(ds.navgo,true);return}
+  if(ds.hdel!=null){const i=+ds.hdel;if(await askConfirm(`刪除住宿「${hotels[i].name}」？`)){hotels.splice(i,1);save()}return}
+});
+$('#btn-add-hotel').onclick=()=>openHotel();
+$('#h-in').addEventListener('input',()=>{if($('#h-out').value<=$('#h-in').value)$('#h-out').value=nextDate($('#h-in').value);updateNights()});
+$('#h-out').addEventListener('input',updateNights);
+$('#btn-toggle-transit').onclick=()=>{ui.showTransit=!ui.showTransit;$('#btn-toggle-transit').innerHTML=ui.showTransit?'<i class="fa-solid fa-eye-slash"></i> 隱藏交通':'<i class="fa-solid fa-eye"></i> 顯示交通';save()};
+$('#btn-collapse').onclick=()=>{const anyOpen=days.some(d=>ui.sugOpen[d.date]!==false);days.forEach(d=>ui.sugOpen[d.date]=!anyOpen);$('#btn-collapse').textContent=anyOpen?'展開推薦':'收合推薦';save()};
+$('#btn-reset').onclick=async()=>{if(await askConfirm('重設為預設的 17 天行程？目前的修改會被覆蓋，建議先匯出備份。')){days=clone(defaultDays);hotels=clone(defaultHotels);save();toast('已重設')}};
+$('#wx-refresh').onclick=()=>fetchWeather(true);
+function openKeyModal(){$('#key-modal-input').value='';$('#key-modal-status').textContent=navKey()?'已設定金鑰。貼上新的金鑰可取代。':'尚未設定金鑰。';$('#key-modal').hidden=false;$('#key-modal-input').focus()}
+$('#btn-key').onclick=openKeyModal;$('#key-banner-btn').onclick=openKeyModal;
+async function testKey(out){out('測試中…');try{const r=await navSearch({from:'東京',to:'品川',date:new Date(Date.now()+9*3600e3).toISOString().slice(0,10),time:'12:00',type:'departure'},true);out(`連線成功，找到 ${r.items.length} 條路線。`)}catch(e){out(e.message)}}
+$('#key-form').onsubmit=e=>{e.preventDefault();const v=$('#key-modal-input').value.trim();if(!v){toast('請先貼上金鑰');return}try{localStorage.setItem(NK.key,v)}catch(err){}keyStatus();$('#key-modal-input').value='';testKey(m=>$('#key-modal-status').textContent=m)};
+$('#key-modal-test').onclick=()=>{const v=$('#key-modal-input').value.trim();if(v){try{localStorage.setItem(NK.key,v)}catch(err){}keyStatus()}testKey(m=>$('#key-modal-status').textContent=m)};
+function keyStatus(msg){$('#key-banner').hidden=!!navKey();$('#nav-key-status').textContent=msg||(navKey()?'已設定金鑰（存在此裝置）。':'尚未設定金鑰：交通項目仍可使用 Yahoo! 連結。')}
+$('#nav-key-save').onclick=()=>{const v=$('#nav-key').value.trim();if(!v){toast('請先貼上金鑰');return}try{localStorage.setItem(NK.key,v)}catch(e){}$('#nav-key').value='';keyStatus();toast('金鑰已儲存')};
+$('#nav-key-clear').onclick=()=>{try{localStorage.removeItem(NK.key)}catch(e){}keyStatus();toast('金鑰已清除')};
+$('#nav-key-test').onclick=async()=>{keyStatus('測試中…');try{const r=await navSearch({from:'東京',to:'品川',date:new Date(Date.now()+9*3600e3).toISOString().slice(0,10),time:'12:00',type:'departure'},true);keyStatus(`連線成功，找到 ${r.items.length} 條路線。`)}catch(e){keyStatus(e.message)}};
+$('#nav-clear-cache').onclick=()=>{navCache={};store(NK.cache,navCache);renderAll();toast('已清除')};
+$('#nav-all').onclick=async()=>{const ids=Object.keys(navQueries).filter(id=>document.getElementById(id));if(!navKey()){toast('請先設定金鑰');return}
+  toast(`查詢 ${ids.length} 段交通中…`);for(const id of ids){await runNav(id,false)}renderAll();toast('全部查詢完成')};
+$('#q-nav').onclick=async()=>{const q=transitQuery();navQueries['q-result-nav']=q;$('#q-result').innerHTML=`<div class="nav" id="q-result-nav"><div class="nav-hd"><span>查詢中…</span></div></div>`;
+  try{const r=await navSearch(q,true);$('#q-result').innerHTML=navPanel(q,'q-result-nav')}catch(e){$('#q-result').innerHTML=`<div class="nav-err">${esc(e.message)}</div>`}};
+$('#f-cat').onchange=toggleCatFields;
+['#f-from','#f-to','#f-ttype','#f-ttime'].forEach(s=>$(s).addEventListener('input',updateModalYahoo));
+['#q-from','#q-to','#q-date','#q-time','#q-type','#q-sort'].forEach(s=>$(s).addEventListener('input',updateQuery));
+$('#f-fill').onclick=()=>{const s=findSug($('#f-title').value.trim());if(!s){toast('推薦資料庫裡找不到這個名稱');return}
+  $('#f-title').value=s.t;$('#f-jp').value=s.jp;if(!$('#f-notes').value)$('#f-notes').value=s.n;$('#f-cat').value=s.cat;toggleCatFields();toast('已帶入')};
+$('#f-title').addEventListener('change',()=>{const s=findSug($('#f-title').value.trim());if(s&&s.t===$('#f-title').value&&!$('#f-jp').value){$('#f-jp').value=s.jp;if(!$('#f-notes').value)$('#f-notes').value=s.n;$('#f-cat').value=s.cat;toggleCatFields()}});
+$('#item-form').onsubmit=e=>{e.preventDefault();
+  const di=+$('#f-day').value, idx=$('#f-idx').value, cat=$('#f-cat').value;
+  const it={category:cat,title:$('#f-title').value.trim(),jp:$('#f-jp').value.trim(),en:$('#f-en').value.trim(),notes:$('#f-notes').value.trim()};
+  if(cat==='train'){it.from=$('#f-from').value.trim();it.to=$('#f-to').value.trim();it.timeType=$('#f-ttype').value;it.transitTime=$('#f-ttime').value}
+  else{it.startTime=$('#f-start').value;it.endTime=$('#f-end').value}
+  if(idx==='')days[di].items.push(it);else days[di].items[+idx]=it;
+  $('#item-modal').hidden=true;save();toast('已儲存');
+};
+$('#hotel-form').onsubmit=e=>{e.preventDefault();
+  const idx=$('#h-idx').value;
+  const h={id:idx===''?'h'+Date.now():hotels[+idx].id,name:$('#h-name').value.trim(),checkIn:$('#h-in').value,checkInTime:$('#h-intime').value,checkOut:$('#h-out').value,checkOutTime:$('#h-outtime').value,area:$('#h-area').value,address:$('#h-addr').value.trim(),status:$('#h-status').value,conf:$('#h-conf').value.trim()};
+  if(h.checkOut<=h.checkIn){toast('退房日期要晚於入住日期');return}
+  const clash=hotels.find((x,i)=>String(i)!==idx&&h.checkIn<x.checkOut&&x.checkIn<h.checkOut);
+  if(clash){toast(`與「${clash.name}」日期重疊`);return}
+  if(idx==='')hotels.push(h);else hotels[+idx]=h;$('#hotel-modal').hidden=true;save();toast('住宿已儲存');
+};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal').forEach(m=>m.hidden=true)});
+$('#btn-export').onclick=()=>{const blob=new Blob([JSON.stringify({version:2,days,hotels},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='japan_trip_2026.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);
+  if(p.days&&p.hotels){days=p.days;hotels=p.hotels}
+  else if(p.itinerary&&p.hotels){days=p.itinerary.map((d,i)=>({date:d.date,title:d.title,areas:(defaultDays[i]||{}).areas||['tokyo'],items:d.items||[]}));hotels=p.hotels.map(h=>({...h,area:h.area||guessArea(h.address||h.name),status:(h.status||'').split(' ')[0]}))}
+  else throw 0;save();fetchWeather(true);toast('匯入成功')}catch(err){toast('檔案格式不正確')}};r.readAsText(f);e.target.value=''};
+
+/* ===================== Boot ===================== */
+function renderCountdown(){const diff=Math.ceil((new Date('2026-11-13T00:00:00+08:00')-Date.now())/864e5);const el=$('#countdown');
+  if(diff>0)el.textContent=`倒數 ${diff} 天`;else{const idx=days.findIndex(d=>d.date===new Date().toISOString().slice(0,10));el.textContent=idx>=0?`今天 Day ${idx+1}`:'旅程結束'}}
+function renderAll(){renderChecks();renderDays();renderHotels();renderTransit();renderWx()}
+days.forEach(sortItems);
+if(!ui.showTransit)$('#btn-toggle-transit').innerHTML='<i class="fa-solid fa-eye"></i> 顯示交通';
+renderCountdown();renderAll();keyStatus();fetchWeather(false);
+// During the trip, jump to today's card automatically
+(function(){const today=new Date().toISOString().slice(0,10);const i=days.findIndex(d=>d.date===today);if(i>0)setTimeout(()=>$('#day-'+i).scrollIntoView(),300)})();
+</script>
+</body>
+</html>
+```
+
+The label next to the countdown now reads **v3.1**, so you can confirm you're on this version. If the page still doesn't load, it now shows a red error message in place of the days; send me a screenshot of it.
