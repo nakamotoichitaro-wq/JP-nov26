@@ -1,0 +1,448 @@
+{
+ "version": 3,
+ "updatedAt": 0,
+ "days": [
+  {
+   "date": "2026-11-13",
+   "title": "啟程：香港 → 台北 CX 544",
+   "areas": [
+    "taipei"
+   ],
+   "items": [
+    {
+     "category": "flight",
+     "startTime": "",
+     "endTime": "",
+     "title": "CX 544 香港 → 台北桃園",
+     "jp": "香港国際空港 → 台湾桃園国際空港",
+     "en": "CX544 HKG → TPE",
+     "notes": "起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入",
+     "flightNo": "CX544",
+     "flightDate": "2026-11-13"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-14",
+   "title": "台北停留",
+   "areas": [
+    "taipei"
+   ],
+   "items": [
+    {
+     "category": "sight",
+     "startTime": "10:00",
+     "endTime": "18:00",
+     "title": "台北自由活動 / 整理行李",
+     "jp": "台北市内",
+     "en": "Taipei free day",
+     "notes": "明天 CX564 飛大阪"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-15",
+   "title": "抵達關西 · 天婦羅晚餐",
+   "areas": [
+    "osaka"
+   ],
+   "items": [
+    {
+     "category": "flight",
+     "startTime": "",
+     "endTime": "14:45",
+     "title": "CX 564 台北 → 大阪關西",
+     "jp": "台湾桃園国際空港 T1 → 関西国際空港 T1",
+     "en": "CX564 TPE → KIX T1",
+     "notes": "14:45 抵達關西機場"
+    },
+    {
+     "category": "train",
+     "from": "関西空港",
+     "to": "大阪",
+     "timeType": "departure",
+     "transitTime": "15:45",
+     "title": "關空特急 Haruka",
+     "jp": "関西空港駅 → 大阪駅",
+     "en": "Kansai Airport → Osaka Sta.",
+     "notes": ""
+    },
+    {
+     "category": "dining",
+     "startTime": "20:20",
+     "endTime": "22:30",
+     "title": "ぬまた 双（天婦羅）",
+     "jp": "大阪府大阪市北区西天満4-9-3 渡辺ビル 1F",
+     "en": "4-9-3 Nishitenma, Kita-ku, Osaka",
+     "notes": "晚餐預約 20:20"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-16",
+   "title": "宇治 → 京都 東山緒方",
+   "areas": [
+    "uji",
+    "kyoto"
+   ],
+   "items": [
+    {
+     "category": "train",
+     "from": "大阪",
+     "to": "宇治",
+     "timeType": "departure",
+     "transitTime": "08:45",
+     "title": "前往宇治",
+     "jp": "大阪 → 宇治",
+     "en": "Osaka → Uji",
+     "notes": "約 50–60 分鐘"
+    },
+    {
+     "category": "sight",
+     "startTime": "10:00",
+     "endTime": "14:00",
+     "title": "宇治散策（平等院・茶寮）",
+     "jp": "京都府宇治市宇治蓮華116 平等院",
+     "en": "Byodoin, Uji",
+     "notes": ""
+    },
+    {
+     "category": "train",
+     "from": "宇治",
+     "to": "祇園四条",
+     "timeType": "departure",
+     "transitTime": "14:35",
+     "title": "移動至京都東山",
+     "jp": "宇治 → 祇園四条",
+     "en": "Uji → Gion-Shijo",
+     "notes": ""
+    },
+    {
+     "category": "dining",
+     "startTime": "16:00",
+     "endTime": "18:30",
+     "title": "東山緒方",
+     "jp": "京都府京都市東山区下河原町489-2",
+     "en": "489-2 Shimogawaracho, Higashiyama-ku, Kyoto",
+     "notes": "預約"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-17",
+   "title": "京都 → 東京 · 神樂坂",
+   "areas": [
+    "kagurazaka"
+   ],
+   "items": [
+    {
+     "category": "train",
+     "from": "京都",
+     "to": "東京",
+     "timeType": "departure",
+     "transitTime": "14:00",
+     "title": "東海道新幹線 のぞみ",
+     "jp": "京都駅 → 東京駅",
+     "en": "Kyoto → Tokyo (Tokaido Shinkansen)",
+     "notes": "約 2 小時 15 分"
+    },
+    {
+     "category": "hotel",
+     "startTime": "16:30",
+     "endTime": "18:00",
+     "title": "入住東京飯店",
+     "jp": "",
+     "en": "Tokyo hotel check-in",
+     "notes": "建議住東京站或神樂坂附近"
+    },
+    {
+     "category": "dining",
+     "startTime": "20:15",
+     "endTime": "22:30",
+     "title": "多仁本（可選）",
+     "jp": "東京都新宿区神楽坂",
+     "en": "Kagurazaka, Shinjuku-ku",
+     "notes": "可選"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-18",
+   "title": "押上 焼鳥おみ乃 → 二子玉川 すし喜邑",
+   "areas": [
+    "oshiage",
+    "futako"
+   ],
+   "items": [
+    {
+     "category": "train",
+     "from": "東京",
+     "to": "押上",
+     "timeType": "arrival",
+     "transitTime": "11:35",
+     "title": "前往押上",
+     "jp": "→ 押上駅",
+     "en": "→ Oshiage Sta.",
+     "notes": ""
+    },
+    {
+     "category": "dining",
+     "startTime": "11:45",
+     "endTime": "14:15",
+     "title": "焼鳥 おみ乃",
+     "jp": "東京都墨田区押上1-38-4",
+     "en": "1-38-4 Oshiage, Sumida-ku",
+     "notes": "午餐預約"
+    },
+    {
+     "category": "train",
+     "from": "押上",
+     "to": "二子玉川",
+     "timeType": "arrival",
+     "transitTime": "17:40",
+     "title": "半藏門線直通 → 二子玉川",
+     "jp": "押上駅 → 二子玉川駅",
+     "en": "Oshiage → Futako-Tamagawa",
+     "notes": "田園都市線直通"
+    },
+    {
+     "category": "dining",
+     "startTime": "18:00",
+     "endTime": "20:30",
+     "title": "すし喜邑",
+     "jp": "東京都世田谷区玉川3-21-8",
+     "en": "3-21-8 Tamagawa, Setagaya-ku",
+     "notes": "晚餐預約"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-19",
+   "title": "麴町 鮨みずかみ",
+   "areas": [
+    "kojimachi",
+    "tokyo"
+   ],
+   "items": [
+    {
+     "category": "train",
+     "from": "東京",
+     "to": "麹町",
+     "timeType": "arrival",
+     "transitTime": "12:45",
+     "title": "前往麴町",
+     "jp": "→ 麹町駅（有楽町線）",
+     "en": "→ Kojimachi Sta.",
+     "notes": ""
+    },
+    {
+     "category": "dining",
+     "startTime": "13:00",
+     "endTime": "15:00",
+     "title": "鮨みずかみ",
+     "jp": "東京都千代田区麹町3-3-6 麹町フロントビル 1F",
+     "en": "3-3-6 Kojimachi, Chiyoda-ku",
+     "notes": "午餐預約"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-20",
+   "title": "東京 → 遠刈田溫泉",
+   "areas": [
+    "zao"
+   ],
+   "items": [
+    {
+     "category": "train",
+     "from": "東京",
+     "to": "白石蔵王",
+     "timeType": "departure",
+     "transitTime": "12:16",
+     "title": "東北新幹線 やまびこ 137號",
+     "jp": "東京駅 → 白石蔵王駅",
+     "en": "Tokyo → Shiroishi-Zao",
+     "notes": "約 1 小時 48 分"
+    },
+    {
+     "category": "hotel",
+     "startTime": "14:15",
+     "endTime": "15:00",
+     "title": "旅館接送 → だいこんの花",
+     "jp": "白石蔵王駅 → 温泉山荘 だいこんの花",
+     "en": "Shiroishi-Zao → Daikon no Hana",
+     "notes": "預約接送約 40 分"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-21",
+   "title": "遠刈田溫泉 → 仙台晚餐 Hou",
+   "areas": [
+    "zao",
+    "sendai"
+   ],
+   "items": [
+    {
+     "category": "sight",
+     "startTime": "10:00",
+     "endTime": "17:00",
+     "title": "溫泉早晨 · 移動至仙台",
+     "jp": "遠刈田温泉 → 仙台市内",
+     "en": "Togatta Onsen → Sendai",
+     "notes": ""
+    },
+    {
+     "category": "dining",
+     "startTime": "20:00",
+     "endTime": "22:00",
+     "title": "Hou",
+     "jp": "宮城県仙台市青葉区一番町2-3-3 J-BOXビル 3F",
+     "en": "3F J-BOX Bldg, 2-3-3 Ichibancho, Aoba-ku, Sendai",
+     "notes": "晚餐預約"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-22",
+   "title": "田代島（貓島）一日遊",
+   "areas": [
+    "ishinomaki",
+    "sendai"
+   ],
+   "items": [
+    {
+     "category": "train",
+     "from": "仙台",
+     "to": "石巻",
+     "timeType": "arrival",
+     "transitTime": "08:00",
+     "title": "仙石東北ライン → 石卷",
+     "jp": "仙台駅 → 石巻駅",
+     "en": "Sendai → Ishinomaki",
+     "notes": "再轉往渡輪碼頭"
+    },
+    {
+     "category": "sight",
+     "startTime": "08:30",
+     "endTime": "15:30",
+     "title": "渡輪＋田代島巡禮",
+     "jp": "宮城県石巻市田代島（網地島ライン）",
+     "en": "Tashirojima Island ferry",
+     "notes": "渡輪時刻請官網確認"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-23",
+   "title": "自由日 / 彈性安排",
+   "areas": [
+    "tokyo"
+   ],
+   "items": []
+  },
+  {
+   "date": "2026-11-24",
+   "title": "自由日 / 彈性安排",
+   "areas": [
+    "tokyo"
+   ],
+   "items": [
+    {
+     "category": "flight",
+     "startTime": "19:30",
+     "endTime": "22:05",
+     "title": "JL 95 東京羽田 → 首爾金浦",
+     "jp": "羽田空港 第3ターミナル → 金浦国際空港",
+     "en": "JL95 HND T3 → GMP",
+     "notes": "建議 17:30 前到羽田第 3 航廈；時刻請以訂位確認單為準"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "title": "首爾",
+   "areas": [
+    "seoul"
+   ],
+   "items": []
+  },
+  {
+   "date": "2026-11-26",
+   "title": "首爾",
+   "areas": [
+    "seoul"
+   ],
+   "items": []
+  },
+  {
+   "date": "2026-11-27",
+   "title": "首爾",
+   "areas": [
+    "seoul"
+   ],
+   "items": []
+  },
+  {
+   "date": "2026-11-28",
+   "title": "首爾 · 最後採購",
+   "areas": [
+    "seoul"
+   ],
+   "items": [
+    {
+     "category": "sight",
+     "startTime": "14:00",
+     "endTime": "20:00",
+     "title": "伴手禮採購",
+     "jp": "首爾市內",
+     "en": "Last-minute shopping in Seoul",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "date": "2026-11-29",
+   "title": "首爾 → 返港 CX 419",
+   "areas": [
+    "seoul"
+   ],
+   "items": [
+    {
+     "category": "train",
+     "from": "首爾站",
+     "to": "仁川機場 T1",
+     "timeType": "departure",
+     "transitTime": "16:30",
+     "title": "AREX 機場快線",
+     "jp": "서울역 → 인천국제공항 T1",
+     "en": "AREX Seoul Sta. → ICN T1",
+     "notes": "Yahoo 不涵蓋韓國"
+    },
+    {
+     "category": "flight",
+     "startTime": "19:35",
+     "endTime": "22:40",
+     "title": "CX 419 首爾仁川 → 香港",
+     "jp": "仁川国際空港 T1 → 香港国際空港 T1",
+     "en": "CX419 ICN T1 → HKG T1",
+     "notes": ""
+    }
+   ]
+  }
+ ],
+ "hotels": [
+  {
+   "id": "h1",
+   "name": "温泉山荘 だいこんの花",
+   "checkIn": "2026-11-20",
+   "checkInTime": "15:00",
+   "checkOut": "2026-11-21",
+   "checkOutTime": "10:00",
+   "area": "zao",
+   "address": "宮城県刈田郡蔵王町遠刈田温泉字北山21-7",
+   "status": "已確認",
+   "conf": ""
+  }
+ ]
+}
