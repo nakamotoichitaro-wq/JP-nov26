@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 1792944240349,
+ "updatedAt": 1792944362130,
  "days": [
   {
    "date": "2026-11-13",
@@ -119,12 +119,12 @@
     },
     {
      "category": "dining",
-     "startTime": "16:00",
-     "endTime": "18:30",
      "title": "東山緒方",
      "jp": "京都府京都市東山区下河原町489-2",
      "en": "489-2 Shimogawaracho, Higashiyama-ku, Kyoto",
-     "notes": "預約"
+     "notes": "預約",
+     "startTime": "16:00",
+     "endTime": "19:00"
     }
    ]
   },
