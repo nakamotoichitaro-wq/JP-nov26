@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 日本關西與東北極上美食行程規劃</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-plane-departure text-amber-400"></i>
+                    2026 日本美食與溫泉之旅行程規劃
+                </h1>
+                <p class="text-xs md:text-sm text-slate-400 mt-1">
+                    行程期間：2026年11月15日 - 11月29日（15天14夜）｜日英雙語地址與起訖時間管理
+                </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <button onclick="switchTab('itinerary')" id="tab-btn-itinerary" class="px-4 py-2 rounded-lg text-sm font-medium bg-amber-500 text-slate-950 transition shadow">
+                    <i class="fa-solid fa-calendar-days mr-1.5"></i> 行程總覽
+                </button>
+                <button onclick="switchTab('hotels')" id="tab-btn-hotels" class="px-4 py-2 rounded-lg text-sm font-medium bg-slate-800 text-slate-200 hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-hotel mr-1.5"></i> 飯店住宿管理 (<span id="hotel-count-badge">1</span>/14)
+                </button>
+                <button onclick="switchTab('transit')" id="tab-btn-transit" class="px-4 py-2 rounded-lg text-sm font-medium bg-slate-800 text-slate-200 hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-train-subway mr-1.5"></i> 航班與交通指南
+                </button>
+                <button onclick="exportJSON()" class="px-3 py-2 rounded-lg text-xs font-medium bg-slate-700 text-slate-200 hover:bg-slate-600 transition" title="備份為 JSON 檔">
+                    <i class="fa-solid fa-download mr-1"></i> 匯出
+                </button>
+                <label class="px-3 py-2 rounded-lg text-xs font-medium bg-slate-700 text-slate-200 hover:bg-slate-600 transition cursor-pointer" title="還原備份檔案">
+                    <i class="fa-solid fa-upload mr-1"></i> 匯入 <input type="file" id="importFile" accept=".json" class="hidden" onchange="importJSON(event)">
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+
+        <!-- TAB 1: ITINERARY -->
+        <div id="tab-itinerary" class="space-y-6">
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">15天 每日行程與預約表</h2>
+                    <p class="text-sm text-slate-500">支援 Yahoo! 路線規劃時間標準與起訖時間管理；點擊「新增項目」可加入自訂行程。</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleAllTransport()" id="transport-toggle-btn" class="px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition">
+                        <i class="fa-solid fa-eye-slash mr-1"></i> 隱藏所有交通建議
+                    </button>
+                    <button onclick="resetToDefault()" class="px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg transition border border-red-200">
+                        重設為預設行程
+                    </button>
+                </div>
+            </div>
+
+            <!-- Itinerary Days Container -->
+            <div id="days-container" class="space-y-6">
+                <!-- Dynamically rendered by JS -->
+            </div>
+        </div>
+
+        <!-- TAB 2: HOTELS -->
+        <div id="tab-hotels" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">14晚住宿總覽與管理</h2>
+                        <p class="text-sm text-slate-500">規劃整個行程的住宿安排，確保無縫銜接。</p>
+                    </div>
+                    <button onclick="openHotelModal()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-medium rounded-xl text-sm transition shadow-sm">
+                        <i class="fa-solid fa-plus mr-1.5"></i> 新增住宿區間
+                    </button>
+                </div>
+
+                <!-- 14-Night Visual Strip -->
+                <div class="mb-6">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">14晚入住覆蓋進度</h3>
+                    <div id="hotel-coverage-bar" class="grid grid-cols-7 md:grid-cols-14 gap-1 bg-slate-100 p-2 rounded-xl">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Hotel Cards List -->
+                <div id="hotels-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: TRANSIT & FLIGHTS -->
+        <div id="tab-transit" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">航班與長途交通指南</h2>
+                    <p class="text-sm text-slate-500">彙整 2026 年 11 月 15 日去程與 29 日回程航班，以及日本國內重要新幹線轉乘資訊。</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Flight Outbound -->
+                    <div class="border border-slate-200 rounded-2xl p-5 bg-gradient-to-br from-slate-50 to-amber-50/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full">去程航班</span>
+                            <span class="text-sm font-semibold text-slate-700">2026年11月15日 (日)</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-1">國泰航空 CX 564</h3>
+                        <p class="text-xs text-slate-500 mb-4">香港 (HKG T1) → 台北 (TPE T1) → 大阪關西 (KIX T1)</p>
+                        <div class="space-y-3 text-sm text-slate-700 border-t border-slate-200 pt-3">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">香港出發 (HKG)</span>
+                                <span class="font-semibold">08:30</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">抵達 / 轉機台北 (TPE)</span>
+                                <span class="font-semibold">10:15 / 11:15 登機</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">抵達大阪關西 (KIX T1)</span>
+                                <span class="font-semibold text-amber-600">14:45</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flight Inbound -->
+                    <div class="border border-slate-200 rounded-2xl p-5 bg-gradient-to-br from-slate-50 to-blue-50/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full">回程航班</span>
+                            <span class="text-sm font-semibold text-slate-700">2026年11月29日 (日)</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-1">國泰航空 CX 419</h3>
+                        <p class="text-xs text-slate-500 mb-4">首爾仁川 (ICN T1) → 香港 (HKG T1)</p>
+                        <div class="space-y-3 text-sm text-slate-700 border-t border-slate-200 pt-3">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">首爾仁川出發 (ICN T1)</span>
+                                <span class="font-semibold">19:35</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">飛行時間</span>
+                                <span class="font-semibold">約 3 小時 5 分鐘</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">抵達香港 (HKG T1)</span>
+                                <span class="font-semibold text-blue-600">22:40</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shinkansen & Key Transits -->
+                <div class="border-t border-slate-200 pt-6">
+                    <h3 class="font-bold text-slate-900 mb-4">日本國內主要長途交通參考 (Yahoo! 路線標準)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <span class="text-xs text-slate-400 font-bold block mb-1">11月17日</span>
+                            <div class="font-bold text-slate-800 mb-1">京都 → 東京</div>
+                            <p class="text-xs text-slate-600">東海道新幹線 のぞみ (Nozomi)<br>14:00 - 16:15 直達東京站</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <span class="text-xs text-slate-400 font-bold block mb-1">11月20日</span>
+                            <div class="font-bold text-slate-800 mb-1">東京 → 藏王溫泉</div>
+                            <p class="text-xs text-slate-600">東北新幹線 やまびこ #137<br>12:16 - 14:04 白石藏王站，轉接專車</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <span class="text-xs text-slate-400 font-bold block mb-1">計程車 / 地圖便利貼</span>
+                            <div class="font-bold text-slate-800 mb-1">日文地址一鍵複製</div>
+                            <p class="text-xs text-slate-600">所有餐廳與飯店均附帶完整日文地址，方便出示給計程車司機或複製到 Google Maps。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-400">
+        <p>2026 Japan Trip Itinerary Planner • 繁體中文版 ｜ 資料自動儲存於瀏覽器 LocalStorage</p>
+    </footer>
+
+    <!-- MODAL: Add / Edit Item -->
+    <div id="itemModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modalTitle" class="text-lg font-bold text-slate-900">新增行程項目</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="itemForm" onsubmit="saveItem(event)" class="space-y-4 text-sm">
+                <input type="hidden" id="modalDayIndex">
+                <input type="hidden" id="modalItemIndex">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">開始時間 (Start)</label>
+                        <input type="text" id="inputStartTime" placeholder="例如: 14:00" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">結束時間 (End)</label>
+                        <input type="text" id="inputEndTime" placeholder="例如: 16:15" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block font-medium text-slate-700">中文名稱 (Title - Chinese)</label>
+                        <button type="button" onclick="handleAutoSuggest()" class="text-xs text-amber-600 hover:text-amber-700 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> 智慧自動填入
+                        </button>
+                    </div>
+                    <input type="text" id="inputTitle" required placeholder="例如: 東山緒方 或 仙台牛舌" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">日文名稱與地址 (Japanese Name & Address 🇯🇵)</label>
+                    <textarea id="inputJp" rows="2" placeholder="例如: 京都市東山区下河原町489-2" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-xs"></textarea>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">英文名稱與地址 (English Name & Address 🇬🇧)</label>
+                    <textarea id="inputEn" rows="2" placeholder="例如: Higashiyama Ogata | Kyoto..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-xs"></textarea>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">備註 / 交通指引 / 訂位狀態 (Notes)</label>
+                    <textarea id="inputNotes" rows="2" placeholder="例如: 已預訂 / 需轉乘..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">分類標籤 (Category)</label>
+                    <select id="inputCategory" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <option value="dining">🍽️ 美食餐廳 (Dining)</option>
+                        <option value="flight">✈️ 航班 (Flight)</option>
+                        <option value="train">🚄 交通 (Transport)</option>
+                        <option value="hotel">🏨 飯店住宿 (Hotel)</option>
+                        <option value="sight">⛩️ 景點活動 (Sightseeing)</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3 pt-3">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50">取消</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-medium rounded-xl">儲存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Hotel Range -->
+    <div id="hotelModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-slate-900">新增或編輯住宿區間</h3>
+                <button onclick="closeHotelModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="hotelForm" onsubmit="saveHotel(event)" class="space-y-4 text-sm">
+                <input type="hidden" id="hotelEditId">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">飯店中文名稱</label>
+                    <input type="text" id="hotelName" required placeholder="例如: 温泉山荘だいこんの花" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">入住日期</label>
+                        <input type="date" id="hotelCheckIn" required min="2026-11-15" max="2026-11-29" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">退房日期</label>
+                        <input type="date" id="hotelCheckOut" required min="2026-11-16" max="2026-11-30" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">日文地址 / 交通</label>
+                    <input type="text" id="hotelAddress" placeholder="例如: 宮城県蔵王町遠刈田温泉..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">訂房狀態</label>
+                        <select id="hotelStatus" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="已確認 (Confirmed)">已確認 (Confirmed)</option>
+                            <option value="保留中 (Hold)">保留中 (Hold)</option>
+                            <option value="待決定 (TBD)">待決定 (TBD)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">確認編號 (Confirmation #)</label>
+                        <input type="text" id="hotelConf" placeholder="例如: AB12345" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-3">
+                    <button type="button" onclick="closeHotelModal()" class="px-4 py-2 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50">取消</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-medium rounded-xl">儲存住宿</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Application Logic -->
+    <script>
+        // Default Data Structure with Yahoo! Transit Standard & New Stops (Hou, Tashirojima)
+        const defaultDays = [
+            {
+                date: "2026-11-15",
+                weekday: "日",
+                title: "抵達關西 · 大阪米其林晚餐",
+                items: [
+                    { startTime: "08:30", endTime: "14:45", title: "國泰航空 CX 564 (香港 → 台北 → 大阪)", jp: "香港國際機場 T1 ➔ 台北桃園機場 T1 ➔ 大阪關西國際機場 T1", en: "CX 564: HKG -> TPE -> KIX T1", notes: "08:30 HKT出發，14:45 JST抵達關西機場", category: "flight" },
+                    { startTime: "15:45", endTime: "16:35", title: "關空特急 Haruka (KIX ➔ 大阪/新大阪)", jp: "関西空港駅 ➔ 新大阪駅 / 大阪駅", en: "Kansai Airport Sta. -> Osaka Sta.", notes: "Yahoo! 轉乘標準：直達市區", category: "train" },
+                    { startTime: "20:20", endTime: "22:30", title: "ぬまた 双 (Tempura Numata Sou)", jp: "大阪府大阪市北区西天満4-9-3 渡辺ビル 1F", en: "4-9-3 Nishitenma, Kita-ku, Osaka", notes: "晚餐預約 20:20 (天婦羅名店)", category: "dining" }
+                ],
+                hotelId: null
+            },
+            {
+                date: "2026-11-16",
+                weekday: "一",
+                title: "宇治巡禮 ➔ 京都東山緒方",
+                items: [
+                    { startTime: "08:45", endTime: "10:00", title: "大阪出發前往宇治 (京阪本線/宇治線)", jp: "大阪 / 梅田站 ➔ 京阪宇治站", en: "Osaka -> Uji Sta. via Keihan Line", notes: "Yahoo! 轉乘標準：車程約 50-60 分鐘", category: "train" },
+                    { startTime: "10:00", endTime: "14:00", title: "宇治散策 (平等院・茶寮)", jp: "京都府宇治市宇治蓮華116 (平等院)", en: "Byodoin Temple, Uji, Kyoto", notes: "上午到午後悠閒造訪抹茶之鄉", category: "sight" },
+                    { startTime: "14:35", endTime: "15:30", title: "移動至京都東山 (京阪線)", jp: "京阪宇治線 ➔ 三条站 ➔ 東山区", en: "Uji -> Sanjo -> Higashiyama, Kyoto", notes: "前往東山地區", category: "train" },
+                    { startTime: "16:00", endTime: "18:30", title: "東山緒方 (Higashiyama Ogata)", jp: "京都府京都市東山区下河原町489-2", en: "489-2 Shimogawaracho, Higashiyama-ku, Kyoto", notes: "下午/傍晚預約：緒方子品牌料亭", category: "dining" }
+                ],
+                hotelId: null
+            },
+            {
+                date: "2026-11-17",
+                weekday: "二",
+                title: "京都移動至東京 ➔ 神楽坂 多仁本",
+                items: [
+                    { startTime: "14:00", endTime: "16:15", title: "東海道新幹線 のぞみ (Nozomi) 京都 ➔ 東京", jp: "京都駅 ➔ 東京駅", en: "Kyoto Sta. -> Tokyo Sta. (Tokaido Shinkansen)", notes: "Yahoo! 轉乘標準：約 2 小時 15 分鐘直達", category: "train" },
+                    { startTime: "16:30", endTime: "18:00", title: "入住東京飯店 / 市區整裝", jp: "東京都内酒店 Check-in", en: "Tokyo Hotel Check-in", notes: "建議入住東京車站周邊或神樂坂附近", category: "hotel" },
+                    { startTime: "20:15", endTime: "22:30", title: "多仁本 (Tanimoto - 可選)", jp: "東京都新宿区神楽坂", en: "Kagurazaka, Shinjuku-ku, Tokyo", notes: "晚餐預約 (可選行程)", category: "dining" }
+                ],
+                hotelId: null
+            },
+            {
+                date: "2026-11-18",
+                weekday: "三",
+                title: "押上 焼鳥おみ乃 ➔ 二子玉川 すし喜邑",
+                items: [
+                    { startTime: "11:15", endTime: "11:40", title: "搭乘地鐵前往押上", jp: "東京メトロ半蔵門線 ➔ 押上駅", en: "Subway Hanzomon Line to Oshiage Sta.", notes: "前往押上站方向", category: "train" },
+                    { startTime: "11:45", endTime: "14:15", title: "焼鳥 おみ乃 (Yakitori Omino)", jp: "東京都墨田区押上1-38-4", en: "1-38-4 Oshiage, Sumida-ku, Tokyo", notes: "午餐預約：頂級燒鳥名店", category: "dining" },
+                    { startTime: "16:40", endTime: "17:45", title: "半藏門線直通運轉至二子玉川", jp: "押上駅 ➔ 二子玉川駅 (直通東急田園都市線)", en: "Oshiage Sta. -> Futako-Tamagawa Sta.", notes: "跨越東京橫貫至西南側，車程約 55 分鐘", category: "train" },
+                    { startTime: "18:00", endTime: "20:30", title: "すし喜邑 (Sushi Kimura)", jp: "東京都世田谷区玉川3-21-8", en: "3-21-8 Tamagawa, Setagaya-ku, Tokyo", notes: "晚餐預約：熟成壽司名店", category: "dining" }
+                ],
+                hotelId: null
+            },
+            {
+                date: "2026-11-19",
+                weekday: "四",
+                title: "麹町 鮨みずかみ",
+                items: [
+                    { startTime: "12:30", endTime: "12:50", title: "前往麹町", jp: "東京メトロ有楽町線 麹町駅", en: "Kojimachi Sta. (Yurakucho Line)", notes: "前往千代田區麹町", category: "train" },
+                    { startTime: "13:00", endTime: "15:00", title: "鮨みずかみ (Sushi Mizukami)", jp: "東京都千代田区麹町3-3-6 麹町フロントビル 1F", en: "3-3-6 Kojimachi, Chiyoda-ku, Tokyo", notes: "午餐預約：鮨みずかみ", category: "dining" }
+                ],
+                hotelId: null
+            },
+            {
+                date: "2026-11-20",
+                weekday: "五",
+                title: "東京移動至宮城藏王溫泉",
+                items: [
+                    { startTime: "12:16", endTime: "14:04", title: "東北新幹線 やまびこ #137 (Tokyo -> 白石蔵王)", jp: "東京駅 ➔ 白石蔵王駅", en: "Tokyo Sta. -> Shiroishi-Zao Sta. (Tohoku Shinkansen)", notes: "Yahoo! 轉乘標準：約 1 小時 48 分鐘", category: "train" },
+                    { startTime: "14:15", endTime: "14:55", title: "旅館專車接駁至藏王溫泉", jp: "白石蔵王駅 ➔ 温泉山荘 だいこんの花", en: "Shiroishi-Zao Sta. -> Onsen Sanso Daikon no Hana", notes: "預約專車接送約 40 分鐘", category: "train" },
+                    { startTime: "15:00", endTime: "21:00", title: "溫泉山荘だいこんの花 Check-in", jp: "宮城県刈田郡蔵王町遠刈田温泉字北山21-7", en: "21-7 Kitayama, Togatta Onsen, Zao-machi, Miyagi", notes: "入住森之散步道溫泉一泊二食", category: "hotel" }
+                ],
+                hotelId: "hotel-default-1"
+            },
+            {
+                date: "2026-11-21",
+                weekday: "六",
+                title: "藏王溫泉 ➔ 仙台晚餐 (Hou)",
+                items: [
+                    { startTime: "10:00", endTime: "17:00", title: "藏王溫泉漫遊與移動至仙台", jp: "蔵王温泉 ➔ 仙台市中心", en: "Zao Onsen to Sendai City", notes: "享受晨間溫泉後前往仙台市區", category: "sight" },
+                    { startTime: "20:00", endTime: "22:00", title: "Hou (鴸)", jp: "宮城県仙台市青葉区一番町2-3-3 J-BOXビル 3F", en: "3F J-BOX Building, 2-3-3 Ichibancho, Aoba-ku, Sendai", notes: "晚餐預約：仙台知名的精緻餐飲/名店", category: "dining" }
+                ],
+                hotelId: "hotel-default-1"
+            },
+            {
+                date: "2026-11-22",
+                weekday: "日",
+                title: "田代島 (貓島) 一日遊",
+                items: [
+                    { startTime: "08:30", endTime: "15:30", title: "田代島 (貓島) 巡禮與石巻渡輪", jp: "宮城県石巻市田代島 (石巻中央発着所よりフェリー)", en: "Tashirojima Island, Ishinomaki, Miyagi (Ferry from Ishinomaki)", notes: "著名貓島一日遊，搭乘石巻發著渡輪往返", category: "sight" }
+                ],
+                hotelId: null
+            },
+            { date: "2026-11-23", weekday: "一", title: "自由行程 / 預留彈性日", items: [{ startTime: "10:00", endTime: "18:00", title: "自由探索或市區採購", jp: "東京 / 自由行動", en: "Free & Easy in Tokyo", notes: "可隨時點擊下方按鈕新增行程", category: "sight" }], hotelId: null },
+            { date: "2026-11-24", weekday: "二", title: "自由行程 / 預留彈性日", items: [{ startTime: "10:00", endTime: "18:00", title: "自由探索或市區採購", jp: "東京 / 自由行動", en: "Free & Easy in Tokyo", notes: "預留彈性餐飲與購物時間", category: "sight" }], hotelId: null },
+            { date: "2026-11-25", weekday: "三", title: "自由行程 / 預留彈性日", items: [{ startTime: "10:00", endTime: "18:00", title: "自由探索或市區採購", jp: "東京 / 自由行動", en: "Free & Easy in Tokyo", notes: "預留彈性餐飲與購物時間", category: "sight" }], hotelId: null },
+            { date: "2026-11-26", weekday: "四", title: "自由行程 / 預留彈性日", items: [{ startTime: "10:00", endTime: "18:00", title: "自由探索或市區採購", jp: "東京 / 自由行動", en: "Free & Easy in Tokyo", notes: "預留彈性餐飲與購物時間", category: "sight" }], hotelId: null },
+            { date: "2026-11-27", weekday: "五", title: "自由行程 / 預留彈性日", items: [{ startTime: "10:00", endTime: "18:00", title: "自由探索或市區採購", jp: "東京 / 自由行動", en: "Free & Easy in Tokyo", notes: "預留彈性餐飲與購物時間", category: "sight" }], hotelId: null },
+            { date: "2026-11-28", weekday: "六", title: "旅程尾聲 採購與整理", items: [{ startTime: "14:00", endTime: "20:00", title: "最後衝刺購物與伴手禮", jp: "東京都内 / 機場快線準備", en: "Last-minute Shopping in Tokyo", notes: "收拾行李準備返程", category: "sight" }], hotelId: null },
+            {
+                date: "2026-11-29",
+                weekday: "日",
+                title: "啟程返港 (CX 419)",
+                items: [
+                    { startTime: "17:00", endTime: "19:00", title: "前往機場準備離境", jp: "仁川國際機場 ICN T1", en: "Incheon International Airport T1", notes: "搭乘機場快線前往仁川機場 (或若從東京出發請改為成田/羽田)", category: "train" },
+                    { startTime: "19:35", endTime: "22:40", title: "國泰航空 CX 419 (首爾仁川 → 香港)", jp: "仁川國際機場 T1 ➔ 香港國際機場 T1", en: "CX 419: ICN T1 -> HKG T1", notes: "19:35 ICN出發，22:40 抵達香港", category: "flight" }
+                ],
+                hotelId: null
+            }
+        ];
+
+        let defaultHotels = [
+            {
+                id: "hotel-default-1",
+                name: "温泉山荘だいこんの花 (Onsen Sanso Daikon no Hana)",
+                checkIn: "2026-11-20",
+                checkOut: "2026-11-22",
+                address: "宮城県刈田郡蔵王町遠刈田温泉字北山21-7",
+                status: "已確認 (Confirmed)",
+                conf: "DAIKON-2026"
+            }
+        ];
+
+        let itineraryData = JSON.parse(localStorage.getItem('jp_itinerary_2026')) || defaultDays;
+        let hotelsData = JSON.parse(localStorage.getItem('jp_hotels_2026')) || defaultHotels;
+        let showTransport = true;
+
+        function saveData() {
+            localStorage.setItem('jp_itinerary_2026', JSON.stringify(itineraryData));
+            localStorage.setItem('jp_hotels_2026', JSON.stringify(hotelsData));
+            renderItinerary();
+            renderHotels();
+        }
+
+        function resetToDefault() {
+            if (confirm("確定要重設為預設的 15 天行程嗎？這將會覆蓋你目前的修改。")) {
+                itineraryData = JSON.parse(JSON.stringify(defaultDays));
+                hotelsData = JSON.parse(JSON.stringify(defaultHotels));
+                saveData();
+                alert("已成功重設！");
+            }
+        }
+
+        function switchTab(tab) {
+            ['itinerary', 'hotels', 'transit'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).className = "px-4 py-2 rounded-lg text-sm font-medium bg-slate-800 text-slate-200 hover:bg-slate-700 transition";
+            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tab}`).className = "px-4 py-2 rounded-lg text-sm font-medium bg-amber-500 text-slate-950 transition shadow";
+        }
+
+        function renderItinerary() {
+            const container = document.getElementById('days-container');
+            container.innerHTML = '';
+
+            itineraryData.forEach((day, dayIndex) => {
+                const dayCard = document.createElement('div');
+                dayCard.className = "bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden";
+                
+                let html = `
+                    <div class="bg-slate-100/70 px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                        <div class="flex items-center gap-3">
+                            <span class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                                ${dayIndex + 1}
+                            </span>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-base">${day.date} (${day.weekday}) - ${day.title}</h3>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="openModal(${dayIndex})" class="px-3 py-1.5 text-xs font-medium bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg transition shadow-sm">
+                                <i class="fa-solid fa-plus mr-1"></i> 新增項目
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                `;
+
+                if (day.items.length === 0) {
+                    html += `<p class="text-xs text-slate-400 italic py-2">本日尚無行程項目，點擊上方「新增項目」開始規劃。</p>`;
+                } else {
+                    day.items.forEach((item, itemIndex) => {
+                        const isTransport = item.category === 'train';
+                        if (isTransport && !showTransport) return;
+
+                        let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
+                        let icon = "fa-circle-dot";
+                        if (item.category === 'dining') { badgeColor = "bg-amber-50 text-amber-800 border-amber-200"; icon = "fa-utensils"; }
+                        else if (item.category === 'flight') { badgeColor = "bg-blue-50 text-blue-800 border-blue-200"; icon = "fa-plane"; }
+                        else if (item.category === 'train') { badgeColor = "bg-emerald-50 text-emerald-800 border-emerald-200"; icon = "fa-train"; }
+                        else if (item.category === 'hotel') { badgeColor = "bg-purple-50 text-purple-800 border-purple-200"; icon = "fa-hotel"; }
+                        else if (item.category === 'sight') { badgeColor = "bg-teal-50 text-teal-800 border-teal-200"; icon = "fa-mountain-sun"; }
+
+                        let timeDisplay = item.startTime ? (item.endTime ? `${item.startTime} - ${item.endTime}` : item.startTime) : (item.time || '全天');
+
+                        html += `
+                            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 rounded-xl border ${badgeColor} gap-4 transition hover:shadow-sm">
+                                <div class="flex items-start gap-3 w-full md:w-auto flex-grow">
+                                    <div class="mt-1"><i class="fa-solid ${icon} text-sm"></i></div>
+                                    <div>
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="px-2 py-0.5 bg-white/80 rounded font-mono text-xs font-semibold shadow-xs">${timeDisplay}</span>
+                                            <h4 class="font-bold text-slate-900">${item.title}</h4>
+                                        </div>
+                                        ${item.jp ? `<p class="text-xs text-slate-600 mt-1 font-mono bg-white/60 p-1.5 rounded border border-slate-200/60">🇯🇵 ${item.jp}</p>` : ''}
+                                        ${item.en ? `<p class="text-xs text-slate-500 mt-0.5 font-mono">🇬🇧 ${item.en}</p>` : ''}
+                                        ${item.notes ? `<p class="text-xs text-slate-600 mt-1">${item.notes}</p>` : ''}
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1.5 self-end md:self-center">
+                                    <button onclick="editItem(${dayIndex}, ${itemIndex})" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-white rounded-lg transition" title="編輯">
+                                        <i class="fa-solid fa-pen text-xs"></i>
+                                    </button>
+                                    <button onclick="deleteItem(${dayIndex}, ${itemIndex})" class="p-2 text-red-500 hover:text-red-700 hover:bg-white rounded-lg transition" title="刪除">
+                                        <i class="fa-solid fa-trash text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                const assignedHotel = hotelsData.find(h => day.date >= h.checkIn && day.date < h.checkOut);
+                html += `
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 bg-slate-50 p-3 rounded-xl">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-hotel text-amber-500"></i>
+                            <span>每晚住宿：</span>
+                            <span class="font-semibold text-slate-800">${assignedHotel ? assignedHotel.name : '尚未指定住宿 (點擊右側指定)'}</span>
+                        </div>
+                        <button onclick="switchTab('hotels')" class="text-amber-600 hover:underline font-medium">管理住宿 →</button>
+                    </div>
+                `;
+
+                html += `</div>`;
+                dayCard.innerHTML = html;
+                container.appendChild(dayCard);
+            });
+        }
+
+        function renderHotels() {
+            const list = document.getElementById('hotels-list');
+            const bar = document.getElementById('hotel-coverage-bar');
+            list.innerHTML = '';
+            bar.innerHTML = '';
+
+            const startDate = new Date('2026-11-15');
+            let bookedCount = 0;
+
+            for (let i = 0; i < 14; i++) {
+                let d = new Date(startDate);
+                d.setDate(startDate.getDate() + i);
+                let dateStr = d.toISOString().split('T')[0];
+                let matchedHotel = hotelsData.find(h => dateStr >= h.checkIn && dateStr < h.checkOut);
+
+                let cell = document.createElement('div');
+                cell.className = `h-10 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold transition ${matchedHotel ? 'bg-amber-500 text-slate-950 shadow-xs' : 'bg-slate-200 text-slate-500'}`;
+                cell.title = `${dateStr}: ${matchedHotel ? matchedHotel.name : '未安排'}`;
+                cell.innerHTML = `<span>${d.getDate()}</span><span class="text-[8px] font-normal opacity-75">11月</span>`;
+                bar.appendChild(cell);
+
+                if (matchedHotel) bookedCount++;
+            }
+
+            document.getElementById('hotel-count-badge').innerText = bookedCount;
+
+            if (hotelsData.length === 0) {
+                list.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400 text-sm">目前尚無新增的住宿區間。</div>`;
+                return;
+            }
+
+            hotelsData.forEach((hotel, idx) => {
+                let card = document.createElement('div');
+                card.className = "border border-slate-200 rounded-2xl p-5 bg-white shadow-sm flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full">${hotel.status}</span>
+                            <div class="flex items-center gap-1">
+                                <button onclick="editHotel(${idx})" class="p-1.5 text-slate-500 hover:text-slate-800 rounded"><i class="fa-solid fa-pen text-xs"></i></button>
+                                <button onclick="deleteHotel(${idx})" class="p-1.5 text-red-500 hover:text-red-700 rounded"><i class="fa-solid fa-trash text-xs"></i></button>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base mb-1">${hotel.name}</h3>
+                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-calendar mr-1"></i> ${hotel.checkIn} 入住 〜 ${hotel.checkOut} 退房</p>
+                        ${hotel.address ? `<p class="text-xs text-slate-600 bg-slate-50 p-2 rounded border border-slate-200 mb-2 font-mono">🇯🇵 ${hotel.address}</p>` : ''}
+                        ${hotel.conf ? `<p class="text-xs text-slate-500">確認編號: <span class="font-mono font-semibold text-slate-700">${hotel.conf}</span></p>` : ''}
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // AI Smart Suggestion Database & Function
+        const suggestionDatabase = {
+            "仙台": { startTime: "20:00", endTime: "22:00", title: "Hou (鴸) 晚餐", jp: "宮城県仙台市青葉区一番町2-3-3 J-BOXビル 3F", en: "3F J-BOX Building, 2-3-3 Ichibancho, Aoba-ku, Sendai", category: "dining", notes: "仙台市中心精緻餐飲" },
+            "田代島": { startTime: "08:30", endTime: "15:30", title: "田代島 (貓島) 一日遊", jp: "宮城県石巻市田代島 (石巻中央発着所よりフェリー)", en: "Tashirojima Island, Ishinomaki, Miyagi", category: "sight", notes: "搭乘石巻發著渡輪前往貓島" },
+            "牛舌": { startTime: "12:00", endTime: "13:30", title: "牛たん炭焼 利久 (仙台站前店)", jp: "宮城県仙台市青葉区中央1-1-1", en: "1-1-1 Chuo, Aoba-ku, Sendai", category: "dining", notes: "品嚐仙台名物炭燒牛舌" },
+            "壽司": { startTime: "12:00", endTime: "14:00", title: "築地場外市場美食巡禮", jp: "東京都中央区築地4-16-2", en: "Tsukiji Outer Market, Tokyo", category: "dining", notes: "品嚐新鮮海鮮丼" }
+        };
+
+        function handleAutoSuggest() {
+            const titleInput = document.getElementById('inputTitle').value;
+            for (let keyword in suggestionDatabase) {
+                if (titleInput.includes(keyword)) {
+                    const match = suggestionDatabase[keyword];
+                    document.getElementById('inputStartTime').value = match.startTime;
+                    document.getElementById('inputEndTime').value = match.endTime;
+                    document.getElementById('inputTitle').value = match.title;
+                    document.getElementById('inputJp').value = match.jp;
+                    document.getElementById('inputEn').value = match.en;
+                    document.getElementById('inputNotes').value = match.notes;
+                    document.getElementById('inputCategory').value = match.category;
+                    alert(`✨ 已自動為您配對「${match.title}」的日文地址與時間！`);
+                    return;
+                }
+            }
+            alert("找不到對應的關鍵字，請手動填寫或嘗試輸入「仙台」、「田代島」、「牛舌」等關鍵字。");
+        }
+
+        function openModal(dayIndex, itemIndex = null) {
+            document.getElementById('modalDayIndex').value = dayIndex;
+            document.getElementById('modalItemIndex').value = itemIndex !== null ? itemIndex : '';
+            document.getElementById('modalTitle').innerText = itemIndex !== null ? "編輯行程項目" : "新增行程項目";
+
+            if (itemIndex !== null) {
+                let item = itineraryData[dayIndex].items[itemIndex];
+                document.getElementById('inputStartTime').value = item.startTime || item.time || '';
+                document.getElementById('inputEndTime').value = item.endTime || '';
+                document.getElementById('inputTitle').value = item.title || '';
+                document.getElementById('inputJp').value = item.jp || '';
+                document.getElementById('inputEn').value = item.en || '';
+                document.getElementById('inputNotes').value = item.notes || '';
+                document.getElementById('inputCategory').value = item.category || 'dining';
+            } else {
+                document.getElementById('inputStartTime').value = '';
+                document.getElementById('inputEndTime').value = '';
+                document.getElementById('inputTitle').value = '';
+                document.getElementById('inputJp').value = '';
+                document.getElementById('inputEn').value = '';
+                document.getElementById('inputNotes').value = '';
+                document.getElementById('inputCategory').value = 'dining';
+            }
+
+            document.getElementById('itemModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('itemModal').classList.add('hidden');
+        }
+
+        function saveItem(e) {
+            e.preventDefault();
+            const dayIndex = parseInt(document.getElementById('modalDayIndex').value);
+            const itemIndexVal = document.getElementById('modalItemIndex').value;
+
+            const newItem = {
+                startTime: document.getElementById('inputStartTime').value,
+                endTime: document.getElementById('inputEndTime').value,
+                title: document.getElementById('inputTitle').value,
+                jp: document.getElementById('inputJp').value,
+                en: document.getElementById('inputEn').value,
+                notes: document.getElementById('inputNotes').value,
+                category: document.getElementById('inputCategory').value
+            };
+
+            if (itemIndexVal !== '') {
+                itineraryData[dayIndex].items[parseInt(itemIndexVal)] = newItem;
+            } else {
+                itineraryData[dayIndex].items.push(newItem);
+                itineraryData[dayIndex].items.sort((a,b) => (a.startTime || '').localeCompare(b.startTime || ''));
+            }
+
+            saveData();
+            closeModal();
+        }
+
+        function editItem(dayIndex, itemIndex) {
+            openModal(dayIndex, itemIndex);
+        }
+
+        function deleteItem(dayIndex, itemIndex) {
+            if (confirm("確定要刪除這個項目嗎？")) {
+                itineraryData[dayIndex].items.splice(itemIndex, 1);
+                saveData();
+            }
+        }
+
+        function toggleAllTransport() {
+            showTransport = !showTransport;
+            const btn = document.getElementById('transport-toggle-btn');
+            if (showTransport) {
+                btn.innerHTML = `<i class="fa-solid fa-eye-slash mr-1"></i> 隱藏所有交通建議`;
+                btn.className = "px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition";
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-eye mr-1"></i> 顯示所有交通建議`;
+                btn.className = "px-3 py-1.5 text-xs font-medium bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-lg transition";
+            }
+            renderItinerary();
+        }
+
+        function openHotelModal() {
+            document.getElementById('hotelEditId').value = '';
+            document.getElementById('hotelName').value = '';
+            document.getElementById('hotelCheckIn').value = '2026-11-17';
+            document.getElementById('hotelCheckOut').value = '2026-11-20';
+            document.getElementById('hotelAddress').value = '';
+            document.getElementById('hotelStatus').value = '已確認 (Confirmed)';
+            document.getElementById('hotelConf').value = '';
+            document.getElementById('hotelModal').classList.remove('hidden');
+        }
+
+        function closeHotelModal() {
+            document.getElementById('hotelModal').classList.add('hidden');
+        }
+
+        function saveHotel(e) {
+            e.preventDefault();
+            const editId = document.getElementById('hotelEditId').value;
+            const newHotel = {
+                id: editId !== '' ? hotelsData[parseInt(editId)].id : 'hotel-' + Date.now(),
+                name: document.getElementById('hotelName').value,
+                checkIn: document.getElementById('hotelCheckIn').value,
+                checkOut: document.getElementById('hotelCheckOut').value,
+                address: document.getElementById('hotelAddress').value,
+                status: document.getElementById('hotelStatus').value,
+                conf: document.getElementById('hotelConf').value
+            };
+
+            if (editId !== '') {
+                hotelsData[parseInt(editId)] = newHotel;
+            } else {
+                hotelsData.push(newHotel);
+            }
+
+            saveData();
+            closeHotelModal();
+        }
+
+        function editHotel(idx) {
+            const h = hotelsData[idx];
+            document.getElementById('hotelEditId').value = idx;
+            document.getElementById('hotelName').value = h.name;
+            document.getElementById('hotelCheckIn').value = h.checkIn;
+            document.getElementById('hotelCheckOut').value = h.checkOut;
+            document.getElementById('hotelAddress').value = h.address || '';
+            document.getElementById('hotelStatus').value = h.status;
+            document.getElementById('hotelConf').value = h.conf || '';
+            document.getElementById('hotelModal').classList.remove('hidden');
+        }
+
+        function deleteHotel(idx) {
+            if (confirm("確定要刪除這筆住宿記錄嗎？")) {
+                hotelsData.splice(idx, 1);
+                saveData();
+            }
+        }
+
+        function exportJSON() {
+            const exportObj = { itinerary: itineraryData, hotels: hotelsData };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "japan_trip_2026_itinerary.json");
+            dlAnchorElem.click();
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed.itinerary && parsed.hotels) {
+                        itineraryData = parsed.itinerary;
+                        hotelsData = parsed.hotels;
+                        saveData();
+                        alert("行程與飯店資料匯入成功！");
+                    } else {
+                        alert("檔案格式不正確。");
+                    }
+                } catch (err) {
+                    alert("解析 JSON 檔案失敗。");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        renderItinerary();
+        renderHotels();
+    </script>
+</body>
+</html>
