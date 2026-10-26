@@ -217,7 +217,7 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
   <div class="wrap hd">
     <div>
       <h1>2026 日本美食溫泉之旅</h1>
-      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 台北 → 大阪 → 京都 → 東京 → 宮城 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.12</span></div>
+      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 福岡・別府 → 大阪 → 京都 → 東京 → 宮城 → 東京 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.13</span></div>
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="itinerary" aria-selected="true"><i class="fa-solid fa-calendar-days"></i> 行程</button>
@@ -302,10 +302,9 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
     <div class="panel stack">
       <h2>航班</h2>
       <div class="two">
-        <div class="flight"><span class="pill ok">已訂</span><div class="big">CX 544 · 香港 HKG → 台北 TPE</div><div class="muted">11/13 (五) · 起降時間待確認</div></div>
-        <div class="flight"><span class="pill ok">已訂</span><div class="big">CX 564 · 台北 TPE → 大阪 KIX</div><div class="muted">11/15 (日) · 14:45 抵達關西 T1</div></div>
-        <div class="flight"><span class="pill hold">缺少</span><div class="big">日本 → 首爾 ICN</div><div class="muted">11/28 或 11/29 尚未加入航班</div></div>
-        <div class="flight"><span class="pill ok">已訂</span><div class="big">CX 419 · 首爾 ICN → 香港 HKG</div><div class="muted">11/29 (日) · 19:35 – 22:40 · T1</div></div>
+        <div class="flight"><span class="pill ok">已訂</span><div class="big">UO 600 · 香港 HKG → 福岡 FUK</div><div class="muted">11/13 (五) · 07:50 – 11:55（請以確認單為準）</div></div>
+        <div class="flight"><span class="pill ok">已訂</span><div class="big">JL 95 · 東京羽田 HND → 首爾金浦 GMP</div><div class="muted">11/24 (二) · 19:30 – 22:05 · 羽田 T3</div></div>
+        <div class="flight"><span class="pill ok">已訂</span><div class="big">UO 633 · → 香港 HKG</div><div class="muted">11/29 (日) · 出發機場與時間待確認</div></div>
       </div>
     </div>
   </section>
@@ -397,6 +396,7 @@ window.addEventListener('error',e=>{const m=document.getElementById('days');if(m
 const JMA_PAGE=c=>`https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=${c}`;
 const WX = {
   taipei:{name:'台北',lat:25.03,lon:121.56,normal:[24,18],link:'https://www.cwa.gov.tw/V8/C/W/County/County.html?CID=63',linkLabel:'中央氣象署'},
+  beppu:{name:'別府',lat:33.28,lon:131.49,normal:[17,9],jma:{office:'440000',region:'中部',temp:['大分']}},
   osaka:{name:'大阪',lat:34.70,lon:135.50,normal:[15,8],jma:{office:'270000',region:'大阪',temp:['大阪']}},
   kyoto:{name:'京都',lat:35.00,lon:135.77,normal:[14,6],jma:{office:'260000',region:'南部',temp:['京都']}},
   tokyo:{name:'東京',lat:35.68,lon:139.76,normal:[15,7],jma:{office:'130000',region:'東京地方',temp:['東京']}},
@@ -412,6 +412,11 @@ const AREAS = {
     snack:[{t:'阜杭豆漿',jp:'阜杭豆漿 華山市場2樓',n:'厚餅夾蛋＋鹹豆漿，早上排隊約 30–60 分鐘。'},{t:'鼎泰豐 信義本店',jp:'鼎泰豐 信義路',n:'小籠包創始店，可現場抽號。'},{t:'寧夏夜市',jp:'寧夏夜市',n:'規模小、在地小吃多。'}],
     coffee:[{t:'Simple Kaffa 興波咖啡',jp:'Simple Kaffa 華山',n:'世界冠軍吳則霖的店。'}],
     tips:['台北 11 月仍溫暖，可能有東北季風帶來的小雨。']},
+  beppu:{label:'別府',wx:'beppu',jp:true,
+    sight:[{t:'別府地獄巡禮',jp:'別府地獄めぐり 海地獄',n:'海地獄、血之池地獄等 7 處源泉，鐵輪一帶步行可串連，約半天。'},{t:'竹瓦溫泉',jp:'竹瓦温泉',n:'明治時代的木造公共浴場，可體驗砂浴，近別府站。'},{t:'鐵輪溫泉街',jp:'鉄輪温泉 いでゆ坂',n:'到處冒著湯煙的老街，傍晚散步很有氣氛。'},{t:'明礬溫泉 湯之花小屋',jp:'明礬温泉 湯の花小屋',n:'茅草屋製作溫泉結晶「湯之花」，山上可眺望別府灣。'}],
+    snack:[{t:'地獄蒸工房 鐵輪',jp:'地獄蒸し工房 鉄輪',n:'用溫泉蒸氣自己蒸海鮮、蔬菜、雞蛋。'},{t:'岡本屋 地獄蒸布丁',jp:'岡本屋売店 地獄蒸しプリン',n:'明礬溫泉的名物布丁。'},{t:'東洋軒 炸雞天婦羅',jp:'東洋軒 とり天',n:'大分名物「とり天」的發源店。'},{t:'別府冷麵',jp:'別府冷麺',n:'別府在地的韓式風冷麵。'}],
+    coffee:[],
+    tips:['別府站到鐵輪、明礬溫泉搭龜之井巴士約 15–25 分鐘；有巴士一日券。']},
   osaka:{label:'大阪 梅田/北新地',wx:'osaka',jp:true,
     sight:[{t:'梅田藍天大廈 空中庭園',jp:'梅田スカイビル 空中庭園展望台',n:'抵達當天傍晚看夜景，離大阪站步行約 10 分。'},{t:'中之島公園・中央公會堂',jp:'大阪市中央公会堂',n:'紅磚建築與河岸散步，秋季銀杏。'},{t:'大阪城公園',jp:'大阪城公園',n:'11 月下旬紅葉與銀杏正好。'}],
     snack:[{t:'阪神名物 いか焼き',jp:'阪神梅田本店 B1 スナックパーク',n:'大阪站旁的平民名物，便宜快速。'},{t:'551 蓬萊 豚まん',jp:'551蓬莱 大阪駅',n:'車站就有，適合當伴手禮或宵夜。'},{t:'りくろーおじさんの店',jp:'りくろーおじさんの店 なんば本店',n:'現烤起司蛋糕，在難波。'}],
@@ -469,7 +474,7 @@ const AREAS = {
     sight:[{t:'景福宮',jp:'경복궁',n:'週二休館。穿韓服入場免費。'},{t:'昌德宮・後苑',jp:'창덕궁 후원',n:'後苑（秘苑）需參加導覽，名額少請先上網預約；週一休館。'},{t:'北村韓屋村',jp:'북촌한옥마을',n:'景福宮與昌德宮之間，居民區請放低音量。'},{t:'益善洞韓屋街',jp:'익선동 한옥거리',n:'韓屋改建的小店與咖啡館。'},{t:'聖水洞',jp:'성수동',n:'工廠改建的咖啡館、選物店集中地。'},{t:'南山首爾塔',jp:'N서울타워',n:'傍晚上去看夜景，搭纜車或步行上山。'},{t:'東大門設計廣場 DDP',jp:'동대문디자인플라자',n:'札哈・哈蒂設計，附近東大門市場逛到深夜。'}],
     snack:[{t:'廣藏市場',jp:'광장시장',n:'綠豆煎餅、麻藥飯捲、生拌牛肉。'},{t:'通仁市場 銅錢便當',jp:'통인시장 엽전도시락',n:'用銅錢換小菜自組便當，西村一帶。'},{t:'明洞街頭小吃',jp:'명동 길거리 음식',n:'傍晚後攤販最多。'}],
     coffee:[{t:'Fritz Coffee Company',jp:'프릳츠 커피',n:'復古麵包咖啡店。'},{t:'Onion 安國',jp:'어니언 안국',n:'韓屋咖啡館。'},{t:'Onion 聖水',jp:'어니언 성수',n:'舊工廠改建的人氣麵包咖啡。'},{t:'Blue Bottle 聖水',jp:'블루보틀 성수',n:'韓國一號店。'},{t:'Anthracite 合井',jp:'앤트러사이트 합정',n:'舊鞋廠改建，近弘大。'}],
-    tips:['AREX 直達車從首爾站到仁川機場約 43 分鐘；CX419 19:35 起飛，建議 16:30 前出發。']}
+    tips:['AREX 直達車從首爾站到仁川機場約 43 分鐘；國際線建議起飛前 2.5–3 小時從市區出發。']}
 };
 const CAT = {
   dining:{label:'美食',icon:'fa-utensils'},sight:{label:'景點',icon:'fa-torii-gate'},snack:{label:'小吃',icon:'fa-cookie-bite'},
@@ -479,13 +484,12 @@ const CAT = {
 /* ===================== Default itinerary ===================== */
 const WD = ['日','一','二','三','四','五','六'];
 const defaultDays = [
-  {date:'2026-11-13',title:'啟程：香港 → 台北 CX 544',areas:['taipei'],items:[
-    {category:'flight',startTime:'',endTime:'',title:'CX 544 香港 → 台北桃園',jp:'香港国際空港 → 台湾桃園国際空港',en:'CX544 HKG → TPE',notes:'起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入',flightNo:'CX544',flightDate:'2026-11-13'}]},
-  {date:'2026-11-14',title:'台北停留',areas:['taipei'],items:[
-    {category:'sight',startTime:'10:00',endTime:'18:00',title:'台北自由活動 / 整理行李',jp:'台北市内',en:'Taipei free day',notes:'明天 CX564 飛大阪'}]},
-  {date:'2026-11-15',title:'抵達關西 · 天婦羅晚餐',areas:['osaka'],items:[
-    {category:'flight',startTime:'',endTime:'14:45',title:'CX 564 台北 → 大阪關西',jp:'台湾桃園国際空港 T1 → 関西国際空港 T1',en:'CX564 TPE → KIX T1',notes:'14:45 抵達關西機場',flightNo:'CX564',flightDate:'2026-11-15'},
-    {category:'train',from:'関西空港',to:'大阪',timeType:'departure',transitTime:'15:45',title:'關空特急 Haruka',jp:'関西空港駅 → 大阪駅',en:'Kansai Airport → Osaka Sta.',notes:''},
+  {date:'2026-11-13',title:'啟程：香港 → 福岡 · 別府',areas:['beppu'],items:[
+    {category:'flight',startTime:'07:50',endTime:'11:55',title:'UO 600 香港 → 福岡',jp:'香港国際空港 → 福岡空港 国際線',en:'UO600 HKG → FUK',notes:'HK Express；時刻為第三方資料，請以訂位確認單為準',flightNo:'UO600',flightDate:'2026-11-13'},
+    {category:'train',from:'福岡空港',to:'別府',timeType:'departure',transitTime:'12:45',title:'福岡空港 → 別府',jp:'福岡空港 → 博多（地下鐵）→ 別府（JR 特急ソニック）',en:'Fukuoka Airport → Hakata → Beppu',notes:'約 2.5 小時；也可查福岡空港直達別府的高速巴士'},
+    {category:'dining',startTime:'18:00',endTime:'',title:'ひろかど（Hirokado）晚餐',jp:'ひろかど 別府',en:'Hirokado, Beppu',notes:'晚餐預約 18:00'}]},
+  {date:'2026-11-14',title:'別府 → 大阪（交通待安排）',areas:['beppu'],items:[]},
+  {date:'2026-11-15',title:'大阪 · 天婦羅晚餐',areas:['osaka'],items:[
     {category:'dining',startTime:'20:20',endTime:'22:30',title:'ぬまた 双（天婦羅）',jp:'大阪府大阪市北区西天満4-9-3 渡辺ビル 1F',en:'4-9-3 Nishitenma, Kita-ku, Osaka',notes:'晚餐預約 20:20'}]},
   {date:'2026-11-16',title:'宇治 → 京都 東山緒方',areas:['uji','kyoto'],items:[
     {category:'train',from:'大阪',to:'宇治',timeType:'departure',transitTime:'08:45',title:'前往宇治',jp:'大阪 → 宇治',en:'Osaka → Uji',notes:'約 50–60 分鐘'},
@@ -494,7 +498,6 @@ const defaultDays = [
     {category:'dining',startTime:'16:00',endTime:'18:30',title:'東山緒方',jp:'京都府京都市東山区下河原町489-2',en:'489-2 Shimogawaracho, Higashiyama-ku, Kyoto',notes:'預約'}]},
   {date:'2026-11-17',title:'京都 → 東京 · 神樂坂',areas:['kagurazaka'],items:[
     {category:'train',from:'京都',to:'東京',timeType:'departure',transitTime:'14:00',title:'東海道新幹線 のぞみ',jp:'京都駅 → 東京駅',en:'Kyoto → Tokyo (Tokaido Shinkansen)',notes:'約 2 小時 15 分'},
-    {category:'hotel',startTime:'16:30',endTime:'18:00',title:'入住東京飯店',jp:'',en:'Tokyo hotel check-in',notes:'建議住東京站或神樂坂附近'},
     {category:'dining',startTime:'20:15',endTime:'22:30',title:'多仁本（可選）',jp:'東京都新宿区神楽坂',en:'Kagurazaka, Shinjuku-ku',notes:'可選'}]},
   {date:'2026-11-18',title:'押上 焼鳥おみ乃 → 二子玉川 すし喜邑',areas:['oshiage','futako'],items:[
     {category:'train',from:'東京',to:'押上',timeType:'arrival',transitTime:'11:35',title:'前往押上',jp:'→ 押上駅',en:'→ Oshiage Sta.',notes:''},
@@ -519,12 +522,15 @@ const defaultDays = [
   ...['25','26','27'].map(d=>({date:`2026-11-${d}`,title:'首爾',areas:['seoul'],items:[]})),
   {date:'2026-11-28',title:'首爾 · 最後採購',areas:['seoul'],items:[
     {category:'sight',startTime:'14:00',endTime:'20:00',title:'伴手禮採購',jp:'首爾市內',en:'Last-minute shopping in Seoul',notes:''}]},
-  {date:'2026-11-29',title:'首爾 → 返港 CX 419',areas:['seoul'],items:[
+  {date:'2026-11-29',title:'首爾 → 返港 UO 633',areas:['seoul'],items:[
     {category:'train',from:'首爾站',to:'仁川機場 T1',timeType:'departure',transitTime:'16:30',title:'AREX 機場快線',jp:'서울역 → 인천국제공항 T1',en:'AREX Seoul Sta. → ICN T1',notes:'Yahoo 不涵蓋韓國'},
-    {category:'flight',startTime:'19:35',endTime:'22:40',title:'CX 419 首爾仁川 → 香港',jp:'仁川国際空港 T1 → 香港国際空港 T1',en:'CX419 ICN T1 → HKG T1',notes:''}]}
+    {category:'flight',startTime:'',endTime:'',title:'UO 633 → 香港',jp:'',en:'UO633 → HKG',notes:'出發機場與起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入',flightNo:'UO633',flightDate:'2026-11-29'}]}
 ];
 const defaultHotels = [
-  {id:'h1',name:'温泉山荘 だいこんの花',checkIn:'2026-11-20',checkInTime:'15:00',checkOut:'2026-11-22',checkOutTime:'10:00',area:'zao',address:'宮城県刈田郡蔵王町遠刈田温泉字北山21-7',status:'已確認',conf:''}
+  {id:'h-beppu',name:'御宿 野乃 別府（Beppu Hachiyu Onyado Nono）',checkIn:'2026-11-13',checkInTime:'15:00',checkOut:'2026-11-14',checkOutTime:'11:00',area:'beppu',address:'',status:'已確認',conf:''},
+  {id:'h-shiodome',name:'Royal Park Hotel The Shiodome（ロイヤルパークホテル ザ 汐留）',checkIn:'2026-11-17',checkInTime:'15:00',checkOut:'2026-11-19',checkOutTime:'11:00',area:'tokyo',address:'東京都港区東新橋1-6-3',status:'已確認',conf:''},
+  {id:'h1',name:'温泉山荘 だいこんの花',checkIn:'2026-11-20',checkInTime:'15:00',checkOut:'2026-11-22',checkOutTime:'10:00',area:'zao',address:'宮城県刈田郡蔵王町遠刈田温泉字北山21-7',status:'已確認',conf:''},
+  {id:'h-metropolitan',name:'Hotel Metropolitan Tokyo Marunouchi（ホテルメトロポリタン 丸の内）',checkIn:'2026-11-22',checkInTime:'15:00',checkOut:'2026-11-24',checkOutTime:'12:00',area:'tokyo',address:'東京都千代田区丸の内1-7-12',status:'已確認',conf:''}
 ];
 
 /* ===================== State ===================== */
@@ -577,7 +583,34 @@ let meta = Object.assign({updatedAt:0,dirty:false}, load(K.meta)||{});
       if(!d.items.some(it=>/CX\s*0?544/.test(it.title||'')))d.items.push({category:'flight',startTime:'',endTime:'',title:'CX 544 香港 → 台北桃園',jp:'香港国際空港 → 台湾桃園国際空港',en:'CX544 HKG → TPE',notes:'起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入',flightNo:'CX544',flightDate:'2026-11-13'});
       if(/^啟程：香港 → 台北/.test(d.title||''))d.title='啟程：香港 → 台北 CX 544'}
     ui.patches.cx544=true;store(K.days,days);store(K.ui,ui)}})();
+if(applyTripUpdates()){meta.dirty=true;store(K.days,days);store(K.hotels,hotels);store(K.meta,meta)}
 
+// 10/26 update: Fukuoka/Beppu start, new hotels, UO 633 home. Content-based, safe to run repeatedly; returns true if anything changed.
+function applyTripUpdates(){
+  let ch=false;const D=dt=>days.find(x=>x.date===dt);const drop=(d,fn)=>{const n=d.items.length;d.items=d.items.filter(it=>!fn(it));if(d.items.length!==n)ch=true};
+  const has=(d,re)=>d.items.some(it=>re.test((it.title||'')+' '+(it.en||'')));
+  let d=D('2026-11-13');
+  if(d){drop(d,it=>it.category==='flight'&&/CX\s*0?(544|488)|航班待確認|TBD/.test((it.title||'')+(it.en||'')));
+    if(d.areas.includes('taipei')){d.areas=['beppu'];ch=true}
+    if(/^啟程：香港 → 台北/.test(d.title||'')){d.title='啟程：香港 → 福岡 · 別府';ch=true}
+    if(!has(d,/UO\s*0?600/)){d.items.push({category:'flight',startTime:'07:50',endTime:'11:55',title:'UO 600 香港 → 福岡',jp:'香港国際空港 → 福岡空港 国際線',en:'UO600 HKG → FUK',notes:'HK Express；時刻為第三方資料，請以訂位確認單為準',flightNo:'UO600',flightDate:'2026-11-13'});ch=true}
+    if(!d.items.some(it=>it.category==='train'&&it.from==='福岡空港')){d.items.push({category:'train',from:'福岡空港',to:'別府',timeType:'departure',transitTime:'12:45',title:'福岡空港 → 別府',jp:'福岡空港 → 博多（地下鐵）→ 別府（JR 特急ソニック）',en:'Fukuoka Airport → Hakata → Beppu',notes:'約 2.5 小時；也可查福岡空港直達別府的高速巴士'});ch=true}
+    if(!has(d,/ひろかど|Hirokado/i)){d.items.push({category:'dining',startTime:'18:00',endTime:'',title:'ひろかど（Hirokado）晚餐',jp:'ひろかど 別府',en:'Hirokado, Beppu',notes:'晚餐預約 18:00'});ch=true}}
+  d=D('2026-11-14');
+  if(d){drop(d,it=>/台北/.test(it.title||''));if(d.areas.includes('taipei')){d.areas=['beppu'];ch=true}
+    if(/台北/.test(d.title||'')){d.title='別府 → 大阪（交通待安排）';ch=true}}
+  d=D('2026-11-15');
+  if(d){drop(d,it=>(it.category==='flight'&&/CX\s*0?564/.test(it.title||''))||(it.category==='train'&&it.from==='関西空港'&&it.to==='大阪'));
+    if(d.title==='抵達關西 · 天婦羅晚餐'){d.title='大阪 · 天婦羅晚餐';ch=true}}
+  d=D('2026-11-17'); if(d) drop(d,it=>it.category==='hotel'&&it.title==='入住東京飯店');
+  d=D('2026-11-29');
+  if(d){drop(d,it=>it.category==='flight'&&/CX\s*0?419/.test(it.title||''));
+    if(!has(d,/UO\s*0?633/)){d.items.push({category:'flight',startTime:'',endTime:'',title:'UO 633 → 香港',jp:'',en:'UO633 → HKG',notes:'出發機場與起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入',flightNo:'UO633',flightDate:'2026-11-29'});ch=true}
+    if(/CX 419/.test(d.title||'')){d.title=d.title.replace('CX 419','UO 633');ch=true}}
+  [[/野乃/,{id:'h-beppu',name:'御宿 野乃 別府（Beppu Hachiyu Onyado Nono）',checkIn:'2026-11-13',checkInTime:'15:00',checkOut:'2026-11-14',checkOutTime:'11:00',area:'beppu',address:'',status:'已確認',conf:''}],[/汐留|Shiodome/i,{id:'h-shiodome',name:'Royal Park Hotel The Shiodome（ロイヤルパークホテル ザ 汐留）',checkIn:'2026-11-17',checkInTime:'15:00',checkOut:'2026-11-19',checkOutTime:'11:00',area:'tokyo',address:'東京都港区東新橋1-6-3',status:'已確認',conf:''}],[/Metropolitan|メトロポリタン/i,{id:'h-metropolitan',name:'Hotel Metropolitan Tokyo Marunouchi（ホテルメトロポリタン 丸の内）',checkIn:'2026-11-22',checkInTime:'15:00',checkOut:'2026-11-24',checkOutTime:'12:00',area:'tokyo',address:'東京都千代田区丸の内1-7-12',status:'已確認',conf:''}]].forEach(([re,h])=>{if(!hotels.some(x=>re.test(x.name||''))){hotels.push(h);ch=true}});
+  if(ch) days.forEach(sortItems);
+  return ch;
+}
 function migrateOld(){
   // Import data saved by the previous version of this tool, keeping user edits.
   const old = load('jp_itinerary_2026'); if(!old || !Array.isArray(old)) return null;
@@ -620,6 +653,7 @@ const STATIONS={
   '宇治':[34.8939,135.8072],'京阪宇治':[34.8939,135.8072],'JR宇治':[34.8904,135.8003],'祇園四条':[35.0037,135.7722],'清水五条':[34.9958,135.7697],'京都':[34.9858,135.7588],'三条':[35.0089,135.7722],
   '東京':[35.6812,139.7671],'品川':[35.6285,139.7387],'新宿':[35.6896,139.7006],'渋谷':[35.6580,139.7016],'上野':[35.7138,139.7773],'浅草':[35.7114,139.7966],'押上':[35.7101,139.8132],
   '二子玉川':[35.6115,139.6268],'麹町':[35.6840,139.7372],'飯田橋':[35.7020,139.7450],'神楽坂':[35.7034,139.7346],'羽田空港':[35.5494,139.7798],'成田空港':[35.7647,140.3864],
+  '福岡空港':[33.5859,130.4507],'博多':[33.5897,130.4207],'小倉':[33.8869,130.8826],'別府':[33.2793,131.5006],'大分':[33.2333,131.6066],
   '白石蔵王':[38.0087,140.6411],'遠刈田温泉':[38.1205,140.5530],'仙台':[38.2601,140.8821],'石巻':[38.4281,141.3048]
 };
 const NAV_HOST='navitime-route-totalnavi.p.rapidapi.com';
@@ -704,7 +738,7 @@ async function runNav(id,force){
 
 /* ===================== Flight lookup (AeroDataBox via RapidAPI, same key as NAVITIME) ===================== */
 const ADB_HOST='aerodatabox.p.rapidapi.com';
-const AIRPORT_ZH={HND:'東京羽田',NRT:'東京成田',KIX:'大阪關西',ITM:'大阪伊丹',UKB:'神戶',NGO:'名古屋中部',SDJ:'仙台',CTS:'札幌新千歲',FUK:'福岡',OKA:'沖繩那霸',KOJ:'鹿兒島',HIJ:'廣島',
+const AIRPORT_ZH={HND:'東京羽田',NRT:'東京成田',KIX:'大阪關西',ITM:'大阪伊丹',UKB:'神戶',NGO:'名古屋中部',SDJ:'仙台',CTS:'札幌新千歲',FUK:'福岡',OIT:'大分',OKA:'沖繩那霸',KOJ:'鹿兒島',HIJ:'廣島',
   TPE:'台北桃園',TSA:'台北松山',KHH:'高雄',RMQ:'台中',HKG:'香港',MFM:'澳門',ICN:'首爾仁川',GMP:'首爾金浦',PUS:'釜山',CJU:'濟州',PVG:'上海浦東',SHA:'上海虹橋',PEK:'北京首都',PKX:'北京大興',SIN:'新加坡',BKK:'曼谷',MNL:'馬尼拉'};
 async function lookupFlight(no,date){
   const key=navKey(); if(!key) throw new Error('尚未設定 RapidAPI 金鑰。');
@@ -779,11 +813,13 @@ async function ghSync(opts={}){
     const useRemote=remote&&Array.isArray(remote.days)&&(opts.forceRemote||!meta.dirty||rTime>meta.updatedAt||!ghCfg.token);
     if(useRemote){
       days=remote.days;hotels=Array.isArray(remote.hotels)?remote.hotels:[];normalizeDays();days.forEach(sortItems);
-      meta={updatedAt:rTime,dirty:false};store(K.days,days);store(K.hotels,hotels);store(K.meta,meta);renderAll();
+      meta={updatedAt:rTime,dirty:false};
+      if(applyTripUpdates()&&ghCfg.token){meta.updatedAt=Date.now();meta.dirty=true}
+      store(K.days,days);store(K.hotels,hotels);store(K.meta,meta);renderAll();
       if(opts.announce)toast('已載入雲端最新版本');
     }
     ghBusy=false;
-    if(!useRemote&&ghCfg.token&&(meta.dirty||r.missing)){ await ghUpload(); return }
+    if(ghCfg.token&&(meta.dirty||r.missing)){ await ghUpload(); return }
     cloudBadge(ghCfg.token?'ok':'read',r.missing&&!ghCfg.token?'雲端還沒有資料檔，請在可編輯的裝置設定權杖後同步':undefined);
   }catch(e){ghBusy=false;cloudBadge('err',e.message);if(opts.announce)toast(e.message)}
 }
@@ -908,12 +944,12 @@ function computeChecks(){
   days.forEach((d,i)=>{
     const h=hotelFor(d.date);
     const late=d.items.filter(it=>toMin(it.endTime)>=21*60);
-    if(h&&h.area&&late.length&&d.areas[d.areas.length-1]!==h.area){
+    if(h&&h.area&&late.length&&AREAS[d.areas[d.areas.length-1]]?.wx!==AREAS[h.area]?.wx){
       out.push({lvl:'bad',msg:`${mmdd(d.date)} 晚上 ${esc(late[0].title)} 在${AREAS[d.areas[d.areas.length-1]].label}，但當晚住${AREAS[h.area].label}（${esc(h.name)}）。請確認夜間回程交通。`,day:i});
     }
     const prev=i>0&&hotelFor(days[i-1].date);
     const first=d.items.find(it=>toMin(itemTime(it))!=null);
-    if(prev&&prev.area&&first&&toMin(itemTime(first))<9*60&&!d.areas.includes(prev.area)){
+    if(prev&&prev.area&&first&&toMin(itemTime(first))<9*60&&!d.areas.some(a=>AREAS[a]?.wx===AREAS[prev.area]?.wx)){
       out.push({lvl:'bad',msg:`${mmdd(d.date)} ${itemTime(first)} 要在${AREAS[d.areas[0]].label}，但前一晚住${AREAS[prev.area].label}。早上可能趕不上。`,day:i});
     }
     // overlaps
@@ -1003,7 +1039,7 @@ function hotelRow(h,hi,kind){
     <div class="acts"><button class="icon-btn" data-hedit="${hi}" aria-label="編輯住宿"><i class="fa-solid fa-pen"></i></button></div></div>`;
 }
 function nearbyAreas(d){
-  const map={taipei:[],osaka:['kyoto'],uji:['kyoto'],kyoto:['uji','osaka'],kagurazaka:['tokyo','kojimachi'],oshiage:['tokyo'],futako:['tokyo'],kojimachi:['tokyo','kagurazaka'],tokyo:['oshiage','kojimachi'],zao:['sendai'],sendai:['zao','ishinomaki'],ishinomaki:['sendai'],seoul:[]};
+  const map={taipei:[],beppu:[],osaka:['kyoto'],uji:['kyoto'],kyoto:['uji','osaka'],kagurazaka:['tokyo','kojimachi'],oshiage:['tokyo'],futako:['tokyo'],kojimachi:['tokyo','kagurazaka'],tokyo:['oshiage','kojimachi'],zao:['sendai'],sendai:['zao','ishinomaki'],ishinomaki:['sendai'],seoul:[]};
   return [...new Set(d.areas.flatMap(a=>map[a]||[]))];
 }
 function renderSug(d,i,open){
