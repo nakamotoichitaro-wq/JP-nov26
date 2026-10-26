@@ -4,69 +4,59 @@
  "days": [
   {
    "date": "2026-11-13",
-   "title": "啟程：香港 → 台北 CX 544",
+   "title": "啟程：香港 → 福岡 · 別府",
    "areas": [
-    "taipei"
+    "beppu"
    ],
    "items": [
     {
      "category": "flight",
-     "title": "CX 488 香港 → 台北桃園",
-     "jp": "Hong Kong Chek Lap Kok T1 → Taipei Taiwan Taoyuan T1",
-     "en": "CX488 HKG T1 → TPE T1",
-     "notes": "起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入",
-     "startTime": "08:00",
-     "endTime": "09:40",
-     "flightNo": "CX488",
+     "startTime": "07:50",
+     "endTime": "11:55",
+     "title": "UO 600 香港 → 福岡",
+     "jp": "香港国際空港 → 福岡空港 国際線",
+     "en": "UO600 HKG → FUK",
+     "notes": "HK Express；時刻為第三方資料，請以訂位確認單為準",
+     "flightNo": "UO600",
      "flightDate": "2026-11-13"
+    },
+    {
+     "category": "train",
+     "from": "福岡空港",
+     "to": "別府",
+     "timeType": "departure",
+     "transitTime": "12:45",
+     "title": "福岡空港 → 別府",
+     "jp": "福岡空港 → 博多（地下鐵）→ 別府（JR 特急ソニック）",
+     "en": "Fukuoka Airport → Hakata → Beppu",
+     "notes": "約 2.5 小時；也可查福岡空港直達別府的高速巴士"
+    },
+    {
+     "category": "dining",
+     "startTime": "18:00",
+     "endTime": "",
+     "title": "ひろかど（Hirokado）晚餐",
+     "jp": "ひろかど 別府",
+     "en": "Hirokado, Beppu",
+     "notes": "晚餐預約 18:00"
     }
    ]
   },
   {
    "date": "2026-11-14",
-   "title": "台北停留",
+   "title": "別府 → 大阪（交通待安排）",
    "areas": [
-    "taipei"
+    "beppu"
    ],
-   "items": [
-    {
-     "category": "sight",
-     "startTime": "10:00",
-     "endTime": "18:00",
-     "title": "台北自由活動 / 整理行李",
-     "jp": "台北市内",
-     "en": "Taipei free day",
-     "notes": "明天 CX564 飛大阪"
-    }
-   ]
+   "items": []
   },
   {
    "date": "2026-11-15",
-   "title": "抵達關西 · 天婦羅晚餐",
+   "title": "大阪 · 天婦羅晚餐",
    "areas": [
     "osaka"
    ],
    "items": [
-    {
-     "category": "flight",
-     "startTime": "",
-     "endTime": "14:45",
-     "title": "CX 564 台北 → 大阪關西",
-     "jp": "台湾桃園国際空港 T1 → 関西国際空港 T1",
-     "en": "CX564 TPE → KIX T1",
-     "notes": "14:45 抵達關西機場"
-    },
-    {
-     "category": "train",
-     "from": "関西空港",
-     "to": "大阪",
-     "timeType": "departure",
-     "transitTime": "15:45",
-     "title": "關空特急 Haruka",
-     "jp": "関西空港駅 → 大阪駅",
-     "en": "Kansai Airport → Osaka Sta.",
-     "notes": ""
-    },
     {
      "category": "dining",
      "startTime": "20:20",
@@ -145,15 +135,6 @@
      "jp": "京都駅 → 東京駅",
      "en": "Kyoto → Tokyo (Tokaido Shinkansen)",
      "notes": "約 2 小時 15 分"
-    },
-    {
-     "category": "hotel",
-     "startTime": "16:30",
-     "endTime": "18:00",
-     "title": "入住東京飯店",
-     "jp": "",
-     "en": "Tokyo hotel check-in",
-     "notes": "建議住東京站或神樂坂附近"
     },
     {
      "category": "dining",
@@ -403,7 +384,7 @@
   },
   {
    "date": "2026-11-29",
-   "title": "首爾 → 返港 CX 419",
+   "title": "首爾 → 返港 UO 633",
    "areas": [
     "seoul"
    ],
@@ -421,12 +402,14 @@
     },
     {
      "category": "flight",
-     "startTime": "19:35",
-     "endTime": "22:40",
-     "title": "CX 419 首爾仁川 → 香港",
-     "jp": "仁川国際空港 T1 → 香港国際空港 T1",
-     "en": "CX419 ICN T1 → HKG T1",
-     "notes": ""
+     "startTime": "",
+     "endTime": "",
+     "title": "UO 633 → 香港",
+     "jp": "",
+     "en": "UO633 → HKG",
+     "notes": "出發機場與起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入",
+     "flightNo": "UO633",
+     "flightDate": "2026-11-29"
     }
    ]
   }
@@ -441,6 +424,42 @@
    "checkOutTime": "10:00",
    "area": "zao",
    "address": "宮城県刈田郡蔵王町遠刈田温泉字北山21-7",
+   "status": "已確認",
+   "conf": ""
+  },
+  {
+   "id": "h-beppu",
+   "name": "御宿 野乃 別府（Beppu Hachiyu Onyado Nono）",
+   "checkIn": "2026-11-13",
+   "checkInTime": "15:00",
+   "checkOut": "2026-11-14",
+   "checkOutTime": "11:00",
+   "area": "beppu",
+   "address": "",
+   "status": "已確認",
+   "conf": ""
+  },
+  {
+   "id": "h-shiodome",
+   "name": "Royal Park Hotel The Shiodome（ロイヤルパークホテル ザ 汐留）",
+   "checkIn": "2026-11-17",
+   "checkInTime": "15:00",
+   "checkOut": "2026-11-19",
+   "checkOutTime": "11:00",
+   "area": "tokyo",
+   "address": "東京都港区東新橋1-6-3",
+   "status": "已確認",
+   "conf": ""
+  },
+  {
+   "id": "h-metropolitan",
+   "name": "Hotel Metropolitan Tokyo Marunouchi（ホテルメトロポリタン 丸の内）",
+   "checkIn": "2026-11-22",
+   "checkInTime": "15:00",
+   "checkOut": "2026-11-24",
+   "checkOutTime": "12:00",
+   "area": "tokyo",
+   "address": "東京都千代田区丸の内1-7-12",
    "status": "已確認",
    "conf": ""
   }
