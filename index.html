@@ -224,7 +224,7 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
   <div class="wrap hd">
     <div>
       <h1>2026 日本美食溫泉之旅</h1>
-      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 福岡・別府 → 大阪 → 京都 → 東京 → 宮城 → 東京 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.14</span></div>
+      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 福岡・別府 → 大阪 → 京都 → 東京 → 宮城 → 東京 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.16</span></div>
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="itinerary" aria-selected="true"><i class="fa-solid fa-calendar-days"></i> 行程</button>
@@ -699,7 +699,9 @@ function yahooUrl(from,to,date,time,type=1,sort=0){
   const p=new URLSearchParams({from,to});
   if(date){const[y,m,d]=date.split('-');p.set('y',y);p.set('m',m);p.set('d',d)}
   if(time&&(type==1||type==4)){const[hh,mm]=time.split(':');p.set('hh',String(Number(hh)));p.set('m1',mm[0]);p.set('m2',mm[1])}
-  p.set('type',type);p.set('ticket','ic');p.set('expkind','1');p.set('userpass','1');p.set('ws','3');p.set('s',sort);
+  p.set('type',type);p.set('ticket','ic');p.set('expkind','1');p.set('userpass','0');p.set('ws','3');p.set('s',sort);
+  // Allow every transport type, same as Yahoo's own search form: shinkansen, limited express, airplane, highway bus, local bus, ferry
+  ['shin','ex','al','hb','lb','sr'].forEach(k=>p.set(k,'1'));
   return 'https://transit.yahoo.co.jp/search/result?'+p.toString();
 }
 function inJapan(day){return day.areas.some(a=>AREAS[a]&&AREAS[a].jp)}
@@ -736,6 +738,7 @@ async function navSearch(q,force){
   if(!force&&navCache[ck]) return navCache[ck];
   const key=navKey(); if(!key) throw new Error('尚未設定 NAVITIME API Key，請到「交通」分頁貼上金鑰。');
   const [s,g]=await Promise.all([coordOf(q.from),coordOf(q.to)]);
+  if(Math.abs(s[0]-g[0])<1e-4&&Math.abs(s[1]-g[1])<1e-4) throw new Error('出發站和到達站是同一個位置，請確認站名。');
   const time=`${q.date}T${(q.time||'09:00')}:00`;
   const call=async extra=>{
     const p=new URLSearchParams({start:`${s[0]},${s[1]}`,goal:`${g[0]},${g[1]}`,limit:'3',...extra});
@@ -744,21 +747,27 @@ async function navSearch(q,force){
     catch(err){throw new Error('無法連線到 NAVITIME。請確認網路，或是否有廣告/隱私阻擋外掛擋住 rapidapi.com。')}
     if(res.status===401||res.status===403) throw new Error('金鑰無效或尚未訂閱 NAVITIME Route (totalnavi)。');
     if(res.status===429) throw new Error('已達 RapidAPI 的查詢上限，請稍後再試。');
-    if(!res.ok){const t=await res.text().catch(()=>'');const e=new Error(`NAVITIME 回傳錯誤 ${res.status}`);e.status=res.status;e.body=t;throw e}
+    if(!res.ok){
+      const t=await res.text().catch(()=>'');let detail='';
+      try{const j=JSON.parse(t);detail=j.message||j.error?.message||j.errors?.[0]?.message||j.error||''}catch(_){detail=t.slice(0,120)}
+      const e=new Error(`NAVITIME 回傳錯誤 ${res.status}${detail?'：'+detail:''}`);e.status=res.status;e.body=t;throw e}
     return res.json();
   };
+  // Server errors are often temporary: try once more before giving up
+  const callRetry=async extra=>{try{return await call(extra)}catch(e){if(e.status>=500){await new Promise(r=>setTimeout(r,900));return call(extra)}throw e}};
   let data;
   if(q.type==='arrival'){
-    try{data=await call({goal_time:time})}
-    catch(e){ if(e.status!==400) throw e;
+    try{data=await callRetry({goal_time:time})}
+    catch(e){ if(!(e.status===400||e.status>=500)) throw e;
       // Fallback: search departures 2.5h before the wanted arrival and keep routes that arrive in time
       const t=new Date(`${time}+09:00`);t.setMinutes(t.getMinutes()-150);
       const st=new Date(t.getTime()+9*3600e3).toISOString().slice(0,19);
-      data=await call({start_time:st});
+      data=await callRetry({start_time:st});
       data.items=(data.items||[]).filter(it=>(it.summary?.move?.to_time||'').slice(11,16)<=(q.time||'23:59'));
     }
-  } else data=await call({start_time:time});
-  const slim={at:Date.now(),items:(data.items||[]).slice(0,3).map(slimRoute)};
+  } else data=await callRetry({start_time:time});
+  if(!data||!Array.isArray(data.items)) throw new Error('NAVITIME 沒有回傳路線資料，請稍後再試或改用 Yahoo! 連結。');
+  const slim={at:Date.now(),items:data.items.slice(0,3).map(slimRoute)};
   navCache[ck]=slim; store(NK.cache,navCache); return slim;
 }
 function slimRoute(r){
@@ -791,7 +800,8 @@ async function runNav(id,force){
   const btn=el.querySelector('[data-navgo]'); if(btn){btn.disabled=true;btn.textContent='查詢中…'}
   try{await navSearch(q,force);el.outerHTML=navPanel(q,id)}
   catch(e){if(btn){btn.disabled=false;btn.textContent='再試一次'}
-    el.querySelector('.nav-err')?.remove();el.insertAdjacentHTML('beforeend',`<div class="nav-err">${esc(e.message)}</div>`)}
+    const q2=navQueries[id];const hint=e.status>=500?`<br>這通常是 NAVITIME 暫時出錯，或「${esc(q2.from)}」「${esc(q2.to)}」的位置判斷不準。請稍後再試；站名請用日文正式站名（例如「博多」「新大阪」），或改用上方的 Yahoo! 連結。`:'';
+    el.querySelector('.nav-err')?.remove();el.insertAdjacentHTML('beforeend',`<div class="nav-err">${esc(e.message)}${hint}</div>`)}
 }
 
 /* ===================== Flight lookup (AeroDataBox via RapidAPI, same key as NAVITIME) ===================== */
