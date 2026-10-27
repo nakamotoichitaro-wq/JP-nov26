@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 1793118470615,
+ "updatedAt": 1793118760385,
  "days": [
   {
    "date": "2026-11-13",
@@ -48,7 +48,19 @@
    "areas": [
     "beppu"
    ],
-   "items": []
+   "items": [
+    {
+     "category": "train",
+     "title": "別府->広島",
+     "jp": "",
+     "en": "",
+     "notes": "",
+     "from": "別府",
+     "to": "広島",
+     "timeType": "departure",
+     "transitTime": "09:00"
+    }
+   ]
   },
   {
    "date": "2026-11-15",
