@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 1793118235780,
+ "updatedAt": 1793118249845,
  "days": [
   {
    "date": "2026-11-13",
@@ -509,7 +509,7 @@
    "checkIn": "2026-11-21",
    "checkInTime": "15:00",
    "checkOut": "2026-11-22",
-   "checkOutTime": "11:00",
+   "checkOutTime": "08:00",
    "area": "sendai",
    "address": "〒980-8477 宮城県仙台市青葉区中央中央一丁目愛宕上杉通",
    "lat": 38.2589,
