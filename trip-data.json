@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 1793118043239,
+ "updatedAt": 1793118125018,
  "days": [
   {
    "date": "2026-11-13",
@@ -474,6 +474,18 @@
    "address": "〒730-0043 広島県広島市中区富士見町駅前通り11-12",
    "lat": 34.3865,
    "lon": 132.46239,
+   "status": "已確認",
+   "conf": ""
+  },
+  {
+   "id": "h1793118125018",
+   "name": "ALA HOTEL KYOTO（アルアホテル京都)",
+   "checkIn": "2026-11-15",
+   "checkInTime": "15:00",
+   "checkOut": "2026-11-17",
+   "checkOutTime": "11:00",
+   "area": "kyoto",
+   "address": "京都市下京區塩小路町518番",
    "status": "已確認",
    "conf": ""
   }
