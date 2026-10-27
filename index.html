@@ -187,6 +187,13 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
 .nav-err{font-size:.78rem;color:var(--bad);margin-top:4px}
 .keybox{display:grid;gap:8px}
 .keybox .row input{flex:1;min-width:200px}
+.geo-box{background:var(--chip);border-radius:10px;padding:10px;display:grid;gap:8px}
+.geo-row{display:flex;gap:8px}.geo-row input{flex:1;min-width:0}
+.geo-res{display:grid;gap:6px;max-height:240px;overflow:auto}
+.geo-item{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:7px 10px;font-size:.8rem}
+.geo-item:hover{border-color:var(--momiji)}
+.geo-item b{display:block;font-size:.86rem}
+.geo-item span{color:var(--muted);overflow-wrap:anywhere}
 
 /* Modal */
 .modal{position:fixed;inset:0;background:rgba(10,14,25,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:60}
@@ -217,7 +224,7 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
   <div class="wrap hd">
     <div>
       <h1>2026 日本美食溫泉之旅</h1>
-      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 福岡・別府 → 大阪 → 京都 → 東京 → 宮城 → 東京 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.13</span></div>
+      <div class="sub">2026/11/13 – 11/29 · 17 天 16 夜 · 福岡・別府 → 大阪 → 京都 → 東京 → 宮城 → 東京 → 首爾<span class="countdown num" id="countdown"></span> <span class="num" style="opacity:.6;font-size:.7rem">v3.14</span></div>
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="itinerary" aria-selected="true"><i class="fa-solid fa-calendar-days"></i> 行程</button>
@@ -346,12 +353,20 @@ input,select,textarea{font:inherit;font-size:.88rem;padding:7px 9px;border:1px s
   <form class="dlg" id="hotel-form">
     <div class="row spread"><h3>住宿區間</h3><button type="button" class="icon-btn" data-close><i class="fa-solid fa-xmark"></i></button></div>
     <input type="hidden" id="h-idx">
+    <div class="geo-box">
+      <label class="f" for="h-q">搜尋飯店名稱或地址，自動填入地址與地區</label>
+      <div class="geo-row"><input id="h-q" placeholder="例如：Royal Park Hotel Shiodome、御宿 野乃 別府" autocomplete="off"><button type="button" class="btn pri" id="h-search"><i class="fa-solid fa-magnifying-glass-location"></i> 搜尋</button></div>
+      <div class="muted" id="h-geostatus">地圖資料來自 OpenStreetMap（免費、不需金鑰），可用「Google 地圖查看」確認位置。</div>
+      <div class="geo-res" id="h-results"></div>
+    </div>
+    <input type="hidden" id="h-lat"><input type="hidden" id="h-lon">
     <label class="f">名稱<input id="h-name" required></label>
     <div class="fx"><label class="f">入住日期 Check-in<input id="h-in" type="date" required min="2026-11-13" max="2026-11-29"></label><label class="f">入住時間<input id="h-intime" type="time" value="15:00"></label></div>
     <div class="fx"><label class="f">退房日期 Check-out<input id="h-out" type="date" required min="2026-11-14" max="2026-11-30"></label><label class="f">退房時間<input id="h-outtime" type="time" value="11:00"></label></div>
     <div class="muted" id="h-nights"></div>
     <label class="f">地區<select id="h-area"></select></label>
-    <label class="f">日文地址<input id="h-addr"></label>
+    <label class="f">地址<input id="h-addr"></label>
+    <a class="lk" id="h-gmap" target="_blank" rel="noopener" style="justify-self:start"><i class="fa-solid fa-location-dot"></i> 在 Google 地圖查看</a>
     <div class="fx"><label class="f">狀態<select id="h-status"><option>已確認</option><option>保留中</option><option>待決定</option></select></label><label class="f">確認編號<input id="h-conf"></label></div>
     <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-close>取消</button><button class="btn pri">儲存</button></div>
   </form>
@@ -450,7 +465,7 @@ const AREAS = {
     snack:[{t:'東京車站 GRANSTA',jp:'グランスタ東京',n:'站內甜點伴手禮集中地。'}],
     coffee:[{t:'Glitch Coffee & Roasters',jp:'GLITCH COFFEE & ROASTERS 神保町',n:'東京代表性淺焙咖啡，搭地鐵約 10 分。'}],
     tips:[]},
-  tokyo:{label:'東京（自由日）',wx:'tokyo',jp:true,
+  tokyo:{label:'東京',wx:'tokyo',jp:true,
     sight:[{t:'明治神宮外苑 銀杏並木',jp:'明治神宮外苑 いちょう並木',n:'11 月下旬至 12 月初最黃，這幾天正是時候。'},{t:'六義園 紅葉點燈',jp:'六義園',n:'秋季夜間點燈通常在 11 月下旬。'},{t:'teamLab Planets',jp:'チームラボプラネッツ 豊洲',n:'需事先網路購票。'},{t:'谷中・根津・千駄木',jp:'谷中銀座商店街',n:'下町老街散步。'},{t:'一日遊：鎌倉',jp:'鎌倉 長谷寺',n:'鎌倉紅葉比東京晚，11 月底到 12 月初。'}],
     snack:[{t:'浪花家總本店 鯛魚燒',jp:'浪花家総本店 麻布十番',n:'百年鯛魚燒老店。'},{t:'築地場外市場',jp:'築地場外市場',n:'玉子燒、海鮮丼，上午去。'},{t:'人形町 甘酒橫丁',jp:'人形町 甘酒横丁',n:'和菓子、人形燒老舖。'}],
     coffee:[{t:'Koffee Mameya Kakeru',jp:'Koffee Mameya Kakeru 清澄白河',n:'咖啡套餐體驗，建議預約。'},{t:'Blue Bottle 清澄白河',jp:'ブルーボトルコーヒー 清澄白河フラッグシップカフェ',n:'日本一號店。'},{t:'Fuglen Tokyo',jp:'Fuglen Tokyo 富ヶ谷',n:'白天咖啡、晚上調酒。'},{t:'Onibus Coffee 中目黑',jp:'ONIBUS COFFEE 中目黒',n:'電車旁的小屋。'}],
@@ -480,6 +495,49 @@ const CAT = {
   dining:{label:'美食',icon:'fa-utensils'},sight:{label:'景點',icon:'fa-torii-gate'},snack:{label:'小吃',icon:'fa-cookie-bite'},
   coffee:{label:'咖啡',icon:'fa-mug-hot'},train:{label:'交通',icon:'fa-train'},flight:{label:'航班',icon:'fa-plane'},hotel:{label:'住宿',icon:'fa-bed'}
 };
+
+/* ===================== Custom areas (created automatically from hotel searches) ===================== */
+const CUSTOM_KEY='jp_trip_v2_areas';
+let customAreas=(()=>{try{return JSON.parse(localStorage.getItem(CUSTOM_KEY))||[]}catch(e){return[]}})();
+if(!Array.isArray(customAreas)) customAreas=[];
+function registerCustomArea(c){
+  if(!c||!c.key||!/^c_/.test(c.key)||!isFinite(c.lat)||!isFinite(c.lon)) return;
+  AREAS[c.key]={label:c.label,wx:c.key,jp:c.cc==='jp',custom:true,sight:[],snack:[],coffee:[],tips:[]};
+  WX[c.key]={name:c.label,lat:+c.lat,lon:+c.lon,normal:[15,7]};
+  if(!customAreas.some(x=>x.key===c.key)) customAreas.push(c);
+}
+function saveCustomAreas(){try{localStorage.setItem(CUSTOM_KEY,JSON.stringify(customAreas))}catch(e){}}
+customAreas.slice().forEach(registerCustomArea);
+
+/* ===================== Place search for hotels (OpenStreetMap Nominatim) ===================== */
+const km=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+async function placeSearch(q){
+  let r;
+  try{r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=6&accept-language=ja,zh-TW,en&q=${encodeURIComponent(q)}`,{headers:{'Accept':'application/json'}})}
+  catch(e){throw new Error('無法連線到地圖搜尋服務，請確認網路。')}
+  if(r.status===429) throw new Error('搜尋太頻繁，請等幾秒再試。');
+  if(!r.ok) throw new Error('地圖搜尋失敗（'+r.status+'）。');
+  return r.json();
+}
+function placeName(x){return x.namedetails?.name||x.name||(x.display_name||'').split(',')[0]}
+function fmtAddr(x){
+  const a=x.address||{}, cc=a.country_code;
+  let parts=(x.display_name||'').split(',').map(t=>t.trim()).filter(Boolean);
+  if(parts[0]===placeName(x)) parts.shift();
+  parts=parts.filter(t=>t!==a.country&&t!==a.postcode);
+  if(['jp','kr','tw','cn','hk','mo'].includes(cc)) return (cc==='jp'&&a.postcode?'〒'+a.postcode+' ':'')+parts.reverse().join('');
+  return parts.join(', ');
+}
+// Nearest planner area within 35 km; otherwise a new area named after the city
+function areaFor(x){
+  const lat=+x.lat, lon=+x.lon; let best=null, bd=1e9;
+  Object.keys(AREAS).forEach(k=>{if(AREAS[k].wx!==k||!WX[k])return;const d=km(lat,lon,WX[k].lat,WX[k].lon);if(d<bd){bd=d;best=k}});
+  if(best&&bd<=35) return {key:best,isNew:false,dist:bd};
+  const a=x.address||{}; const label=a.city||a.town||a.village||a.municipality||a.county||a.state||placeName(x)||'新地區';
+  const key='c_'+Math.abs([...label].reduce((h,c)=>(h*31+c.charCodeAt(0))|0,7)).toString(36);
+  return {key,isNew:!AREAS[key],dist:0,area:{key,label,lat:+lat.toFixed(4),lon:+lon.toFixed(4),cc:a.country_code||''}};
+}
+
 
 /* ===================== Default itinerary ===================== */
 const WD = ['日','一','二','三','四','五','六'];
@@ -789,7 +847,7 @@ async function ghGet(){
 }
 async function ghPut(retry=true){
   const body={message:`Update itinerary ${new Date().toISOString().slice(0,16).replace('T',' ')}`,
-    content:b64enc(JSON.stringify({version:3,updatedAt:meta.updatedAt,days,hotels},null,1))};
+    content:b64enc(JSON.stringify({version:3,updatedAt:meta.updatedAt,days,hotels,customAreas},null,1))};
   if(ghSha) body.sha=ghSha; if(ghCfg.branch) body.branch=ghCfg.branch;
   const r=await fetch(ghUrl(),{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify(body)});
   if((r.status===409||r.status===422)&&retry){ await ghGet().catch(()=>{}); return ghPut(false); }  // someone else saved first: take their file version, keep our latest edit
@@ -812,6 +870,7 @@ async function ghSync(opts={}){
     const remote=r.data, rTime=remote?.updatedAt||0;
     const useRemote=remote&&Array.isArray(remote.days)&&(opts.forceRemote||!meta.dirty||rTime>meta.updatedAt||!ghCfg.token);
     if(useRemote){
+      (Array.isArray(remote.customAreas)?remote.customAreas:[]).forEach(registerCustomArea);saveCustomAreas();
       days=remote.days;hotels=Array.isArray(remote.hotels)?remote.hotels:[];normalizeDays();days.forEach(sortItems);
       meta={updatedAt:rTime,dirty:false};
       if(applyTripUpdates()&&ghCfg.token){meta.updatedAt=Date.now();meta.dirty=true}
@@ -1063,7 +1122,7 @@ function renderHotels(){
   $('#hotel-badge').textContent=`${ok}/16`;
   $('#hotels').innerHTML=hotels.length?hotels.map((h,i)=>`<div class="hc"><div class="row spread"><span class="pill ${h.status==='已確認'?'ok':'hold'}">${esc(h.status)}</span><span><button class="icon-btn" data-hedit="${i}"><i class="fa-solid fa-pen"></i></button><button class="icon-btn" data-hdel="${i}"><i class="fa-solid fa-trash"></i></button></span></div>
     <b>${esc(h.name)}</b><span class="muted num">入住 ${mmdd(h.checkIn)} (${wd(h.checkIn)}) ${esc(h.checkInTime||'15:00')} → 退房 ${mmdd(h.checkOut)} (${wd(h.checkOut)}) ${esc(h.checkOutTime||'11:00')}</span><span class="muted">${nightsOf(h)} 晚 · ${AREAS[h.area]?AREAS[h.area].label:''}</span>
-    ${h.address?`<a class="lk" style="justify-self:start" target="_blank" rel="noopener" href="${mapsUrl(h.address)}"><i class="fa-solid fa-location-dot"></i> ${esc(h.address)}</a>`:''}
+    <a class="lk" style="justify-self:start" target="_blank" rel="noopener" href="${h.lat&&h.lon?`https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lon}`:mapsUrl(h.address||h.name)}"><i class="fa-solid fa-location-dot"></i> ${esc(h.address||'Google 地圖')}</a>
     ${h.conf?`<span class="muted">確認編號 <span class="num">${esc(h.conf)}</span></span>`:''}</div>`).join(''):'<div class="empty">還沒有住宿。</div>';
 }
 
@@ -1100,9 +1159,12 @@ function openHotel(idx=null,date=null){
   const day=date&&days.find(d=>d.date===date);
   const h=idx!=null?hotels[idx]:{checkIn:date||'2026-11-17',checkOut:date?nextDate(date):'2026-11-20',area:day?(AREAS[day.areas[day.areas.length-1]]?day.areas[day.areas.length-1]:'tokyo'):'tokyo',status:'已確認'};
   $('#h-idx').value=idx??'';$('#h-name').value=h.name||'';$('#h-in').value=h.checkIn;$('#h-out').value=h.checkOut;
-  $('#h-area').innerHTML=Object.entries(AREAS).map(([k,a])=>`<option value="${k}">${a.label}</option>`).join('');$('#h-area').value=h.area||'tokyo';
+  $('#h-area').innerHTML=Object.entries(AREAS).map(([k,a])=>`<option value="${k}">${esc(a.label)}${a.custom?'（自訂）':''}</option>`).join('');$('#h-area').value=AREAS[h.area]?h.area:'tokyo';
   $('#h-intime').value=h.checkInTime||'15:00';$('#h-outtime').value=h.checkOutTime||'11:00';updateNights();
-  $('#h-addr').value=h.address||'';$('#h-status').value=h.status||'已確認';$('#h-conf').value=h.conf||'';$('#hotel-modal').hidden=false;
+  $('#h-addr').value=h.address||'';$('#h-status').value=h.status||'已確認';$('#h-conf').value=h.conf||'';
+  $('#h-q').value='';$('#h-results').innerHTML='';$('#h-geostatus').textContent='地圖資料來自 OpenStreetMap（免費、不需金鑰），可用「Google 地圖查看」確認位置。';
+  $('#h-lat').value=h.lat??'';$('#h-lon').value=h.lon??'';delete $('#h-name').dataset.auto;updateGmap();
+  $('#hotel-modal').hidden=false;setTimeout(()=>(idx==null?$('#h-q'):$('#h-name')).focus(),30);
 }
 
 function updateNights(){const a=$('#h-in').value,b=$('#h-out').value;const n=a&&b?Math.round((new Date(b)-new Date(a))/864e5):0;
@@ -1134,6 +1196,29 @@ document.addEventListener('click',async e=>{
   if(ds.hdel!=null){const i=+ds.hdel;if(await askConfirm(`刪除住宿「${hotels[i].name}」？`)){hotels.splice(i,1);save()}return}
 });
 $('#btn-add-hotel').onclick=()=>openHotel();
+let geoResults=[];
+function updateGmap(){const q=$('#h-addr').value.trim()||$('#h-name').value.trim();const la=$('#h-lat').value,lo=$('#h-lon').value;
+  $('#h-gmap').href=la&&lo?`https://www.google.com/maps/search/?api=1&query=${la},${lo}`:mapsUrl(q||'Japan')}
+$('#h-addr').addEventListener('input',()=>{$('#h-lat').value='';$('#h-lon').value='';updateGmap()});
+$('#h-name').addEventListener('input',()=>{delete $('#h-name').dataset.auto;updateGmap()});
+$('#h-search').onclick=async()=>{
+  const q=$('#h-q').value.trim()||$('#h-name').value.trim(); const st=$('#h-geostatus'), box=$('#h-results');
+  if(!q){st.textContent='請先輸入飯店名稱或地址。';return}
+  st.textContent='搜尋中…';box.innerHTML='';$('#h-search').disabled=true;
+  try{geoResults=await placeSearch(q);
+    if(!geoResults.length){st.textContent='找不到結果。試試英文或日文名稱、加上城市名（例如「野乃 別府」），或直接輸入地址。';return}
+    st.textContent=`找到 ${geoResults.length} 筆，請選擇：`;
+    box.innerHTML=geoResults.map((x,i)=>`<button type="button" class="geo-item" data-geo="${i}"><b>${esc(placeName(x))}</b><span>${esc(fmtAddr(x))}</span></button>`).join('')}
+  catch(e){st.textContent=e.message}
+  finally{$('#h-search').disabled=false}};
+$('#h-q').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#h-search').click()}});
+$('#h-results').addEventListener('click',e=>{const b=e.target.closest('[data-geo]');if(!b)return;const x=geoResults[+b.dataset.geo];if(!x)return;
+  const ar=areaFor(x); if(ar.isNew) registerCustomArea(ar.area);
+  $('#h-area').innerHTML=Object.entries(AREAS).map(([k,a])=>`<option value="${k}">${esc(a.label)}${a.custom?'（自訂）':''}</option>`).join('');$('#h-area').value=ar.key;
+  const nm=$('#h-name');if(!nm.value.trim()||nm.dataset.auto==='1'){nm.value=placeName(x);nm.dataset.auto='1'}
+  $('#h-addr').value=fmtAddr(x);$('#h-lat').value=(+x.lat).toFixed(5);$('#h-lon').value=(+x.lon).toFixed(5);updateGmap();
+  $('#h-results').innerHTML='';
+  $('#h-geostatus').textContent=`已填入地址。地區：${AREAS[ar.key].label}${ar.isNew?'（新地區，已自動建立，天氣會跟著顯示）':ar.dist>3?`（最近的行程地區，約 ${Math.round(ar.dist)} 公里）`:''}。請確認後按「儲存」。`;});
 $('#btn-cloud').onclick=openCloud;
 $('#cloud-form').onsubmit=async e=>{e.preventDefault();
   const tok=$('#gh-token').value.trim();
@@ -1193,16 +1278,16 @@ $('#item-form').onsubmit=e=>{e.preventDefault();
 };
 $('#hotel-form').onsubmit=e=>{e.preventDefault();
   const idx=$('#h-idx').value;
-  const h={id:idx===''?'h'+Date.now():hotels[+idx].id,name:$('#h-name').value.trim(),checkIn:$('#h-in').value,checkInTime:$('#h-intime').value,checkOut:$('#h-out').value,checkOutTime:$('#h-outtime').value,area:$('#h-area').value,address:$('#h-addr').value.trim(),status:$('#h-status').value,conf:$('#h-conf').value.trim()};
+  const h={id:idx===''?'h'+Date.now():hotels[+idx].id,name:$('#h-name').value.trim(),checkIn:$('#h-in').value,checkInTime:$('#h-intime').value,checkOut:$('#h-out').value,checkOutTime:$('#h-outtime').value,area:$('#h-area').value,address:$('#h-addr').value.trim(),lat:$('#h-lat').value?+$('#h-lat').value:undefined,lon:$('#h-lon').value?+$('#h-lon').value:undefined,status:$('#h-status').value,conf:$('#h-conf').value.trim()};
   if(h.checkOut<=h.checkIn){toast('退房日期要晚於入住日期');return}
   const clash=hotels.find((x,i)=>String(i)!==idx&&h.checkIn<x.checkOut&&x.checkIn<h.checkOut);
   if(clash){toast(`與「${clash.name}」日期重疊`);return}
-  if(idx==='')hotels.push(h);else hotels[+idx]=h;$('#hotel-modal').hidden=true;save();toast('住宿已儲存');
+  if(idx==='')hotels.push(h);else hotels[+idx]=h;saveCustomAreas();$('#hotel-modal').hidden=true;save();toast('住宿已儲存');
 };
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal').forEach(m=>m.hidden=true)});
-$('#btn-export').onclick=()=>{const blob=new Blob([JSON.stringify({version:2,days,hotels},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='japan_trip_2026.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('#btn-export').onclick=()=>{const blob=new Blob([JSON.stringify({version:3,days,hotels,customAreas},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='japan_trip_2026.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 $('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);
-  if(p.days&&p.hotels){days=p.days;hotels=p.hotels}
+  if(p.days&&p.hotels){(Array.isArray(p.customAreas)?p.customAreas:[]).forEach(registerCustomArea);saveCustomAreas();days=p.days;hotels=p.hotels}
   else if(p.itinerary&&p.hotels){days=p.itinerary.map((d,i)=>({date:d.date,title:d.title,areas:(defaultDays[i]||{}).areas||['tokyo'],items:d.items||[]}));hotels=p.hotels.map(h=>({...h,area:h.area||guessArea(h.address||h.name),status:(h.status||'').split(' ')[0]}))}
   else throw 0;normalizeDays();save();fetchWeather(true);toast('匯入成功')}catch(err){toast('檔案格式不正確')}};r.readAsText(f);e.target.value=''};
 
