@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 1793118125018,
+ "updatedAt": 1793118187100,
  "days": [
   {
    "date": "2026-11-13",
@@ -486,6 +486,20 @@
    "checkOutTime": "11:00",
    "area": "kyoto",
    "address": "京都市下京區塩小路町518番",
+   "status": "已確認",
+   "conf": ""
+  },
+  {
+   "id": "h1793118187100",
+   "name": "ホテルメトロポリタン仙台",
+   "checkIn": "2026-11-19",
+   "checkInTime": "15:00",
+   "checkOut": "2026-11-20",
+   "checkOutTime": "11:00",
+   "area": "sendai",
+   "address": "〒980-8477 宮城県仙台市青葉区中央中央一丁目愛宕上杉通",
+   "lat": 38.2589,
+   "lon": 140.88112,
    "status": "已確認",
    "conf": ""
   }
