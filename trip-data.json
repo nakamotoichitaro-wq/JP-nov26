@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 1792944362130,
+ "updatedAt": 1793118043239,
  "days": [
   {
    "date": "2026-11-13",
@@ -462,6 +462,29 @@
    "address": "東京都千代田区丸の内1-7-12",
    "status": "已確認",
    "conf": ""
+  },
+  {
+   "id": "h1793118043239",
+   "name": "Hilton Hiroshima",
+   "checkIn": "2026-11-14",
+   "checkInTime": "15:00",
+   "checkOut": "2026-11-15",
+   "checkOutTime": "11:00",
+   "area": "c_ef5m0",
+   "address": "〒730-0043 広島県広島市中区富士見町駅前通り11-12",
+   "lat": 34.3865,
+   "lon": 132.46239,
+   "status": "已確認",
+   "conf": ""
+  }
+ ],
+ "customAreas": [
+  {
+   "key": "c_ef5m0",
+   "label": "広島市",
+   "lat": 34.3865,
+   "lon": 132.4624,
+   "cc": "jp"
   }
  ]
 }
