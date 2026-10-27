@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 1793118216300,
+ "updatedAt": 1793118235780,
  "days": [
   {
    "date": "2026-11-13",
@@ -455,7 +455,7 @@
    "id": "h-metropolitan",
    "name": "Hotel Metropolitan Tokyo Marunouchi（ホテルメトロポリタン 丸の内）",
    "checkIn": "2026-11-22",
-   "checkInTime": "15:00",
+   "checkInTime": "21:00",
    "checkOut": "2026-11-24",
    "checkOutTime": "21:00",
    "area": "tokyo",
