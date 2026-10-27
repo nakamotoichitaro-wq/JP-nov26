@@ -1,6 +1,6 @@
 {
  "version": 3,
- "updatedAt": 1793118204372,
+ "updatedAt": 1793118216300,
  "days": [
   {
    "date": "2026-11-13",
@@ -457,7 +457,7 @@
    "checkIn": "2026-11-22",
    "checkInTime": "15:00",
    "checkOut": "2026-11-24",
-   "checkOutTime": "12:00",
+   "checkOutTime": "21:00",
    "area": "tokyo",
    "address": "東京都千代田区丸の内1-7-12",
    "status": "已確認",
