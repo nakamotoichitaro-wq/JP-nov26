@@ -580,6 +580,35 @@
       "approx": true
      },
      "id": "k6zgca4"
+    },
+    {
+     "id": "rkhq8rb",
+     "cat": "train",
+     "title": "仙台 → 東京",
+     "sub": "",
+     "notes": "",
+     "from": {
+      "name": "仙台",
+      "lat": 38.2601,
+      "lon": 140.8821,
+      "cc": "jp",
+      "addr": "",
+      "city": "",
+      "pref": "",
+      "src": "station"
+     },
+     "to": {
+      "name": "東京",
+      "lat": 35.6812,
+      "lon": 139.7671,
+      "cc": "jp",
+      "addr": "",
+      "city": "",
+      "pref": "",
+      "src": "station"
+     },
+     "timeType": "departure",
+     "time": "18:00"
     }
    ]
   },
@@ -874,5 +903,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793202175787
+ "updatedAt": 1793202251245
 }
