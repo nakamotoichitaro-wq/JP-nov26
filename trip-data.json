@@ -76,12 +76,11 @@
    "title": "別府 →広島",
    "items": [
     {
+     "id": "w4iedbs",
      "cat": "train",
      "title": "別府->広島",
-     "notes": "",
      "sub": "",
-     "time": "09:00",
-     "timeType": "departure",
+     "notes": "",
      "from": {
       "name": "別府",
       "lat": 33.2793,
@@ -89,11 +88,22 @@
       "cc": "jp"
      },
      "to": {
-      "name": "広島",
-      "lat": null,
-      "lon": null
+      "name": "Hilton Hiroshima",
+      "addr": "〒730-0043 広島県広島市中区富士見町駅前通り11-12",
+      "lat": 34.386497,
+      "lon": 132.462385,
+      "cc": "jp",
+      "pref": "広島県",
+      "city": "広島市",
+      "src": "osm",
+      "jma": {
+       "office": "340000",
+       "c10": "340010",
+       "c10name": "南部"
+      }
      },
-     "id": "w4iedbs"
+     "timeType": "departure",
+     "time": "09:00"
     }
    ],
    "base": {
@@ -835,5 +845,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793201473893
+ "updatedAt": 1793201547752
 }
