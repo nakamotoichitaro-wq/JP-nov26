@@ -445,7 +445,7 @@
       "src": "station"
      },
      "timeType": "departure",
-     "time": "14:00"
+     "time": "15:00"
     }
    ]
   },
@@ -874,5 +874,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793202039537
+ "updatedAt": 1793202049457
 }
