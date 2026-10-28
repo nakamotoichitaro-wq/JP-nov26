@@ -400,11 +400,12 @@
      "id": "6k7g257"
     },
     {
+     "id": "nd3wrxe",
      "cat": "dining",
      "title": "鮨みずかみ",
-     "notes": "午餐預約",
      "sub": "3-3-6 Kojimachi, Chiyoda-ku",
-     "start": "13:00",
+     "notes": "午餐預約",
+     "start": "13:29",
      "end": "15:00",
      "place": {
       "name": "鮨みずかみ",
@@ -415,8 +416,7 @@
       "city": "千代田区",
       "addr": "東京都千代田区麹町3-3-6 麹町フロントビル 1F",
       "approx": true
-     },
-     "id": "nd3wrxe"
+     }
     },
     {
      "id": "509b1zf",
@@ -874,5 +874,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793202049457
+ "updatedAt": 1793202169195
 }
