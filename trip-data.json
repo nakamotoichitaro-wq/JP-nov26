@@ -1,431 +1,694 @@
 {
- "version": 3,
- "updatedAt": 1793118760385,
- "days": [
-  {
-   "date": "2026-11-13",
+ "version": 4,
+ "title": "2026 日本美食溫泉之旅",
+ "days": {
+  "2026-11-13": {
    "title": "啟程：香港 → 福岡 · 別府",
-   "areas": [
-    "beppu"
-   ],
    "items": [
     {
-     "category": "flight",
-     "startTime": "07:50",
-     "endTime": "11:55",
+     "cat": "flight",
      "title": "UO 600 香港 → 福岡",
-     "jp": "香港国際空港 → 福岡空港 国際線",
-     "en": "UO600 HKG → FUK",
      "notes": "HK Express；時刻為第三方資料，請以訂位確認單為準",
+     "sub": "UO600 HKG → FUK",
+     "start": "07:50",
+     "end": "11:55",
+     "place": {
+      "name": "福岡空港 国際線ターミナル",
+      "lat": 33.5859,
+      "lon": 130.4507,
+      "cc": "jp",
+      "pref": "福岡県",
+      "city": "福岡市"
+     },
      "flightNo": "UO600",
-     "flightDate": "2026-11-13"
+     "flightDate": "2026-11-13",
+     "dep": "HKG",
+     "arr": "FUK",
+     "id": "vrfrl7p"
     },
     {
-     "category": "train",
-     "from": "福岡空港",
-     "to": "別府",
-     "timeType": "departure",
-     "transitTime": "12:45",
+     "cat": "train",
      "title": "福岡空港 → 別府",
-     "jp": "福岡空港 → 博多（地下鐵）→ 別府（JR 特急ソニック）",
-     "en": "Fukuoka Airport → Hakata → Beppu",
-     "notes": "約 2.5 小時；也可查福岡空港直達別府的高速巴士"
+     "notes": "約 2.5 小時；也可查福岡空港直達別府的高速巴士",
+     "sub": "Fukuoka Airport → Hakata → Beppu",
+     "time": "12:45",
+     "timeType": "departure",
+     "from": {
+      "name": "福岡空港",
+      "lat": 33.5859,
+      "lon": 130.4507,
+      "cc": "jp",
+      "pref": "福岡県",
+      "city": "福岡市"
+     },
+     "to": {
+      "name": "別府",
+      "lat": 33.2793,
+      "lon": 131.5006,
+      "cc": "jp",
+      "pref": "大分県",
+      "city": "別府市"
+     },
+     "id": "5exrof8"
     },
     {
-     "category": "dining",
-     "startTime": "18:00",
-     "endTime": "",
+     "cat": "dining",
      "title": "ひろかど（Hirokado）晚餐",
-     "jp": "ひろかど 別府",
-     "en": "Hirokado, Beppu",
-     "notes": "晚餐預約 18:00"
+     "notes": "晚餐預約 18:00",
+     "sub": "Hirokado, Beppu",
+     "start": "18:00",
+     "end": "",
+     "place": {
+      "name": "ひろかど",
+      "lat": 33.2793,
+      "lon": 131.5006,
+      "cc": "jp",
+      "pref": "大分県",
+      "city": "別府市",
+      "addr": "大分県別府市",
+      "approx": true
+     },
+     "id": "8f82paf"
     }
    ]
   },
-  {
-   "date": "2026-11-14",
+  "2026-11-14": {
    "title": "別府 → 大阪（交通待安排）",
-   "areas": [
-    "beppu"
-   ],
    "items": [
     {
-     "category": "train",
+     "cat": "train",
      "title": "別府->広島",
-     "jp": "",
-     "en": "",
      "notes": "",
-     "from": "別府",
-     "to": "広島",
+     "sub": "",
+     "time": "09:00",
      "timeType": "departure",
-     "transitTime": "09:00"
+     "from": {
+      "name": "別府",
+      "lat": 33.2793,
+      "lon": 131.5006,
+      "cc": "jp"
+     },
+     "to": {
+      "name": "広島",
+      "lat": null,
+      "lon": null
+     },
+     "id": "w4iedbs"
     }
-   ]
+   ],
+   "base": {
+    "name": "別府市",
+    "lat": 33.28,
+    "lon": 131.49,
+    "cc": "jp",
+    "city": "別府市",
+    "pref": "大分県",
+    "approx": true,
+    "auto": true
+   }
   },
-  {
-   "date": "2026-11-15",
+  "2026-11-15": {
    "title": "大阪 · 天婦羅晚餐",
-   "areas": [
-    "osaka"
-   ],
    "items": [
     {
-     "category": "dining",
-     "startTime": "20:20",
-     "endTime": "22:30",
+     "cat": "dining",
      "title": "ぬまた 双（天婦羅）",
-     "jp": "大阪府大阪市北区西天満4-9-3 渡辺ビル 1F",
-     "en": "4-9-3 Nishitenma, Kita-ku, Osaka",
-     "notes": "晚餐預約 20:20"
+     "notes": "晚餐預約 20:20",
+     "sub": "4-9-3 Nishitenma, Kita-ku, Osaka",
+     "start": "20:20",
+     "end": "22:30",
+     "place": {
+      "name": "ぬまた 双",
+      "lat": 34.6975,
+      "lon": 135.5063,
+      "cc": "jp",
+      "pref": "大阪府",
+      "city": "大阪市",
+      "addr": "大阪府大阪市北区西天満4-9-3 渡辺ビル 1F",
+      "approx": true
+     },
+     "id": "itdwxxx"
     }
    ]
   },
-  {
-   "date": "2026-11-16",
+  "2026-11-16": {
    "title": "宇治 → 京都 東山緒方",
-   "areas": [
-    "uji",
-    "kyoto"
-   ],
    "items": [
     {
-     "category": "train",
-     "from": "大阪",
-     "to": "宇治",
-     "timeType": "departure",
-     "transitTime": "08:45",
+     "cat": "train",
      "title": "前往宇治",
-     "jp": "大阪 → 宇治",
-     "en": "Osaka → Uji",
-     "notes": "約 50–60 分鐘"
+     "notes": "約 50–60 分鐘",
+     "sub": "Osaka → Uji",
+     "time": "08:45",
+     "timeType": "departure",
+     "from": {
+      "name": "大阪",
+      "lat": 34.7025,
+      "lon": 135.4959,
+      "cc": "jp",
+      "pref": "大阪府",
+      "city": "大阪市"
+     },
+     "to": {
+      "name": "宇治",
+      "lat": 34.8939,
+      "lon": 135.8072,
+      "cc": "jp",
+      "pref": "京都府",
+      "city": "宇治市"
+     },
+     "id": "7eko617"
     },
     {
-     "category": "sight",
-     "startTime": "10:00",
-     "endTime": "14:00",
+     "cat": "sight",
      "title": "宇治散策（平等院・茶寮）",
-     "jp": "京都府宇治市宇治蓮華116 平等院",
-     "en": "Byodoin, Uji",
-     "notes": ""
+     "notes": "",
+     "sub": "Byodoin, Uji",
+     "start": "10:00",
+     "end": "14:00",
+     "place": {
+      "name": "平等院",
+      "lat": 34.8893,
+      "lon": 135.8077,
+      "cc": "jp",
+      "pref": "京都府",
+      "city": "宇治市",
+      "addr": "京都府宇治市宇治蓮華116"
+     },
+     "id": "qy6kbaa"
     },
     {
-     "category": "train",
-     "from": "宇治",
-     "to": "祇園四条",
-     "timeType": "departure",
-     "transitTime": "14:35",
+     "cat": "train",
      "title": "移動至京都東山",
-     "jp": "宇治 → 祇園四条",
-     "en": "Uji → Gion-Shijo",
-     "notes": ""
+     "notes": "",
+     "sub": "Uji → Gion-Shijo",
+     "time": "14:35",
+     "timeType": "departure",
+     "from": {
+      "name": "宇治",
+      "lat": 34.8939,
+      "lon": 135.8072,
+      "cc": "jp",
+      "pref": "京都府",
+      "city": "宇治市"
+     },
+     "to": {
+      "name": "祇園四条",
+      "lat": 35.0037,
+      "lon": 135.7722,
+      "cc": "jp",
+      "pref": "京都府",
+      "city": "京都市"
+     },
+     "id": "0bp6nro"
     },
     {
-     "category": "dining",
+     "cat": "dining",
      "title": "東山緒方",
-     "jp": "京都府京都市東山区下河原町489-2",
-     "en": "489-2 Shimogawaracho, Higashiyama-ku, Kyoto",
      "notes": "預約",
-     "startTime": "16:00",
-     "endTime": "19:00"
+     "sub": "489-2 Shimogawaracho, Higashiyama-ku, Kyoto",
+     "start": "16:00",
+     "end": "19:00",
+     "place": {
+      "name": "東山緒方",
+      "lat": 34.9993,
+      "lon": 135.7768,
+      "cc": "jp",
+      "pref": "京都府",
+      "city": "京都市",
+      "addr": "京都府京都市東山区下河原町489-2",
+      "approx": true
+     },
+     "id": "faq971x"
     }
    ]
   },
-  {
-   "date": "2026-11-17",
+  "2026-11-17": {
    "title": "京都 → 東京 · 神樂坂",
-   "areas": [
-    "kagurazaka"
-   ],
    "items": [
     {
-     "category": "train",
-     "from": "京都",
-     "to": "東京",
-     "timeType": "departure",
-     "transitTime": "14:00",
+     "cat": "train",
      "title": "東海道新幹線 のぞみ",
-     "jp": "京都駅 → 東京駅",
-     "en": "Kyoto → Tokyo (Tokaido Shinkansen)",
-     "notes": "約 2 小時 15 分"
+     "notes": "約 2 小時 15 分",
+     "sub": "Kyoto → Tokyo (Tokaido Shinkansen)",
+     "time": "14:00",
+     "timeType": "departure",
+     "from": {
+      "name": "京都",
+      "lat": 34.9858,
+      "lon": 135.7588,
+      "cc": "jp",
+      "pref": "京都府",
+      "city": "京都市"
+     },
+     "to": {
+      "name": "東京",
+      "lat": 35.6812,
+      "lon": 139.7671,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "千代田区"
+     },
+     "id": "pj21v0e"
     },
     {
-     "category": "dining",
-     "startTime": "20:15",
-     "endTime": "22:30",
+     "cat": "dining",
      "title": "多仁本（可選）",
-     "jp": "東京都新宿区神楽坂",
-     "en": "Kagurazaka, Shinjuku-ku",
-     "notes": "可選"
+     "notes": "可選",
+     "sub": "Kagurazaka, Shinjuku-ku",
+     "start": "20:15",
+     "end": "22:30",
+     "place": {
+      "name": "多仁本",
+      "lat": 35.7023,
+      "lon": 139.7395,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "新宿区",
+      "addr": "東京都新宿区神楽坂",
+      "approx": true
+     },
+     "id": "v8rb3m2"
     }
    ]
   },
-  {
-   "date": "2026-11-18",
+  "2026-11-18": {
    "title": "押上 焼鳥おみ乃 → 二子玉川 すし喜邑",
-   "areas": [
-    "oshiage",
-    "futako"
-   ],
    "items": [
     {
-     "category": "train",
-     "from": "東京",
-     "to": "押上",
-     "timeType": "arrival",
-     "transitTime": "11:35",
+     "cat": "train",
      "title": "前往押上",
-     "jp": "→ 押上駅",
-     "en": "→ Oshiage Sta.",
-     "notes": ""
+     "notes": "",
+     "sub": "→ Oshiage Sta.",
+     "time": "11:35",
+     "timeType": "arrival",
+     "from": {
+      "name": "東京",
+      "lat": 35.6812,
+      "lon": 139.7671,
+      "cc": "jp"
+     },
+     "to": {
+      "name": "押上",
+      "lat": 35.7101,
+      "lon": 139.8132,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "墨田区"
+     },
+     "id": "woyfru3"
     },
     {
-     "category": "dining",
-     "startTime": "11:45",
-     "endTime": "14:15",
+     "cat": "dining",
      "title": "焼鳥 おみ乃",
-     "jp": "東京都墨田区押上1-38-4",
-     "en": "1-38-4 Oshiage, Sumida-ku",
-     "notes": "午餐預約"
+     "notes": "午餐預約",
+     "sub": "1-38-4 Oshiage, Sumida-ku",
+     "start": "11:45",
+     "end": "14:15",
+     "place": {
+      "name": "焼鳥 おみ乃",
+      "lat": 35.7107,
+      "lon": 139.8146,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "墨田区",
+      "addr": "東京都墨田区押上1-38-4",
+      "approx": true
+     },
+     "id": "n77yl7g"
     },
     {
-     "category": "train",
-     "from": "押上",
-     "to": "二子玉川",
-     "timeType": "arrival",
-     "transitTime": "17:40",
+     "cat": "train",
      "title": "半藏門線直通 → 二子玉川",
-     "jp": "押上駅 → 二子玉川駅",
-     "en": "Oshiage → Futako-Tamagawa",
-     "notes": "田園都市線直通"
+     "notes": "田園都市線直通",
+     "sub": "Oshiage → Futako-Tamagawa",
+     "time": "17:40",
+     "timeType": "arrival",
+     "from": {
+      "name": "押上",
+      "lat": 35.7101,
+      "lon": 139.8132,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "墨田区"
+     },
+     "to": {
+      "name": "二子玉川",
+      "lat": 35.6115,
+      "lon": 139.6268,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "世田谷区"
+     },
+     "id": "qlcy48f"
     },
     {
-     "category": "dining",
-     "startTime": "18:00",
-     "endTime": "20:30",
+     "cat": "dining",
      "title": "すし喜邑",
-     "jp": "東京都世田谷区玉川3-21-8",
-     "en": "3-21-8 Tamagawa, Setagaya-ku",
-     "notes": "晚餐預約"
+     "notes": "晚餐預約",
+     "sub": "3-21-8 Tamagawa, Setagaya-ku",
+     "start": "18:00",
+     "end": "20:30",
+     "place": {
+      "name": "すし喜邑",
+      "lat": 35.6097,
+      "lon": 139.6282,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "世田谷区",
+      "addr": "東京都世田谷区玉川3-21-8",
+      "approx": true
+     },
+     "id": "ggue45m"
     }
    ]
   },
-  {
-   "date": "2026-11-19",
+  "2026-11-19": {
    "title": "麴町 鮨みずかみ",
-   "areas": [
-    "kojimachi",
-    "tokyo"
-   ],
    "items": [
     {
-     "category": "train",
-     "from": "東京",
-     "to": "麹町",
-     "timeType": "arrival",
-     "transitTime": "12:45",
+     "cat": "train",
      "title": "前往麴町",
-     "jp": "→ 麹町駅（有楽町線）",
-     "en": "→ Kojimachi Sta.",
-     "notes": ""
-    },
-    {
-     "category": "dining",
-     "startTime": "13:00",
-     "endTime": "15:00",
-     "title": "鮨みずかみ",
-     "jp": "東京都千代田区麹町3-3-6 麹町フロントビル 1F",
-     "en": "3-3-6 Kojimachi, Chiyoda-ku",
-     "notes": "午餐預約"
-    }
-   ]
-  },
-  {
-   "date": "2026-11-20",
-   "title": "東京 → 遠刈田溫泉",
-   "areas": [
-    "zao"
-   ],
-   "items": [
-    {
-     "category": "train",
-     "from": "東京",
-     "to": "白石蔵王",
-     "timeType": "departure",
-     "transitTime": "12:16",
-     "title": "東北新幹線 やまびこ 137號",
-     "jp": "東京駅 → 白石蔵王駅",
-     "en": "Tokyo → Shiroishi-Zao",
-     "notes": "約 1 小時 48 分"
-    },
-    {
-     "category": "hotel",
-     "startTime": "14:15",
-     "endTime": "15:00",
-     "title": "旅館接送 → だいこんの花",
-     "jp": "白石蔵王駅 → 温泉山荘 だいこんの花",
-     "en": "Shiroishi-Zao → Daikon no Hana",
-     "notes": "預約接送約 40 分"
-    }
-   ]
-  },
-  {
-   "date": "2026-11-21",
-   "title": "遠刈田溫泉 → 仙台晚餐 Hou",
-   "areas": [
-    "zao",
-    "sendai"
-   ],
-   "items": [
-    {
-     "category": "sight",
-     "startTime": "10:00",
-     "endTime": "17:00",
-     "title": "溫泉早晨 · 移動至仙台",
-     "jp": "遠刈田温泉 → 仙台市内",
-     "en": "Togatta Onsen → Sendai",
-     "notes": ""
-    },
-    {
-     "category": "dining",
-     "startTime": "20:00",
-     "endTime": "22:00",
-     "title": "Hou",
-     "jp": "宮城県仙台市青葉区一番町2-3-3 J-BOXビル 3F",
-     "en": "3F J-BOX Bldg, 2-3-3 Ichibancho, Aoba-ku, Sendai",
-     "notes": "晚餐預約"
-    }
-   ]
-  },
-  {
-   "date": "2026-11-22",
-   "title": "田代島（貓島）一日遊",
-   "areas": [
-    "ishinomaki",
-    "sendai"
-   ],
-   "items": [
-    {
-     "category": "train",
-     "from": "仙台",
-     "to": "石巻",
+     "notes": "",
+     "sub": "→ Kojimachi Sta.",
+     "time": "12:45",
      "timeType": "arrival",
-     "transitTime": "08:00",
-     "title": "仙石東北ライン → 石卷",
-     "jp": "仙台駅 → 石巻駅",
-     "en": "Sendai → Ishinomaki",
-     "notes": "再轉往渡輪碼頭"
+     "from": {
+      "name": "東京",
+      "lat": 35.6812,
+      "lon": 139.7671,
+      "cc": "jp"
+     },
+     "to": {
+      "name": "麹町",
+      "lat": 35.684,
+      "lon": 139.7372,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "千代田区"
+     },
+     "id": "6k7g257"
     },
     {
-     "category": "sight",
-     "startTime": "08:30",
-     "endTime": "15:30",
-     "title": "渡輪＋田代島巡禮",
-     "jp": "宮城県石巻市田代島（網地島ライン）",
-     "en": "Tashirojima Island ferry",
-     "notes": "渡輪時刻請官網確認"
+     "cat": "dining",
+     "title": "鮨みずかみ",
+     "notes": "午餐預約",
+     "sub": "3-3-6 Kojimachi, Chiyoda-ku",
+     "start": "13:00",
+     "end": "15:00",
+     "place": {
+      "name": "鮨みずかみ",
+      "lat": 35.6842,
+      "lon": 139.7379,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "千代田区",
+      "addr": "東京都千代田区麹町3-3-6 麹町フロントビル 1F",
+      "approx": true
+     },
+     "id": "nd3wrxe"
     }
    ]
   },
-  {
-   "date": "2026-11-23",
-   "title": "自由日 / 彈性安排",
-   "areas": [
-    "tokyo"
-   ],
-   "items": []
-  },
-  {
-   "date": "2026-11-24",
-   "title": "自由日 / 彈性安排",
-   "areas": [
-    "tokyo"
-   ],
+  "2026-11-20": {
+   "title": "東京 → 遠刈田溫泉",
    "items": [
     {
-     "category": "flight",
-     "startTime": "19:30",
-     "endTime": "22:05",
-     "title": "JL 95 東京羽田 → 首爾金浦",
-     "jp": "羽田空港 第3ターミナル → 金浦国際空港",
-     "en": "JL95 HND T3 → GMP",
-     "notes": "建議 17:30 前到羽田第 3 航廈；時刻請以訂位確認單為準"
-    }
-   ]
-  },
-  {
-   "date": "2026-11-25",
-   "title": "首爾",
-   "areas": [
-    "seoul"
-   ],
-   "items": []
-  },
-  {
-   "date": "2026-11-26",
-   "title": "首爾",
-   "areas": [
-    "seoul"
-   ],
-   "items": []
-  },
-  {
-   "date": "2026-11-27",
-   "title": "首爾",
-   "areas": [
-    "seoul"
-   ],
-   "items": []
-  },
-  {
-   "date": "2026-11-28",
-   "title": "首爾 · 最後採購",
-   "areas": [
-    "seoul"
-   ],
-   "items": [
-    {
-     "category": "sight",
-     "startTime": "14:00",
-     "endTime": "20:00",
-     "title": "伴手禮採購",
-     "jp": "首爾市內",
-     "en": "Last-minute shopping in Seoul",
-     "notes": ""
-    }
-   ]
-  },
-  {
-   "date": "2026-11-29",
-   "title": "首爾 → 返港 UO 633",
-   "areas": [
-    "seoul"
-   ],
-   "items": [
-    {
-     "category": "train",
-     "from": "首爾站",
-     "to": "仁川機場 T1",
+     "cat": "train",
+     "title": "東北新幹線 やまびこ 137號",
+     "notes": "約 1 小時 48 分",
+     "sub": "Tokyo → Shiroishi-Zao",
+     "time": "12:16",
      "timeType": "departure",
-     "transitTime": "16:30",
-     "title": "AREX 機場快線",
-     "jp": "서울역 → 인천국제공항 T1",
-     "en": "AREX Seoul Sta. → ICN T1",
-     "notes": "Yahoo 不涵蓋韓國"
+     "from": {
+      "name": "東京",
+      "lat": 35.6812,
+      "lon": 139.7671,
+      "cc": "jp",
+      "pref": "東京都",
+      "city": "千代田区"
+     },
+     "to": {
+      "name": "白石蔵王",
+      "lat": 38.0087,
+      "lon": 140.6411,
+      "cc": "jp",
+      "pref": "宮城県",
+      "city": "白石市"
+     },
+     "id": "9s3s1gn"
     },
     {
-     "category": "flight",
-     "startTime": "",
-     "endTime": "",
+     "cat": "hotel",
+     "title": "旅館接送 → だいこんの花",
+     "notes": "預約接送約 40 分",
+     "sub": "Shiroishi-Zao → Daikon no Hana",
+     "start": "14:15",
+     "end": "15:00",
+     "place": {
+      "name": "旅館接送 → だいこんの花",
+      "addr": "白石蔵王駅 → 温泉山荘 だいこんの花",
+      "lat": null,
+      "lon": null
+     },
+     "id": "3rg4og7"
+    }
+   ]
+  },
+  "2026-11-21": {
+   "title": "遠刈田溫泉 → 仙台晚餐 Hou",
+   "items": [
+    {
+     "cat": "sight",
+     "title": "溫泉早晨 · 移動至仙台",
+     "notes": "",
+     "sub": "Togatta Onsen → Sendai",
+     "start": "10:00",
+     "end": "17:00",
+     "place": {
+      "name": "遠刈田温泉",
+      "lat": 38.1205,
+      "lon": 140.553,
+      "cc": "jp",
+      "pref": "宮城県",
+      "city": "蔵王町"
+     },
+     "id": "t6bn7od"
+    },
+    {
+     "cat": "dining",
+     "title": "Hou",
+     "notes": "晚餐預約",
+     "sub": "3F J-BOX Bldg, 2-3-3 Ichibancho, Aoba-ku, Sendai",
+     "start": "20:00",
+     "end": "22:00",
+     "place": {
+      "name": "Hou",
+      "lat": 38.2618,
+      "lon": 140.8697,
+      "cc": "jp",
+      "pref": "宮城県",
+      "city": "仙台市",
+      "addr": "宮城県仙台市青葉区一番町2-3-3 J-BOXビル 3F",
+      "approx": true
+     },
+     "id": "4n9w9dv"
+    }
+   ]
+  },
+  "2026-11-22": {
+   "title": "田代島（貓島）一日遊",
+   "items": [
+    {
+     "cat": "train",
+     "title": "仙石東北ライン → 石卷",
+     "notes": "再轉往渡輪碼頭",
+     "sub": "Sendai → Ishinomaki",
+     "time": "08:00",
+     "timeType": "arrival",
+     "from": {
+      "name": "仙台",
+      "lat": 38.2601,
+      "lon": 140.8821,
+      "cc": "jp",
+      "pref": "宮城県",
+      "city": "仙台市"
+     },
+     "to": {
+      "name": "石巻",
+      "lat": 38.4281,
+      "lon": 141.3048,
+      "cc": "jp",
+      "pref": "宮城県",
+      "city": "石巻市"
+     },
+     "id": "fv6t6x5"
+    },
+    {
+     "cat": "sight",
+     "title": "渡輪＋田代島巡禮",
+     "notes": "渡輪時刻請官網確認",
+     "sub": "Tashirojima Island ferry",
+     "start": "08:30",
+     "end": "15:30",
+     "place": {
+      "name": "田代島",
+      "lat": 38.295,
+      "lon": 141.423,
+      "cc": "jp",
+      "pref": "宮城県",
+      "city": "石巻市",
+      "approx": true
+     },
+     "id": "k6zgca4"
+    }
+   ]
+  },
+  "2026-11-23": {
+   "title": "自由日 / 彈性安排",
+   "items": [],
+   "base": {
+    "name": "千代田区",
+    "lat": 35.68,
+    "lon": 139.76,
+    "cc": "jp",
+    "city": "千代田区",
+    "pref": "東京都",
+    "approx": true,
+    "auto": true
+   }
+  },
+  "2026-11-24": {
+   "title": "自由日 / 彈性安排",
+   "items": [
+    {
+     "cat": "flight",
+     "title": "JL 95 東京羽田 → 首爾金浦",
+     "notes": "建議 17:30 前到羽田第 3 航廈；時刻請以訂位確認單為準",
+     "sub": "JL95 HND T3 → GMP",
+     "start": "19:30",
+     "end": "22:05",
+     "place": {
+      "name": "金浦国際空港",
+      "lat": 37.5583,
+      "lon": 126.7906,
+      "cc": "kr",
+      "pref": "ソウル特別市",
+      "city": "ソウル"
+     },
+     "flightNo": "JL95",
+     "flightDate": "2026-11-24",
+     "dep": "HND",
+     "arr": "GMP",
+     "id": "efvwp4g"
+    }
+   ]
+  },
+  "2026-11-25": {
+   "title": "首爾",
+   "items": [],
+   "base": {
+    "name": "ソウル",
+    "lat": 37.5665,
+    "lon": 126.978,
+    "cc": "kr",
+    "city": "ソウル",
+    "pref": "ソウル特別市",
+    "approx": true,
+    "auto": true
+   }
+  },
+  "2026-11-26": {
+   "title": "首爾",
+   "items": [],
+   "base": {
+    "name": "ソウル",
+    "lat": 37.5665,
+    "lon": 126.978,
+    "cc": "kr",
+    "city": "ソウル",
+    "pref": "ソウル特別市",
+    "approx": true,
+    "auto": true
+   }
+  },
+  "2026-11-27": {
+   "title": "首爾",
+   "items": [],
+   "base": {
+    "name": "ソウル",
+    "lat": 37.5665,
+    "lon": 126.978,
+    "cc": "kr",
+    "city": "ソウル",
+    "pref": "ソウル特別市",
+    "approx": true,
+    "auto": true
+   }
+  },
+  "2026-11-28": {
+   "title": "首爾 · 最後採購",
+   "items": [
+    {
+     "cat": "sight",
+     "title": "伴手禮採購",
+     "notes": "",
+     "sub": "Last-minute shopping in Seoul",
+     "start": "14:00",
+     "end": "20:00",
+     "place": {
+      "name": "明洞",
+      "lat": 37.5636,
+      "lon": 126.985,
+      "cc": "kr",
+      "pref": "ソウル特別市",
+      "city": "ソウル",
+      "approx": true
+     },
+     "id": "9ulh36c"
+    }
+   ]
+  },
+  "2026-11-29": {
+   "title": "首爾 → 返港 UO 633",
+   "items": [
+    {
+     "cat": "train",
+     "title": "AREX 機場快線",
+     "notes": "Yahoo 不涵蓋韓國",
+     "sub": "AREX Seoul Sta. → ICN T1",
+     "time": "16:30",
+     "timeType": "departure",
+     "from": {
+      "name": "首爾站",
+      "lat": 37.5547,
+      "lon": 126.9707,
+      "cc": "kr"
+     },
+     "to": {
+      "name": "仁川機場 T1",
+      "lat": 37.449,
+      "lon": 126.451,
+      "cc": "kr"
+     },
+     "id": "o5qlaol"
+    },
+    {
+     "cat": "flight",
      "title": "UO 633 → 香港",
-     "jp": "",
-     "en": "UO633 → HKG",
      "notes": "出發機場與起降時間待確認：按筆圖示 →「查詢航班並自動填入」，或依訂位確認單填入",
+     "sub": "UO633 → HKG",
+     "start": "",
+     "end": "",
+     "place": null,
      "flightNo": "UO633",
-     "flightDate": "2026-11-29"
+     "flightDate": "2026-11-29",
+     "arr": "HKG",
+     "id": "gc2mz5v"
     }
    ]
   }
- ],
+ },
  "hotels": [
   {
    "id": "h1",
@@ -434,10 +697,18 @@
    "checkInTime": "15:00",
    "checkOut": "2026-11-21",
    "checkOutTime": "10:00",
-   "area": "zao",
-   "address": "宮城県刈田郡蔵王町遠刈田温泉字北山21-7",
    "status": "已確認",
-   "conf": ""
+   "conf": "",
+   "place": {
+    "name": "温泉山荘 だいこんの花",
+    "lat": 38.1192,
+    "lon": 140.5531,
+    "cc": "jp",
+    "pref": "宮城県",
+    "city": "蔵王町",
+    "addr": "宮城県刈田郡蔵王町遠刈田温泉字北山21-7",
+    "approx": true
+   }
   },
   {
    "id": "h-beppu",
@@ -446,10 +717,18 @@
    "checkInTime": "15:00",
    "checkOut": "2026-11-14",
    "checkOutTime": "11:00",
-   "area": "beppu",
-   "address": "",
    "status": "已確認",
-   "conf": ""
+   "conf": "",
+   "place": {
+    "name": "御宿 野乃 別府",
+    "lat": 33.2805,
+    "lon": 131.4992,
+    "cc": "jp",
+    "pref": "大分県",
+    "city": "別府市",
+    "addr": "大分県別府市",
+    "approx": true
+   }
   },
   {
    "id": "h-shiodome",
@@ -458,10 +737,17 @@
    "checkInTime": "15:00",
    "checkOut": "2026-11-19",
    "checkOutTime": "11:00",
-   "area": "tokyo",
-   "address": "東京都港区東新橋1-6-3",
    "status": "已確認",
-   "conf": ""
+   "conf": "",
+   "place": {
+    "name": "ロイヤルパークホテル ザ 汐留",
+    "lat": 35.6643,
+    "lon": 139.759,
+    "cc": "jp",
+    "pref": "東京都",
+    "city": "港区",
+    "addr": "東京都港区東新橋1-6-3"
+   }
   },
   {
    "id": "h-metropolitan",
@@ -470,10 +756,17 @@
    "checkInTime": "21:00",
    "checkOut": "2026-11-24",
    "checkOutTime": "21:00",
-   "area": "tokyo",
-   "address": "東京都千代田区丸の内1-7-12",
    "status": "已確認",
-   "conf": ""
+   "conf": "",
+   "place": {
+    "name": "ホテルメトロポリタン 丸の内",
+    "lat": 35.6823,
+    "lon": 139.77,
+    "cc": "jp",
+    "pref": "東京都",
+    "city": "千代田区",
+    "addr": "東京都千代田区丸の内1-7-12"
+   }
   },
   {
    "id": "h1793118043239",
@@ -482,12 +775,14 @@
    "checkInTime": "15:00",
    "checkOut": "2026-11-15",
    "checkOutTime": "11:00",
-   "area": "c_ef5m0",
-   "address": "〒730-0043 広島県広島市中区富士見町駅前通り11-12",
-   "lat": 34.3865,
-   "lon": 132.46239,
    "status": "已確認",
-   "conf": ""
+   "conf": "",
+   "place": {
+    "name": "Hilton Hiroshima",
+    "lat": 34.3865,
+    "lon": 132.46239,
+    "addr": "〒730-0043 広島県広島市中区富士見町駅前通り11-12"
+   }
   },
   {
    "id": "h1793118125018",
@@ -496,10 +791,14 @@
    "checkInTime": "15:00",
    "checkOut": "2026-11-17",
    "checkOutTime": "11:00",
-   "area": "kyoto",
-   "address": "京都市下京區塩小路町518番",
    "status": "已確認",
-   "conf": ""
+   "conf": "",
+   "place": {
+    "name": "ALA HOTEL KYOTO（アルアホテル京都)",
+    "addr": "京都市下京區塩小路町518番",
+    "lat": null,
+    "lon": null
+   }
   },
   {
    "id": "h1793118187100",
@@ -508,12 +807,14 @@
    "checkInTime": "15:00",
    "checkOut": "2026-11-20",
    "checkOutTime": "11:00",
-   "area": "sendai",
-   "address": "〒980-8477 宮城県仙台市青葉区中央中央一丁目愛宕上杉通",
-   "lat": 38.2589,
-   "lon": 140.88112,
    "status": "已確認",
-   "conf": ""
+   "conf": "",
+   "place": {
+    "name": "ホテルメトロポリタン仙台",
+    "lat": 38.2589,
+    "lon": 140.88112,
+    "addr": "〒980-8477 宮城県仙台市青葉区中央中央一丁目愛宕上杉通"
+   }
   },
   {
    "id": "h1793118204372",
@@ -522,21 +823,17 @@
    "checkInTime": "15:00",
    "checkOut": "2026-11-22",
    "checkOutTime": "08:00",
-   "area": "sendai",
-   "address": "〒980-8477 宮城県仙台市青葉区中央中央一丁目愛宕上杉通",
-   "lat": 38.2589,
-   "lon": 140.88112,
    "status": "已確認",
-   "conf": ""
+   "conf": "",
+   "place": {
+    "name": "ホテルメトロポリタン仙台",
+    "lat": 38.2589,
+    "lon": 140.88112,
+    "addr": "〒980-8477 宮城県仙台市青葉区中央中央一丁目愛宕上杉通"
+   }
   }
  ],
- "customAreas": [
-  {
-   "key": "c_ef5m0",
-   "label": "広島市",
-   "lat": 34.3865,
-   "lon": 132.4624,
-   "cc": "jp"
-  }
- ]
+ "start": "2026-11-13",
+ "end": "2026-11-29",
+ "updatedAt": 1793195434857
 }
