@@ -289,6 +289,20 @@
       "approx": true
      },
      "id": "v8rb3m2"
+    },
+    {
+     "id": "tfjg0r4",
+     "cat": "dining",
+     "title": "Gibier MIYAMA",
+     "sub": "",
+     "notes": "",
+     "start": "",
+     "end": "",
+     "place": {
+      "name": "京都府京都市東山区祇園町北側279-3",
+      "lat": null,
+      "lon": null
+     }
     }
    ]
   },
@@ -935,5 +949,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793437073425
+ "updatedAt": 1793437496450
 }
