@@ -121,6 +121,20 @@
    "title": "広島 →京都",
    "items": [
     {
+     "id": "bfnnhl5",
+     "cat": "dining",
+     "title": "未在 京都",
+     "sub": "",
+     "notes": "",
+     "start": "18:00",
+     "end": "21:00",
+     "place": {
+      "name": "京都府京都市東山区八坂鳥居前東入ル円山町613 円山公園",
+      "lat": null,
+      "lon": null
+     }
+    },
+    {
      "cat": "dining",
      "title": "ぬまた 双（天婦羅）",
      "notes": "晚餐預約 20:20",
@@ -143,20 +157,6 @@
       }
      },
      "id": "itdwxxx"
-    },
-    {
-     "id": "bfnnhl5",
-     "cat": "dining",
-     "title": "未在 京都",
-     "sub": "",
-     "notes": "",
-     "start": "",
-     "end": "",
-     "place": {
-      "name": "京都府京都市東山区八坂鳥居前東入ル円山町613 円山公園",
-      "lat": null,
-      "lon": null
-     }
     }
    ]
   },
@@ -963,5 +963,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793438225950
+ "updatedAt": 1793438253338
 }
