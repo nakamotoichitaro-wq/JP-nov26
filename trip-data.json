@@ -143,6 +143,20 @@
       }
      },
      "id": "itdwxxx"
+    },
+    {
+     "id": "bfnnhl5",
+     "cat": "dining",
+     "title": "未在",
+     "sub": "",
+     "notes": "",
+     "start": "",
+     "end": "",
+     "place": {
+      "name": "未在 東山",
+      "lat": null,
+      "lon": null
+     }
     }
    ]
   },
@@ -949,5 +963,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793437496450
+ "updatedAt": 1793438167369
 }
