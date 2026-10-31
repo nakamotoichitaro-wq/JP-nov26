@@ -463,31 +463,6 @@
    "title": "仙台→ 遠刈田溫泉",
    "items": [
     {
-     "cat": "train",
-     "title": "東北新幹線 やまびこ 137號",
-     "notes": "約 1 小時 48 分",
-     "sub": "Tokyo → Shiroishi-Zao",
-     "time": "12:16",
-     "timeType": "departure",
-     "from": {
-      "name": "東京",
-      "lat": 35.6812,
-      "lon": 139.7671,
-      "cc": "jp",
-      "pref": "東京都",
-      "city": "千代田区"
-     },
-     "to": {
-      "name": "白石蔵王",
-      "lat": 38.0087,
-      "lon": 140.6411,
-      "cc": "jp",
-      "pref": "宮城県",
-      "city": "白石市"
-     },
-     "id": "9s3s1gn"
-    },
-    {
      "cat": "hotel",
      "title": "旅館接送 → だいこんの花",
      "notes": "預約接送約 40 分",
@@ -501,6 +476,33 @@
       "lon": null
      },
      "id": "3rg4og7"
+    },
+    {
+     "id": "9s3s1gn",
+     "cat": "train",
+     "title": "仙台 → 白石蔵王",
+     "sub": "Sendai → Shiroishi-Zao",
+     "notes": "",
+     "from": {
+      "name": "仙台",
+      "lat": 38.2601,
+      "lon": 140.8821,
+      "cc": "jp",
+      "addr": "",
+      "city": "",
+      "pref": "",
+      "src": "station"
+     },
+     "to": {
+      "name": "白石蔵王",
+      "lat": 38.0087,
+      "lon": 140.6411,
+      "cc": "jp",
+      "pref": "宮城県",
+      "city": "白石市"
+     },
+     "timeType": "arrival",
+     "time": "15:00"
     }
    ]
   },
@@ -933,5 +935,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793436991623
+ "updatedAt": 1793437073425
 }
