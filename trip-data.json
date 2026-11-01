@@ -494,12 +494,12 @@
      "id": "9s3s1gn",
      "cat": "train",
      "title": "仙台 → 白石蔵王",
-     "sub": "Sendai → Shiroishi-Zao",
+     "sub": "Tokyo-->Sendai → Shiroishi-Zao",
      "notes": "",
      "from": {
-      "name": "仙台",
-      "lat": 38.2601,
-      "lon": 140.8821,
+      "name": "東京",
+      "lat": 35.6812,
+      "lon": 139.7671,
       "cc": "jp",
       "addr": "",
       "city": "",
@@ -967,5 +967,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793536833951
+ "updatedAt": 1793536866072
 }
