@@ -478,7 +478,7 @@
     {
      "id": "9s3s1gn",
      "cat": "train",
-     "title": "仙台 → 白石蔵王-> だいこんの花",
+     "title": "仙台 → 白石蔵王-> だいこんの花 (leave Tokyo Station at 11am)",
      "sub": "Tokyo-->Sendai → Shiroishi-Zao-> だいこんの花",
      "notes": "",
      "from": {
@@ -959,5 +959,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793537472231
+ "updatedAt": 1793537519844
 }
