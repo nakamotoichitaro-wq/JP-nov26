@@ -484,6 +484,20 @@
      },
      "timeType": "departure",
      "time": "15:00"
+    },
+    {
+     "id": "dc69hkf",
+     "cat": "dining",
+     "title": "たでの葉/Tadenoha",
+     "sub": "",
+     "notes": "",
+     "start": "19:00",
+     "end": "21:00",
+     "place": {
+      "name": "東京都港区南青山3-2-3 ダイアンクレストビル 2F",
+      "lat": null,
+      "lon": null
+     }
     }
    ]
   },
@@ -963,5 +977,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793438253338
+ "updatedAt": 1793502482772
 }
