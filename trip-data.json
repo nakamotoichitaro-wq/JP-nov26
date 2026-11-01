@@ -493,8 +493,8 @@
     {
      "id": "9s3s1gn",
      "cat": "train",
-     "title": "仙台 → 白石蔵王",
-     "sub": "Tokyo-->Sendai → Shiroishi-Zao",
+     "title": "仙台 → 白石蔵王-> だいこんの花",
+     "sub": "Tokyo-->Sendai → Shiroishi-Zao_> だいこんの花",
      "notes": "",
      "from": {
       "name": "東京",
@@ -507,12 +507,19 @@
       "src": "station"
      },
      "to": {
-      "name": "白石蔵王",
-      "lat": 38.0087,
-      "lon": 140.6411,
+      "name": "だいこんの花",
+      "addr": "〒984-0041 宮城県仙台市若林区志波町大和町二丁目荒浜原町線",
+      "lat": 38.252157,
+      "lon": 140.912966,
       "cc": "jp",
       "pref": "宮城県",
-      "city": "白石市"
+      "city": "仙台市",
+      "src": "osm",
+      "jma": {
+       "office": "040000",
+       "c10": "040010",
+       "c10name": "東部"
+      }
      },
      "timeType": "arrival",
      "time": "15:00"
@@ -967,5 +974,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793536866072
+ "updatedAt": 1793537157767
 }
