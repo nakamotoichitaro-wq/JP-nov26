@@ -944,9 +944,24 @@
     "lon": 140.88112,
     "addr": "〒980-8477 宮城県仙台市青葉区中央中央一丁目愛宕上杉通"
    }
+  },
+  {
+   "id": "ukrmjs8",
+   "name": "The Grand Lotte Seoul",
+   "checkIn": "2026-11-24",
+   "checkInTime": "23:00",
+   "checkOut": "2026-11-29",
+   "checkOutTime": "11:00",
+   "status": "已確認",
+   "conf": "",
+   "place": {
+    "name": "The Grand Lotte Seoul",
+    "lat": null,
+    "lon": null
+   }
   }
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793511943666
+ "updatedAt": 1793512031463
 }
