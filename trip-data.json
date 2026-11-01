@@ -712,12 +712,17 @@
       "src": "osm"
      },
      "to": {
-      "name": "東京国際空港（羽田）第3ターミナル",
-      "lat": null,
-      "lon": null
+      "name": "羽田空港第3ターミナル",
+      "addr": "〒144-0041 東京大田区羽田空港First Floor",
+      "lat": 35.545012,
+      "lon": 139.767039,
+      "cc": "jp",
+      "pref": "",
+      "city": "大田区",
+      "src": "osm"
      },
      "timeType": "arrival",
-     "time": "15:00"
+     "time": "16:00"
     },
     {
      "cat": "flight",
@@ -1032,5 +1037,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793538030730
+ "updatedAt": 1793538138732
 }
