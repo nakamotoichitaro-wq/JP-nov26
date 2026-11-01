@@ -915,7 +915,7 @@
   },
   {
    "id": "h1793118187100",
-   "name": "ホテルメトロポリタン仙台",
+   "name": "Mitsui Garden Hotel Jingugaien Tokyo PREMIER",
    "checkIn": "2026-11-19",
    "checkInTime": "15:00",
    "checkOut": "2026-11-20",
@@ -923,10 +923,14 @@
    "status": "已確認",
    "conf": "",
    "place": {
-    "name": "ホテルメトロポリタン仙台",
-    "lat": 38.2589,
-    "lon": 140.88112,
-    "addr": "〒980-8477 宮城県仙台市青葉区中央中央一丁目愛宕上杉通"
+    "name": "Mitsui Garden Hotel Jingugaien Tokyo Premier",
+    "addr": "〒160-8484 東京新宿区霞ヶ丘町四谷角筈線",
+    "lat": 35.68002,
+    "lon": 139.715704,
+    "cc": "jp",
+    "pref": "",
+    "city": "新宿区",
+    "src": "osm"
    }
   },
   {
@@ -963,5 +967,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793512031463
+ "updatedAt": 1793536804055
 }
