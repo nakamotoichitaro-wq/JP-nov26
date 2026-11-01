@@ -638,6 +638,35 @@
    "title": "自由日 / 彈性安排",
    "items": [
     {
+     "id": "y3b9s8u",
+     "cat": "train",
+     "title": "仙台 → 東京駅(改札外)",
+     "sub": "",
+     "notes": "",
+     "from": {
+      "name": "仙台駅",
+      "lat": 38.2601,
+      "lon": 140.8821,
+      "cc": "jp",
+      "addr": "",
+      "city": "",
+      "pref": "",
+      "src": "station"
+     },
+     "to": {
+      "name": "東京駅(改札外)",
+      "addr": "〒100-0005 東京千代田区丸の内丸の内一丁目",
+      "lat": 35.683161,
+      "lon": 139.766912,
+      "cc": "jp",
+      "pref": "",
+      "city": "千代田区",
+      "src": "osm"
+     },
+     "timeType": "arrival",
+     "time": "17:00"
+    },
+    {
      "id": "ne2y1je",
      "cat": "dining",
      "title": "銀座 きた川",
@@ -979,5 +1008,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793537848261
+ "updatedAt": 1793537923248
 }
