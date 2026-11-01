@@ -532,6 +532,40 @@
      "id": "t6bn7od"
     },
     {
+     "id": "4fghfby",
+     "cat": "train",
+     "title": "温泉山荘 だいこんの花 → 仙台市",
+     "sub": "",
+     "notes": "",
+     "from": {
+      "name": "温泉山荘 だいこんの花",
+      "addr": "〒989-0916 宮城県刈田郡蔵王町",
+      "lat": 38.126007,
+      "lon": 140.566417,
+      "cc": "jp",
+      "pref": "宮城県",
+      "city": "刈田郡",
+      "src": "osm",
+      "jma": {
+       "office": "040000",
+       "c10": "040010",
+       "c10name": "東部"
+      }
+     },
+     "to": {
+      "name": "仙台駅",
+      "lat": 38.2601,
+      "lon": 140.8821,
+      "cc": "jp",
+      "addr": "",
+      "city": "",
+      "pref": "",
+      "src": "station"
+     },
+     "timeType": "arrival",
+     "time": "17:00"
+    },
+    {
      "cat": "dining",
      "title": "Hou",
      "notes": "晚餐預約",
@@ -959,5 +993,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793537519844
+ "updatedAt": 1793537614291
 }
