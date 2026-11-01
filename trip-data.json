@@ -457,35 +457,6 @@
      }
     },
     {
-     "id": "509b1zf",
-     "cat": "train",
-     "title": "東京都 → 仙台",
-     "sub": "",
-     "notes": "",
-     "from": {
-      "name": "東京都",
-      "addr": "東京",
-      "lat": 35.67686,
-      "lon": 139.763895,
-      "cc": "jp",
-      "pref": "東京",
-      "city": "",
-      "src": "osm"
-     },
-     "to": {
-      "name": "仙台",
-      "lat": 38.2601,
-      "lon": 140.8821,
-      "cc": "jp",
-      "addr": "",
-      "city": "",
-      "pref": "",
-      "src": "station"
-     },
-     "timeType": "departure",
-     "time": "15:00"
-    },
-    {
      "id": "dc69hkf",
      "cat": "dining",
      "title": "たでの葉/Tadenoha",
@@ -977,5 +948,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793511922167
+ "updatedAt": 1793511943666
 }
