@@ -275,12 +275,11 @@
      }
     },
     {
+     "id": "pj21v0e",
      "cat": "train",
      "title": "東海道新幹線 のぞみ",
-     "notes": "約 2 小時 15 分",
      "sub": "Kyoto → Tokyo (Tokaido Shinkansen)",
-     "time": "14:00",
-     "timeType": "departure",
+     "notes": "約 2 小時 15 分",
      "from": {
       "name": "京都",
       "lat": 34.9858,
@@ -297,7 +296,8 @@
       "pref": "東京都",
       "city": "千代田区"
      },
-     "id": "pj21v0e"
+     "timeType": "departure",
+     "time": "15:00"
     },
     {
      "cat": "dining",
@@ -977,5 +977,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793511905048
+ "updatedAt": 1793511922167
 }
