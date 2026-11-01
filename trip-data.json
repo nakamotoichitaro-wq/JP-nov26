@@ -476,21 +476,6 @@
    "title": "東京→仙台→ 遠刈田溫泉",
    "items": [
     {
-     "cat": "hotel",
-     "title": "旅館接送 → だいこんの花",
-     "notes": "預約接送約 40 分",
-     "sub": "Shiroishi-Zao → Daikon no Hana",
-     "start": "14:15",
-     "end": "15:00",
-     "place": {
-      "name": "旅館接送 → だいこんの花",
-      "addr": "白石蔵王駅 → 温泉山荘 だいこんの花",
-      "lat": null,
-      "lon": null
-     },
-     "id": "3rg4og7"
-    },
-    {
      "id": "9s3s1gn",
      "cat": "train",
      "title": "仙台 → 白石蔵王-> だいこんの花",
@@ -974,5 +959,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793537304527
+ "updatedAt": 1793537310986
 }
