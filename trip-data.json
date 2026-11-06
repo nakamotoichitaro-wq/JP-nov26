@@ -975,7 +975,7 @@
   },
   {
    "id": "h1793118187100",
-   "name": "Mitsui Garden Hotel Jingugaien Tokyo PREMIER",
+   "name": "Marunouchi Hotel",
    "checkIn": "2026-11-19",
    "checkInTime": "15:00",
    "checkOut": "2026-11-20",
@@ -983,13 +983,13 @@
    "status": "已確認",
    "conf": "",
    "place": {
-    "name": "Mitsui Garden Hotel Jingugaien Tokyo Premier",
-    "addr": "〒160-8484 東京新宿区霞ヶ丘町四谷角筈線",
-    "lat": 35.68002,
-    "lon": 139.715704,
+    "name": "パシフィックセンチュリープレイス丸の内",
+    "addr": "〒100-6221 東京千代田区丸の内丸の内一丁目1",
+    "lat": 35.677979,
+    "lon": 139.766939,
     "cc": "jp",
     "pref": "",
-    "city": "新宿区",
+    "city": "千代田区",
     "src": "osm"
    }
   },
@@ -1027,5 +1027,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793967657215
+ "updatedAt": 1793977053670
 }
