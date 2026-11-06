@@ -133,30 +133,6 @@
       "lat": null,
       "lon": null
      }
-    },
-    {
-     "cat": "dining",
-     "title": "ぬまた 双（天婦羅）",
-     "notes": "晚餐預約 20:20",
-     "sub": "4-9-3 Nishitenma, Kita-ku, Osaka",
-     "start": "20:20",
-     "end": "22:30",
-     "place": {
-      "name": "ぬまた 双",
-      "lat": 34.6975,
-      "lon": 135.5063,
-      "cc": "jp",
-      "pref": "大阪府",
-      "city": "大阪市",
-      "addr": "大阪府大阪市北区西天満4-9-3 渡辺ビル 1F",
-      "approx": true,
-      "jma": {
-       "office": "270000",
-       "c10": "270000",
-       "c10name": "大阪府"
-      }
-     },
-     "id": "itdwxxx"
     }
    ]
   },
@@ -1051,5 +1027,5 @@
  ],
  "start": "2026-11-13",
  "end": "2026-11-29",
- "updatedAt": 1793538271248
+ "updatedAt": 1793967657215
 }
